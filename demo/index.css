@@ -1,0 +1,20 @@
+.wrap {
+    padding: 5px;
+}
+
+.spacer {
+    margin: 20px 0;
+}
+
+#dlg_demo_rules1_log p {
+    padding-bottom: 5px;
+    font-size: 12px;
+    font-family: "courier new";
+}
+
+/* demo_rules1 --------------------------------------------------------------- */
+.rules1_container {
+    width: 750px;
+    padding: 5px;
+    background: none !important;
+}
