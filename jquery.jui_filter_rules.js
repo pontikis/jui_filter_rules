@@ -35,6 +35,35 @@
 
     var pluginName = 'jui_filter_rules';
 
+    var filter_types = [
+        "text",
+        "number",
+        "date"
+    ];
+
+    var operators = [
+        {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+        {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
+        {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+        {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
+        {type: "less", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
+        {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+        {type: "greater", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+        {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+        {type: "between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
+        {type: "not_between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+        {type: "begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "yes"},
+        {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+        {type: "contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+        {type: "not_contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+        {type: "ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+        {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+        {type: "is_empty", accept_values: "no", apply_to: ["text"], start_a_group: "yes"},
+        {type: "is_not_empty", accept_values: "no", apply_to: ["text"], start_a_group: "no"},
+        {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+        {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "no"}
+    ];
+
     /* public methods ------------------------------------------------------- */
     var methods = {
 
@@ -63,11 +92,54 @@
                 var container_id = elem.attr("id");
 
                 // simple validation
-                validate_input(container_id);
+                //validate_input(container_id);
 
                 // bind events
                 //elem.unbind("onCustomEvent1").bind("onCustomEvent1", settings.onCustomEvent1);
 
+                var i, flt_html = '',
+                    filters = settings.filters,
+                    filter_rules = settings.filter_rules;
+
+                if(filters.length > 0 || filter_rules.length > 0) {
+                    flt_html += '<ul>';
+
+                    for(i in filter_rules) {
+                        flt_html += '<li>';
+
+                        flt_html += filters[i].filterLabel;
+
+                        flt_html += '</li>';
+                    }
+
+
+                    flt_html += '<li>';
+
+                    flt_html += '<div class="' + settings.filterContainerClass + '">';
+                    flt_html += create_filters_list(container_id);
+                    flt_html += '</div>';
+
+                    flt_html += '<div class="' + settings.operatorContainerClass + '">';
+                    flt_html += '<select id="operators_list">';
+
+                    flt_html += '</select>';
+                    flt_html += '</div>';
+
+                    flt_html += '</li>';
+
+
+                    flt_html += '</ul>';
+                }
+
+                elem.html(flt_html);
+
+
+
+                $("#operators_list").html(create_operators_list(filters[0].filterType));
+
+                $("#filters_list").change(function() {
+                    $("#operators_list").html(create_operators_list("number"));
+                })
 
             });
 
@@ -80,8 +152,12 @@
          */
         getDefaults: function() {
             return {
-                opt1: 1,
-                opt2: 'opt2_value'
+                filters: [],
+                filter_rules: [],
+
+                filterContainerClass: "filter_container",
+                operatorContainerClass: "operator_container",
+                filterValueClass: "filter_value_container"
             };
         },
 
@@ -148,6 +224,64 @@
     var validate_input = function(container_id) {
         // your code here (OPTIONAL)
     };
+
+
+    var create_filters_list = function(container_id) {
+        var elem = $("#" + container_id),
+            filters = elem.jui_filter_rules('getOption', 'filters'),
+            i, f_html = '';
+
+        f_html += '<select id="filters_list">';
+        for(i in filters) {
+            f_html += '<option value="' + filters[i].filterName + '">' + filters[i].filterLabel + '</option>';
+        }
+        f_html += '</select>';
+
+        return f_html;
+
+    };
+
+    var create_operators_list = function(filter_type) {
+        var oper = {}, i, len, class_html = '', f_oper = '';
+
+        oper = getOperators(filter_type);
+        len = oper.length;
+
+        for(i in oper) {
+            if(oper[i].start_a_group == "yes") {
+                f_oper += '<optgroup label="&raquo;" class="">';
+            }
+            f_oper += '<option value="' + oper[i].operator_type + '"' + ' class=""' + '>' + oper[i].operator_label + '</option>';
+            if(i < len - 1 && oper[parseInt(i) + 1].start_a_group == "yes") {
+                f_oper += '</optgroup>';
+            }
+        }
+
+        return f_oper;
+
+    };
+
+
+    /**
+     * Get operators for filter type
+     * @param filter_type {string}
+     * @return {Array}
+     */
+    var getOperators = function(filter_type) {
+        var i, oper = [], item = {};
+        for(i in operators) {
+            if($.inArray(filter_type, operators[i].apply_to) > -1) {
+                item = {};
+                item.operator_type = operators[i].type;
+                item.operator_label = rsc_jui_fr['operator_' + operators[i].type];
+                item.start_a_group = operators[i].start_a_group;
+                oper.push(item);
+            }
+        }
+        return oper;
+
+    };
+
 
     /**
      * jui_filter_rules - Create rules to filter dataset using jquery.

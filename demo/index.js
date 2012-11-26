@@ -12,21 +12,42 @@ $(function() {
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1").jui_filter_rules({
 
+
         filters: [
             {
+                filterName: "Lastname", "filterType": "text", field: "lastname",filterLabel: "Last name",
+                html: [
+                    {element: "input",type: "text"}
+                ]
+            },
+            {
+                filterName: "Firstname", "filterType": "text", field: "firstname",filterLabel: "First name",
+                html: [
+                    {element: "input",type: "text"}
+                ]
+            }
+        ],
+
+        filter_rules: [],
+
+        filters1: [
+            {
                 filterName: "Lastname", "filterType": "text", field: "lastname",
-                inputs: [
+                html: [
                     {
+                        element: "",
                         type: "text",
                         label: "aaa"
                     }
                 ],
                 widgets: [
                     {
-                        type: "aaa",
-                        prop: "aaaa"
+                        type: "datepicker",
+                        dateformat: "aaaa",
+                        timeformat: ""
                     }
                 ],
+                repeat: 0, // a number or 'auto' according to values_predefined or values_ajax_url (0 = no repeat)
                 values_predefined: [
                     {
                         option: "aaaa",
@@ -37,14 +58,11 @@ $(function() {
             }
         ],
 
-
-        filter_rules: [
-            {filterName: "Lastname", negation: "", operator: "", value: []},
-            {filterName: "Lastname", negation: "", operator: "", value: []},
-            {filterName: "Firstname", negation: "", operator: "", value: []}
-        ],
-
-        containerClass: 'grid1_container ui-state-default ui-corner-all'
+        filter_rules1: [
+            {filterName: "Lastname", operator: "", value: []},
+            {filterName: "Lastname", operator: "", value: []},
+            {filterName: "Firstname", operator: "", value: []}
+        ]
 
     });
 

@@ -1,0 +1,52 @@
+/* containers --------------------------------------------------------------- */
+.filter_container {
+    display: inline-block;
+    padding: 5px;
+}
+
+.operator_container {
+    display: inline-block;
+    padding: 5px;
+}
+
+.filter_value_container {
+    display: inline-block;
+    padding: 5px;
+}
+
+/* filter list ------------------------------------------------------------ */
+.filter_list {
+
+}
+
+.filter_list_option {
+
+}
+
+/* operator list ------------------------------------------------------------ */
+.operator_list {
+
+}
+
+
+.operator_list_option {
+
+}
+
+.operator_list_option_group {
+
+}
+
+/* filter value ------------------------------------------------------------ */
+.filter_input_text {
+
+}
+
+.filter_input_number {
+
+}
+
+.filter_input_date {
+
+}
+/* -------------------------------------------------------------------------- */

@@ -6,6 +6,26 @@
  *
  */
 var rsc_jui_fr = {
-    preferences: 'Προτιμήσεις'
-
+    operator_equal: 'ισούται',
+    operator_not_equal: 'δεν ισούται',
+    operator_in: 'περιλαμβάνεται',
+    operator_not_in: 'δεν περιλαμβάνεται',
+    operator_less: 'μικρότερο',
+    operator_less_or_equal: 'μικρότερο είτε ίσο',
+    operator_greater: 'μεγαλύτερο',
+    operator_greater_or_equal: 'μεγαλύτερο είτε ίσο',
+    operator_between: 'ανάμεσα',
+    operator_not_between: 'όχι ανάμεσα',
+    operator_begins_with: 'ξεκινά με',
+    operator_not_begins_with: 'δεν ξεκινά με',
+    operator_contains: 'περιέχει',
+    operator_not_contains: 'δεν περιέχει',
+    operator_ends_with: 'καταλήγει σε',
+    operator_not_ends_with: 'δεν καταλήγει σε',
+    operator_is_empty: 'είναι κενό',
+    operator_is_not_empty: 'δεν είναι κενό',
+    operator_is_null: 'δεν έχει δοθεί',
+    operator_is_not_null: 'έχει δοθεί'
 };
+
+
