@@ -28,7 +28,6 @@
 
 }
 
-
 .operator_list_option {
 
 }
@@ -37,13 +36,16 @@
 
 }
 
+
 /* filter value ------------------------------------------------------------ */
 .filter_input_text {
-
+    width: 150px;
+    margin: 0 5px;
 }
 
 .filter_input_number {
-
+    width: 75px;
+    margin: 0 5px;
 }
 
 .filter_input_date {

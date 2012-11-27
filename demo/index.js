@@ -12,18 +12,27 @@ $(function() {
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1").jui_filter_rules({
 
-
         filters: [
             {
-                filterName: "Lastname", "filterType": "text", field: "lastname",filterLabel: "Last name",
-                html: [
-                    {element: "input",type: "text"}
+                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                use_operators: [],
+                interface: [
+                    {element: "input", type: "text", class: "test1"}
+                ],
+                interface_in: [
+                    {element: "input", type: "checkbox", option: "lbl1", value: 1},
+                    {element: "input", type: "checkbox", option: "lbl2", value: 2},
+                    {element: "input", type: "checkbox", option: "lbl3", value: 3}
+                ],
+                interface_between: [
+                    {element: "input", type: "text", label: "From"},
+                    {element: "input", type: "text", label: "Until"}
                 ]
             },
             {
-                filterName: "Firstname", "filterType": "text", field: "firstname",filterLabel: "First name",
-                html: [
-                    {element: "input",type: "text"}
+                filterName: "Firstname", "filterType": "number", field: "firstname", filterLabel: "First name",
+                interface: [
+                    {element: "input", type: "text"}
                 ]
             }
         ],
@@ -65,7 +74,6 @@ $(function() {
         ]
 
     });
-
 
 
     elem_dlg_log1.dialog({

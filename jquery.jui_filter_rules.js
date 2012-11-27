@@ -64,6 +64,7 @@
         {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "no"}
     ];
 
+
     /* public methods ------------------------------------------------------- */
     var methods = {
 
@@ -120,13 +121,14 @@
                     flt_html += '</div>';
 
                     flt_html += '<div class="' + settings.operatorContainerClass + '">';
-                    flt_html += '<select id="operators_list">';
-
-                    flt_html += '</select>';
+                    flt_html += '<select id="operators_list"></select>';
                     flt_html += '</div>';
 
-                    flt_html += '</li>';
+                    flt_html += '<div id="filter_value" class="' + settings.filterValueClass + '">';
+                    flt_html += '</div>';
 
+
+                    flt_html += '</li>';
 
                     flt_html += '</ul>';
                 }
@@ -137,9 +139,18 @@
 
                 $("#operators_list").html(create_operators_list(filters[0].filterType));
 
+                $("#filter_value").html(create_filter_value(container_id, 0, $("#operators_list").val()));
+
                 $("#filters_list").change(function() {
-                    $("#operators_list").html(create_operators_list("number"));
+                    var filter_index = $(this).prop('selectedIndex');
+                    $("#operators_list").html(create_operators_list(filters[filter_index].filterType));
+                    $("#filter_value").html(create_filter_value(container_id, filter_index, $("#operators_list").val()));
                 })
+
+                $("#operators_list").change(function() {
+                    $("#filter_value").html(create_filter_value(container_id, $("#filters_list").prop('selectedIndex'), $("#operators_list").val()));
+                })
+
 
             });
 
@@ -157,7 +168,11 @@
 
                 filterContainerClass: "filter_container",
                 operatorContainerClass: "operator_container",
-                filterValueClass: "filter_value_container"
+                filterValueClass: "filter_value_container",
+
+                filterInputTextClass: "filter_input_text",
+                filterInputNumberClass: "filter_input_number",
+                filterInputDateClass: "filter_input_date"
             };
         },
 
@@ -249,15 +264,72 @@
 
         for(i in oper) {
             if(oper[i].start_a_group == "yes") {
-                f_oper += '<optgroup label="&raquo;" class="">';
+                f_oper += '<optgroup label="&raquo;" class="operator_list_option_group">';
             }
-            f_oper += '<option value="' + oper[i].operator_type + '"' + ' class=""' + '>' + oper[i].operator_label + '</option>';
+            f_oper += '<option value="' + oper[i].operator_type + '"' + ' class="operator_list_option"' + '>' + oper[i].operator_label + '</option>';
             if(i < len - 1 && oper[parseInt(i) + 1].start_a_group == "yes") {
                 f_oper += '</optgroup>';
             }
         }
 
         return f_oper;
+
+    };
+
+
+    var create_filter_value = function(container_id, filter_index, operator_type) {
+        var elem = $("#" + container_id),
+            filters = elem.jui_filter_rules('getOption', 'filters'),
+            operator,
+            f_html = '', class_html = '', class_name,
+            i, filter_type,filter_element;
+
+        filter_type = filters[filter_index].filterType;
+
+        operator = getOperator(operator_type);
+
+        if(filter_type == "text") {
+            if(operator.accept_values == "yes") {
+                for(i in filters[filter_index].interface) {
+                    filter_element = filters[filter_index].interface[i].element;
+                    if(filter_element == "input") {
+                        class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
+                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
+                            class_name = filters[filter_index].interface[i].class;
+                            if(class_name == "") {
+                                class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
+                            }
+                        }
+                        class_html = ' class="' + class_name + '"';
+                        f_html += '<input type="' + filters[filter_index].interface[i].type + '"' + class_html + '>';
+                    }
+                }
+            }
+
+        }
+
+        if(filter_type == "number") {
+            if(operator.accept_values == "yes") {
+                for(i in filters[filter_index].interface) {
+                    filter_element = filters[filter_index].interface[i].element;
+                    if(filter_element == "input") {
+                        class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
+                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
+                            class_name = filters[filter_index].interface[i].class;
+                            if(class_name == "") {
+                                class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
+                            }
+                        }
+                        class_html = ' class="' + class_name + '"';
+                        f_html += '<input type="' + filters[filter_index].interface[i].type + '"' + class_html + '>';
+                    }
+                }
+            }
+
+        }
+
+
+        return f_html;
 
     };
 
@@ -280,6 +352,18 @@
         }
         return oper;
 
+    };
+
+
+    var getOperator = function(operator_type) {
+        var i, oper;
+        for(i in operators) {
+            if(operators[i].type == operator_type) {
+                oper = operators[i];
+                break;
+            }
+        }
+        return oper;
     };
 
 
