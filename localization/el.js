@@ -6,6 +6,20 @@
  *
  */
 var rsc_jui_fr = {
+
+    rule: "κριτήριο",
+    group: "ομάδα",
+    tools_please_select: "-επιλογή-",
+    rule_insert_before: "εισαγωγή πριν",
+    rule_insert_after: "εισαγωγή μετά",
+    rule_clear: "καθαρισμός",
+    rule_delete: "διαγραφή",
+    group_insert_before: "εισαγωγή πριν",
+    group_insert_after: "εισαγωγή μετά",
+
+    rules_group_AND: "σε ίσχύ όλα",
+    rules_group_OR: "σε ίσχύ ένα τουλάχιστον",
+
     operator_equal: 'ισούται',
     operator_not_equal: 'δεν ισούται',
     operator_in: 'περιλαμβάνεται',

@@ -1,7 +1,18 @@
 /* containers --------------------------------------------------------------- */
+.filter_rules_container {
+    padding: 5px;
+    border: 1px solid black;
+    width: 700px;
+}
+
+.rules_group_condition_container {
+    padding: 5px;
+    border: 1px solid black;
+}
+
 .filter_container {
     display: inline-block;
-    padding: 5px;
+    padding: 5px 5px 5px 0px;
 }
 
 .operator_container {
@@ -14,7 +25,25 @@
     padding: 5px;
 }
 
-/* filter list ------------------------------------------------------------ */
+.tools_container {
+    display: inline-block;
+    padding: 5px;
+    float: right;
+    display: none;
+}
+
+/* rules list --------------------------------------------------------------- */
+.rules_list {
+    list-style-type: none;
+    border-left: dotted 1px blue;
+}
+
+.rules_list_li {
+    margin: 3px 0px 3px 3px;
+    padding: 0;
+}
+
+/* filter dropdown list ----------------------------------------------------- */
 .filter_list {
 
 }
@@ -23,7 +52,7 @@
 
 }
 
-/* operator list ------------------------------------------------------------ */
+/* operator dropdown list --------------------------------------------------- */
 .operator_list {
 
 }
@@ -37,7 +66,7 @@
 }
 
 
-/* filter value ------------------------------------------------------------ */
+/* filter value ------------------------------------------------------------- */
 .filter_input_text {
     width: 150px;
     margin: 0 5px;

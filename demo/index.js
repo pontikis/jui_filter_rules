@@ -1,7 +1,6 @@
 $(function() {
 
-    var elem_dlg_log1 = $("#dlg_demo_rules1_log"),
-        log;
+    var elem_dlg_rules = $("#dlg_rules");
 
     // theme switcher ----------------------------------------------------------
     $("#ui-theme-switcher").change(function() {
@@ -76,8 +75,8 @@ $(function() {
     });
 
 
-    elem_dlg_log1.dialog({
-        autoOpen: true,
+    elem_dlg_rules.dialog({
+        autoOpen: false,
         width: 250,
         height: 200,
         position: {
@@ -85,27 +84,23 @@ $(function() {
             at: "right",
             of: '#demo_rules1'
         },
-        title: "Log demo_rules1"
+        title: "Rules",
+        open: function() {
+            createrules(elem_dlg_rules)
+        }
     });
 
-    $("#log_show").click(function() {
-        elem_dlg_log1.dialog("open");
+    $("#show_rules").click(function() {
+        elem_dlg_rules.dialog("open");
         return false;
     });
 
-    $("#log_hide").click(function() {
-        elem_dlg_log1.dialog("close");
-        return false;
+    $("#test").click(function() {
+        console.log($('ul:first').get());
     });
-
-    $("#log_clear").click(function() {
-        elem_dlg_log1.html('');
-    });
-
 
 });
 
-function create_log(elem_log, log_line) {
-    var line_number = parseInt(elem_log.find("p").length) + 1;
-    elem_log.prepend('<p>' + line_number + ') ' + log_line);
+function createrules(elem_dlg_rules) {
+    elem_dlg_rules.html('<p>Hello world!');
 }
