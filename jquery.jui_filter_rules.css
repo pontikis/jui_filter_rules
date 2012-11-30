@@ -1,33 +1,56 @@
 /* container ---------------------------------------------------------------- */
 .filter_rules_container {
-    padding: 5px;
+    padding: 5px 10px 10px 10px;
     border: 1px solid black;
     width: 700px;
 }
 
-/* rules group header ------------------------------------------------------- */
+/* rules group -------------------------------------------------------------- */
+.rules_group_container {
+    padding: 0;
+    margin: 0;
+}
+
+.rules_group_header {
+    padding: 5px 0px;
+}
+
+.rules_group_body {
+    padding: 0;
+    margin: 0;
+}
+
 .rules_group_condition_container {
     display: inline-block;
-    padding: 5px 5px 5px 0px;
+    padding: 0;
 }
 
 .rules_group_condition_list {
-    background: none;
-    border: 1px solid blue;
+    border: 1px solid;
+    padding: 2px 0;
+    margin: 0;
 }
 
-.rules_group_delete_button {
-    margin-left: 10px;
+.rules_group_tools_container {
+    display: inline-block;
+    padding: 0;
+    margin-left: 5px;
+}
+
+.rules_group_tools_list {
+    border: 1px solid;
+    padding: 2px;
 }
 
 /* rules list --------------------------------------------------------------- */
 .rules_list {
     list-style-type: none;
-    border-left: dotted 1px blue;
+    padding: 0 0 0 25px;
+    border-left: dotted 1px;
 }
 
 .rules_list_li {
-    margin: 3px 0px 3px 3px;
+    margin: 0;
     padding: 0;
 }
 
@@ -39,7 +62,8 @@
 }
 
 .filter_list {
-
+    padding: 0;
+    margin: 0;
 }
 
 /* operator ----------------------------------------------------------------- */
@@ -81,18 +105,18 @@
 }
 
 /* filter tools ------------------------------------------------------------- */
-.tools_container {
+.rule_tools_container {
     display: inline-block;
     padding: 5px;
     float: right;
 }
 
-.tools_list {
+.rule_tools_list {
 
 }
 
+/* utility ------------------------------------------------------------------ */
 .tools_list_shrink {
     width: 35px;
 }
-
 /* -------------------------------------------------------------------------- */

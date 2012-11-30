@@ -104,45 +104,70 @@
 
                 var filters = settings.filters,
                     filter_rules = settings.filter_rules,
-                    rulesGroupDeleteButtonClass = settings.rulesGroupDeleteButtonClass,
-                    rule_li_id_prefix = create_id(settings.rule_li_id_prefix, container_id) + '_',
+
                     filters_list_id_prefix = create_id(settings.filters_list_id_prefix, container_id) + '_',
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
                     filter_value_id_prefix = create_id(settings.filter_value_id_prefix, container_id) + '_',
-                    tools_container_id_prefix = create_id(settings.tools_container_id_prefix, container_id) + '_',
-                    tools_id_prefix = create_id(settings.tools_id_prefix, container_id) + '_',
-                    rule_li_id, filters_list_id, operators_list_id, filter_value_id, tools_container_id,tools_id,
-                    elem_rule_li, elem_filters_list, elem_operators_list, elem_filter_value, elem_tools_container,elem_tools,
-                    selector, len, rule_id, filter_index, tool_selected;
+                    group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
+                    rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
+                    filters_list_id, operators_list_id, filter_value_id,
+                    elem_filters_list, elem_operators_list, elem_filter_value,
+                    selector, len, rule_id, filter_index, group_selected, tool_selected;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
                     if(filters.length > 0 || filter_rules.length > 0) {
 
                         elem.html(createRulesGroup(container_id));
 
-                        operators_list_id = operators_list_id_prefix + '1';
+/*                        operators_list_id = operators_list_id_prefix + '1';
                         filter_value_id = filter_value_id_prefix + '1';
                         elem_operators_list = $("#" + operators_list_id);
                         elem_filter_value = $("#" + filter_value_id);
 
                         elem_operators_list.html(create_operators_list(filters[0].filterType));
-                        elem_filter_value.html(create_filter_value(container_id, 0, elem_operators_list.val()));
+                        elem_filter_value.html(create_filter_value(container_id, 0, elem_operators_list.val()));*/
                     }
                 }
 
                 elem.addClass(settings.containerClass);
 
                 /* EVENTS --------------------------------------------------- */
-                // delete group
-                    selector = "." + rulesGroupDeleteButtonClass;
-                    elem.off('click', selector).on('click', selector, function() {
-                    $(this).closest("dl").remove();
+                // rule group actions
+                selector = '[id^="' + group_tools_id_prefix + '"]';
+                elem.off('change', selector).on('change', selector, function() {
+                    len = group_tools_id_prefix.length;
+                    rule_id = $(this).attr("id").substr(len);
+                    group_selected = $(this).val();
+
+                    switch(group_selected) {
+                        case "rule_insert_before":
+                            $(this).closest("dt").parent("dl").before(createRule(container_id));
+                            break;
+                        case "rule_insert_after":
+                            $(this).closest("dt").parent("dl").after(createRule(container_id));
+                            break;
+                        case "rule_insert_inside":
+                            $(this).closest("dt").next("dd").find("ul").prepend(createRule(container_id));
+                            break;
+                        case "group_insert_before":
+                            $(this).closest("dl").before(createRulesGroup(container_id));
+                            break;
+                        case "group_insert_after":
+                            $(this).closest("dl").after(createRulesGroup(container_id));
+                            break;
+                        case "group_delete":
+                            $(this).closest("dl").remove();
+                            break;
+                    }
+
+                    $(this).prop("selectedIndex", 0);
+
                 });
 
-                // change tool
-                selector = '[id^="' + tools_id_prefix + '"]';
+                // rule actions
+                selector = '[id^="' + rule_tools_id_prefix + '"]';
                 elem.off('change', selector).on('change', selector, function() {
-                    len = tools_id_prefix.length;
+                    len = rule_tools_id_prefix.length;
                     rule_id = $(this).attr("id").substr(len);
                     tool_selected = $(this).val();
 
@@ -165,7 +190,6 @@
                     }
 
                     $(this).prop("selectedIndex", 0);
-
 
                 });
 
@@ -223,14 +247,21 @@
                 // styles
                 containerClass: "filter_rules_container",
 
+                rulesGroupContainerClass: "rules_group_container",
+                rulesGroupHeaderClass: "rules_group_header",
+                rulesGroupBodyClass: "rules_group_body",
+
                 rulesGroupConditionContainerClass: "rules_group_condition_container",
                 rulesGroupConditionListClass: "rules_group_condition_list",
-                rulesGroupDeleteButtonClass: "rules_group_delete_button",
+
+                rulesGroupToolsContainerClass: "rules_group_tools_container",
+                rulesGroupToolsListClass: "rules_group_tools_list",
 
                 rulesListClass: "rules_list",
                 rulesListLiClass: "rules_list_li",
 
                 filterContainerClass: "filter_container",
+                filterListClass: "filter_list",
 
                 operatorContainerClass: "operator_container",
 
@@ -239,16 +270,16 @@
                 filterInputNumberClass: "filter_input_number",
                 filterInputDateClass: "filter_input_date",
 
-                toolsContainerClass: "tools_container",
-                toolsClass: "tools_list",
+                ruleToolsContainerClass: "rule_tools_container",
+                ruleToolsClass: "rule_tools_list",
 
                 // element id prefix
+                group_tools_id_prefix: "group_tools_",
                 rule_li_id_prefix: "rule_",
                 filters_list_id_prefix: "filters_list_",
                 operators_list_id_prefix: "oper_list_",
                 filter_value_id_prefix: "filter_value_",
-                tools_container_id_prefix: "tools_container_",
-                tools_id_prefix: "tools_"
+                rule_tools_id_prefix: "rule_tools_"
             };
         },
 
@@ -349,21 +380,24 @@
     /**
      * Create filters list
      * @param container_id {string}
-     * @param rule_id {number}
-     * @return {String}
+     * @return {String} filter list html
      */
-    var create_filters_list = function(container_id, rule_id) {
+    var create_filters_list = function(container_id) {
         var elem = $("#" + container_id),
+            rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
             filters = elem.jui_filter_rules('getOption', 'filters'),
-            filters_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "filters_list_id_prefix"), container_id) + '_',
-            filters_list_id = filters_list_id_prefix + rule_id,
+            filterContainerClass = elem.jui_filter_rules("getOption", "filterContainerClass"),
+            filterListClass = elem.jui_filter_rules("getOption", "filterListClass"),
+            filters_list_id = create_id(elem.jui_filter_rules("getOption", "filters_list_id_prefix"), container_id) + '_' + rule_id,
             i, f_html = '';
 
-        f_html += '<select id="' + filters_list_id + '">';
+        f_html += '<div class="' + filterContainerClass + '">';
+        f_html += '<select id="' + filters_list_id + '" class="' + filterListClass + '">';
         for(i in filters) {
             f_html += '<option value="' + filters[i].filterName + '">' + filters[i].filterLabel + '</option>';
         }
         f_html += '</select>';
+        f_html += '</div>';
 
         return f_html;
 
@@ -495,39 +529,74 @@
 
 
     /**
-     * Create rule tools dropdown list
-     * @param container_id {string}
-     * @param rule_id {number}
+     * Cgeate rules group tools dropdown list
+     * @param container_id {String}
      * @return {String}
      */
-    var create_tools = function(container_id, rule_id) {
+    var create_rules_group_tools = function(container_id) {
         var elem = $("#" + container_id),
-            toolsContainerClass = elem.jui_filter_rules("getOption", "toolsContainerClass"),
-            toolsClass = elem.jui_filter_rules("getOption", "toolsClass"),
-            tools_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_id_prefix"), container_id) + '_',
-            tools_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_container_id_prefix"), container_id) + '_',
-            tools_container_id = tools_container_id_prefix + rule_id,
-            tools_id = tools_id_prefix + rule_id,
+            rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
+
+            rulesGroupToolsContainerClass = elem.jui_filter_rules("getOption", "rulesGroupToolsContainerClass"),
+            rulesGroupToolsListClass = elem.jui_filter_rules("getOption", "rulesGroupToolsListClass"),
+
+            group_tools_id = create_id(elem.jui_filter_rules("getOption", "group_tools_id_prefix"), container_id) + '_' + rule_id,
+
+            disabled_html = (rule_id == 0 ? ' disabled="disabled"' : ''),
+            shrink_class_html = ($.browser.msie && parseInt($.browser.version) < 9 ? '' : ' tools_list_shrink'),
             tools_html = '';
 
-        tools_html += '<div id="' + tools_container_id + '" class="' + toolsContainerClass + '">';
-        if($.browser.msie && parseInt($.browser.version) < 9) {
-            tools_html += '<select id="' + tools_id + '" class="' + toolsClass + '">';
-        } else {
-            tools_html += '<select id="' + tools_id + '" class="' + toolsClass + ' tools_list_shrink' + '">';
-        }
+        tools_html += '<div class="' + rulesGroupToolsContainerClass + '">';
+        tools_html += '<select id="' + group_tools_id + '" class="' + rulesGroupToolsListClass + shrink_class_html + '">';
+
+        tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
+
+        tools_html += '<optgroup label="' + rsc_jui_fr.rule + '">';
+        tools_html += '<option value="rule_insert_before"' + disabled_html + '>' + rsc_jui_fr.rule_insert_before + '</option>';
+        tools_html += '<option value="rule_insert_after"' + disabled_html + '>' + rsc_jui_fr.rule_insert_after + '</option>';
+        tools_html += '<option value="rule_insert_inside">' + rsc_jui_fr.rule_insert_inside + '</option>';
+        tools_html += '</optgroup>';
+
+        tools_html += '<optgroup label="' + rsc_jui_fr.group + '">';
+        tools_html += '<option value="group_insert_before"' + disabled_html + '>' + rsc_jui_fr.group_insert_before + '</option>';
+        tools_html += '<option value="group_insert_after"' + disabled_html + '>' + rsc_jui_fr.group_insert_after + '</option>';
+        tools_html += '<option value="group_delete"' + disabled_html + '>' + rsc_jui_fr.group_delete + '</option>';
+        tools_html += '</optgroup>';
+
+        tools_html += '</select>';
+        tools_html += '</div>';
+
+        return tools_html;
+    };
+
+
+    /**
+     * Create rule tools dropdown list
+     * @param container_id {string}
+     * @return {String}
+     */
+    var create_rule_tools = function(container_id) {
+        var elem = $("#" + container_id),
+            rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
+
+            ruleToolsContainerClass = elem.jui_filter_rules("getOption", "ruleToolsContainerClass"),
+            ruleToolsClass = elem.jui_filter_rules("getOption", "ruleToolsClass"),
+
+            rule_tools_id = create_id(elem.jui_filter_rules("getOption", "rule_tools_id_prefix"), container_id) + '_' + rule_id,
+
+            shrink_class_html = ($.browser.msie && parseInt($.browser.version) < 9 ? '' : ' tools_list_shrink'),
+            tools_html = '';
+
+        tools_html += '<div class="' + ruleToolsContainerClass + '">';
+        tools_html += '<select id="' + rule_tools_id + '" class="' + ruleToolsClass + shrink_class_html + '">';
+
         tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
 
         tools_html += '<optgroup label="' + rsc_jui_fr.rule + '">';
         tools_html += '<option value="rule_insert_before">' + rsc_jui_fr.rule_insert_before + '</option>';
         tools_html += '<option value="rule_insert_after">' + rsc_jui_fr.rule_insert_after + '</option>';
         tools_html += '<option value="rule_clear">' + rsc_jui_fr.rule_clear + '</option>';
-        if(rule_id == 1) {
-            tools_html += '<option value="rule_delete" disabled="disabled">' + rsc_jui_fr.rule_delete + '</option>';
-        } else {
-            tools_html += '<option value="rule_delete">' + rsc_jui_fr.rule_delete + '</option>';
-        }
-
+        tools_html += '<option value="rule_delete">' + rsc_jui_fr.rule_delete + '</option>';
         tools_html += '</optgroup>';
 
         tools_html += '<optgroup label="' + rsc_jui_fr.group + '">';
@@ -549,25 +618,25 @@
      */
     var createRulesGroup = function(container_id) {
         var elem = $("#" + container_id),
-            rulesGroupDeleteButtonClass = elem.jui_filter_rules("getOption", "rulesGroupDeleteButtonClass"),
+            rulesGroupContainerClass = elem.jui_filter_rules("getOption", "rulesGroupContainerClass"),
+            rulesGroupHeaderClass = elem.jui_filter_rules("getOption", "rulesGroupHeaderClass"),
+            rulesGroupBodyClass = elem.jui_filter_rules("getOption", "rulesGroupBodyClass"),
             rulesListClass = elem.jui_filter_rules("getOption", "rulesListClass"),
             rg_html = '';
 
-        rg_html += '<dl>';
+        rg_html += '<dl class="' + rulesGroupContainerClass + '">';
 
-        rg_html += '<dd>';
+        rg_html += '<dt class="' + rulesGroupHeaderClass + '">';
         rg_html += create_group_condition(container_id);
-        if(elem.data(pluginStatus)["rule_id"] > 0) {
-            rg_html += '<button class="' + rulesGroupDeleteButtonClass + '">' + rsc_jui_fr.rules_group_delete_button + '</button>';
-        }
+        rg_html += create_rules_group_tools(container_id);
+        rg_html += '</dt>';
 
-        rg_html += '</dd>';
-
-        rg_html += '<dd>';
+        rg_html += '<dd class="' + rulesGroupBodyClass + '">';
         rg_html += '<ul class="' + rulesListClass + '">';
         rg_html += createRule(container_id);
         rg_html += '</ul>';
         rg_html += '</dd>';
+
         rg_html += '</dl>';
 
         return rg_html;
@@ -583,7 +652,6 @@
     var createRule = function(container_id) {
         var elem = $("#" + container_id),
             rulesListLiClass = elem.jui_filter_rules("getOption", "rulesListLiClass"),
-            filterContainerClass = elem.jui_filter_rules("getOption", "filterContainerClass"),
             operatorContainerClass = elem.jui_filter_rules("getOption", "operatorContainerClass"),
             filterValueContainerClass = elem.jui_filter_rules("getOption", "filterValueContainerClass"),
             rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
@@ -594,15 +662,14 @@
 
         var rule_id = parseInt(elem.data(pluginStatus)["rule_id"]) + 1;
         elem.data(pluginStatus)["rule_id"] = rule_id;
+
         operators_list_id = operators_list_id_prefix + rule_id;
         filter_value_id = filter_value_id_prefix + rule_id;
         rule_li_id = rule_li_id_prefix + rule_id;
 
         r_html += '<li id="' + rule_li_id + '" class="' + rulesListLiClass + '">';
 
-        r_html += '<div class="' + filterContainerClass + '">';
-        r_html += create_filters_list(container_id, rule_id);
-        r_html += '</div>';
+        r_html += create_filters_list(container_id);
 
         r_html += '<div class="' + operatorContainerClass + '">';
         r_html += '<select id="' + operators_list_id + '"></select>';
@@ -611,7 +678,7 @@
         r_html += '<div id="' + filter_value_id + '" class="' + filterValueContainerClass + '">';
         r_html += '</div>';
 
-        r_html += create_tools(container_id, rule_id);
+        r_html += create_rule_tools(container_id);
 
         r_html += '</li>';
 
