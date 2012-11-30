@@ -16,7 +16,7 @@ $(function() {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
                 use_operators: [],
                 interface: [
-                    {element: "input", type: "text", class: "test1"}
+                    {element: "input", type: "text", className: "test1"}
                 ],
                 interface_in: [
                     {element: "input", type: "checkbox", option: "lbl1", value: 1},
@@ -95,9 +95,7 @@ $(function() {
         return false;
     });
 
-    $("#test").click(function() {
-        console.log($('ul:first').get());
-    });
+
 
 });
 

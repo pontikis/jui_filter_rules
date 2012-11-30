@@ -9,7 +9,7 @@ var rsc_jui_fr = {
 
     rule: "κριτήριο",
     group: "ομάδα",
-    tools_please_select: "-επιλογή-",
+    tools_please_select: "&raquo;",
     rule_insert_before: "εισαγωγή πριν",
     rule_insert_after: "εισαγωγή μετά",
     rule_clear: "καθαρισμός",
@@ -19,6 +19,7 @@ var rsc_jui_fr = {
 
     rules_group_AND: "σε ίσχύ όλα",
     rules_group_OR: "σε ίσχύ ένα τουλάχιστον",
+    rules_group_delete_button: "-",
 
     operator_equal: 'ισούται',
     operator_not_equal: 'δεν ισούται',

@@ -104,15 +104,16 @@
 
                 var filters = settings.filters,
                     filter_rules = settings.filter_rules,
-                    rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
-                    filters_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "filters_list_id_prefix"), container_id) + '_',
-                    operators_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_list_id_prefix"), container_id) + '_',
-                    filter_value_id_prefix = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_',
-                    tools_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_container_id_prefix"), container_id) + '_',
-                    tools_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_id_prefix"), container_id) + '_',
+                    rulesGroupDeleteButtonClass = settings.rulesGroupDeleteButtonClass,
+                    rule_li_id_prefix = create_id(settings.rule_li_id_prefix, container_id) + '_',
+                    filters_list_id_prefix = create_id(settings.filters_list_id_prefix, container_id) + '_',
+                    operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
+                    filter_value_id_prefix = create_id(settings.filter_value_id_prefix, container_id) + '_',
+                    tools_container_id_prefix = create_id(settings.tools_container_id_prefix, container_id) + '_',
+                    tools_id_prefix = create_id(settings.tools_id_prefix, container_id) + '_',
                     rule_li_id, filters_list_id, operators_list_id, filter_value_id, tools_container_id,tools_id,
                     elem_rule_li, elem_filters_list, elem_operators_list, elem_filter_value, elem_tools_container,elem_tools,
-                    selector, len, rule_id, filter_index;
+                    selector, len, rule_id, filter_index, tool_selected;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
                     if(filters.length > 0 || filter_rules.length > 0) {
@@ -132,45 +133,42 @@
                 elem.addClass(settings.containerClass);
 
                 /* EVENTS --------------------------------------------------- */
-                selector = '[id^="' + rule_li_id_prefix + '"]';
-                len = rule_li_id_prefix.length;
-                $(selector).hover(function() {
-                    rule_id = $(this).attr("id").substr(len);
-                    tools_container_id = tools_container_id_prefix + rule_id;
-                    elem_tools_container = $("#" + tools_container_id);
-                    console.log(tools_container_id);
-                    elem_tools_container.toggle();
+                // delete group
+                    selector = "." + rulesGroupDeleteButtonClass;
+                    elem.off('click', selector).on('click', selector, function() {
+                    $(this).closest("dl").remove();
                 });
 
-
+                // change tool
                 selector = '[id^="' + tools_id_prefix + '"]';
-                len = rule_li_id_prefix.length;
-                $(selector).click(function() {
-                    console.log(tools_id_prefix);
-                    $(this).closest('li').unbind('hover');
+                elem.off('change', selector).on('change', selector, function() {
+                    len = tools_id_prefix.length;
+                    rule_id = $(this).attr("id").substr(len);
+                    tool_selected = $(this).val();
+
+                    switch(tool_selected) {
+                        case "rule_insert_before":
+                            $(this).closest("li").before(createRule(container_id));
+                            break;
+                        case "rule_insert_after":
+                            $(this).closest("li").after(createRule(container_id));
+                            break;
+                        case "rule_delete":
+                            $(this).closest("li").remove();
+                            break;
+                        case "group_insert_before":
+                            $(this).closest("li").before(createRulesGroup(container_id));
+                            break;
+                        case "group_insert_after":
+                            $(this).closest("li").after(createRulesGroup(container_id));
+                            break;
+                    }
+
+                    $(this).prop("selectedIndex", 0);
+
+
                 });
 
-/*                selector = '[id^="' + rule_li_id_prefix + '"]';
-                len = rule_li_id_prefix.length;
-                $(selector).hover(
-                    //mouseover
-                    function() {
-                        rule_id = $(this).attr("id").substr(len);
-                        tools_container_id = tools_container_id_prefix + rule_id;
-                        elem_tools = $("#" + tools_container_id);
-                        console.log(tools_container_id);
-                        elem_tools.show();
-                    },
-
-                    //mouseout
-                    function() {
-                        rule_id = $(this).attr("id").substr(len);
-                        tools_container_id = tools_container_id_prefix + rule_id;
-                        elem_tools = $("#" + tools_container_id);
-                        console.log(tools_container_id);
-                        elem_tools.hide();
-                    }
-                );*/
 
                 // change filter
                 selector = '[id^="' + filters_list_id_prefix + '"]';
@@ -208,13 +206,6 @@
                 });
 
 
-                $("#insert").click(function() {
-                    //var h = createRule(container_id);
-                    //$(this).closest("li").before(h);
-
-                    $(this).closest("li").remove();
-                });
-
             });
 
         },
@@ -229,21 +220,27 @@
                 filters: [],
                 filter_rules: [],
 
-                containerClass: "filter_rules_container",
-                rulesGroupConditionContainerClass: "rules_group_condition_container",
-
                 // styles
+                containerClass: "filter_rules_container",
+
+                rulesGroupConditionContainerClass: "rules_group_condition_container",
+                rulesGroupConditionListClass: "rules_group_condition_list",
+                rulesGroupDeleteButtonClass: "rules_group_delete_button",
+
                 rulesListClass: "rules_list",
                 rulesListLiClass: "rules_list_li",
 
                 filterContainerClass: "filter_container",
-                operatorContainerClass: "operator_container",
-                filterValueContainerClass: "filter_value_container",
-                toolsContainerClass: "tools_container",
 
+                operatorContainerClass: "operator_container",
+
+                filterValueContainerClass: "filter_value_container",
                 filterInputTextClass: "filter_input_text",
                 filterInputNumberClass: "filter_input_number",
                 filterInputDateClass: "filter_input_date",
+
+                toolsContainerClass: "tools_container",
+                toolsClass: "tools_list",
 
                 // element id prefix
                 rule_li_id_prefix: "rule_",
@@ -333,13 +330,19 @@
      * Create rules group condition select (AND - OR)
      * @return {String}
      */
-    var create_group_condition = function() {
-        var f_html = '';
-        f_html += '<select>';
-        f_html += '<option value="AND">' + rsc_jui_fr.rules_group_AND + ':' + '</option>';
-        f_html += '<option value="OR">' + rsc_jui_fr.rules_group_OR + ':' + '</option>';
-        f_html += '</select>';
-        return f_html;
+    var create_group_condition = function(container_id) {
+        var elem = $("#" + container_id),
+            rulesGroupConditionContainerClass = elem.jui_filter_rules('getOption', 'rulesGroupConditionContainerClass'),
+            rulesGroupConditionListClass = elem.jui_filter_rules('getOption', 'rulesGroupConditionListClass'),
+            gc_html = '';
+
+        gc_html += '<div class="' + rulesGroupConditionContainerClass + '">';
+        gc_html += '<select class="' + rulesGroupConditionListClass + '">';
+        gc_html += '<option value="AND">' + rsc_jui_fr.rules_group_AND + ':' + '</option>';
+        gc_html += '<option value="OR">' + rsc_jui_fr.rules_group_OR + ':' + '</option>';
+        gc_html += '</select>';
+        gc_html += '</div>';
+        return gc_html;
 
     };
 
@@ -414,8 +417,8 @@
                     filter_element = filters[filter_index].interface[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
-                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
-                            class_name = filters[filter_index].interface[i].class;
+                        if(filters[filter_index].interface[i].className !== undefined) {
+                            class_name = filters[filter_index].interface[i].className;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
                             }
@@ -434,12 +437,12 @@
                     filter_element = filters[filter_index].interface[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
-                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
+/*                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
                             class_name = filters[filter_index].interface[i].class;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
                             }
-                        }
+                        }*/
                         class_html = ' class="' + class_name + '"';
                         f_html += '<input type="' + filters[filter_index].interface[i].type + '"' + class_html + '>';
                     }
@@ -500,6 +503,7 @@
     var create_tools = function(container_id, rule_id) {
         var elem = $("#" + container_id),
             toolsContainerClass = elem.jui_filter_rules("getOption", "toolsContainerClass"),
+            toolsClass = elem.jui_filter_rules("getOption", "toolsClass"),
             tools_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_id_prefix"), container_id) + '_',
             tools_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "tools_container_id_prefix"), container_id) + '_',
             tools_container_id = tools_container_id_prefix + rule_id,
@@ -507,8 +511,11 @@
             tools_html = '';
 
         tools_html += '<div id="' + tools_container_id + '" class="' + toolsContainerClass + '">';
-        tools_html += '<select id="' + tools_id + '">';
-
+        if($.browser.msie && parseInt($.browser.version) < 9) {
+            tools_html += '<select id="' + tools_id + '" class="' + toolsClass + '">';
+        } else {
+            tools_html += '<select id="' + tools_id + '" class="' + toolsClass + ' tools_list_shrink' + '">';
+        }
         tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
 
         tools_html += '<optgroup label="' + rsc_jui_fr.rule + '">';
@@ -542,13 +549,18 @@
      */
     var createRulesGroup = function(container_id) {
         var elem = $("#" + container_id),
+            rulesGroupDeleteButtonClass = elem.jui_filter_rules("getOption", "rulesGroupDeleteButtonClass"),
             rulesListClass = elem.jui_filter_rules("getOption", "rulesListClass"),
             rg_html = '';
 
         rg_html += '<dl>';
 
         rg_html += '<dd>';
-        rg_html += create_group_condition();
+        rg_html += create_group_condition(container_id);
+        if(elem.data(pluginStatus)["rule_id"] > 0) {
+            rg_html += '<button class="' + rulesGroupDeleteButtonClass + '">' + rsc_jui_fr.rules_group_delete_button + '</button>';
+        }
+
         rg_html += '</dd>';
 
         rg_html += '<dd>';

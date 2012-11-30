@@ -9,7 +9,7 @@ var rsc_jui_fr = {
 
     rule: "rule",
     group: "group",
-    tools_please_select: "-select-",
+    tools_please_select: "&raquo;",
     rule_insert_before: "insert before",
     rule_insert_after: "insert after",
     rule_clear: "clear",
@@ -19,6 +19,7 @@ var rsc_jui_fr = {
 
     rules_group_AND: "all rules",
     rules_group_OR: "any rule",
+    rules_group_delete_button: "-",
 
     operator_equal: 'equal',
     operator_not_equal: 'not_equal',
