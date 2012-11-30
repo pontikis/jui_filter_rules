@@ -12,7 +12,7 @@
 }
 
 .rules_group_header {
-    padding: 5px 0px;
+    padding: 5px 0;
 }
 
 .rules_group_body {
@@ -53,7 +53,6 @@
     margin: 0;
     padding: 0;
 }
-
 
 /* filter name -------------------------------------------------------------- */
 .filter_container {

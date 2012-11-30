@@ -178,6 +178,18 @@
                         case "rule_insert_after":
                             $(this).closest("li").after(createRule(container_id));
                             break;
+                        case "rule_clear":
+                            filters_list_id = filters_list_id_prefix + rule_id;
+                            operators_list_id = operators_list_id_prefix + rule_id;
+                            filter_value_id = filter_value_id_prefix + rule_id;
+                            elem_filters_list = $("#" + filters_list_id);
+                            elem_operators_list = $("#" + operators_list_id);
+                            elem_filter_value = $("#" + filter_value_id);
+
+                            elem_filters_list.prop("selectedIndex", 0);
+                            elem_operators_list.html('');
+                            elem_filter_value.html('');
+                            break;
                         case "rule_delete":
                             $(this).closest("li").remove();
                             break;
@@ -199,15 +211,21 @@
                 elem.off('change', selector).on('change', selector, function() {
                     len = filters_list_id_prefix.length;
                     rule_id = $(this).attr("id").substr(len);
-                    filter_index = $(this).prop('selectedIndex');
+                    filter_index = $(this).prop('selectedIndex') - 1;
 
                     operators_list_id = operators_list_id_prefix + rule_id;
                     filter_value_id = filter_value_id_prefix + rule_id;
                     elem_operators_list = $("#" + operators_list_id);
                     elem_filter_value = $("#" + filter_value_id);
 
-                    elem_operators_list.html(create_operators_list(filters[filter_index].filterType));
-                    elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
+                    if(filter_index >= 0) {
+                        elem_operators_list.html(create_operators_list(filters[filter_index].filterType));
+                        elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
+                    } else {
+                        elem_operators_list.html('');
+                        elem_filter_value.html('');
+                    }
+
 
                 });
 
@@ -216,7 +234,6 @@
                 elem.off('change', selector).on('change', selector, function() {
                     len = operators_list_id_prefix.length;
                     rule_id = $(this).attr("id").substr(len);
-                    filter_index = $(this).prop('selectedIndex');
 
                     filters_list_id = filters_list_id_prefix + rule_id;
                     operators_list_id = operators_list_id_prefix + rule_id;
@@ -225,7 +242,12 @@
                     elem_operators_list = $("#" + operators_list_id);
                     elem_filter_value = $("#" + filter_value_id);
 
-                    elem_filter_value.html(create_filter_value(container_id, elem_filters_list.prop('selectedIndex'), elem_operators_list.val()));
+                    filter_index = elem_filters_list.prop('selectedIndex') - 1;
+                    if(filter_index >= 0) {
+                        elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
+                    } else {
+                        elem_filter_value.html('');
+                    }
 
                 });
 
@@ -393,6 +415,7 @@
 
         f_html += '<div class="' + filterContainerClass + '">';
         f_html += '<select id="' + filters_list_id + '" class="' + filterListClass + '">';
+        f_html += '<option value="no_filter">' + rsc_jui_fr.filter_please_select + '</option>';
         for(i in filters) {
             f_html += '<option value="' + filters[i].filterName + '">' + filters[i].filterLabel + '</option>';
         }
