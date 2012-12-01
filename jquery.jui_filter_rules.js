@@ -295,7 +295,7 @@
                 ruleToolsContainerClass: "rule_tools_container",
                 ruleToolsClass: "rule_tools_list",
 
-                // element id prefix
+                // elements id prefix
                 group_tools_id_prefix: "group_tools_",
                 rule_li_id_prefix: "rule_",
                 filters_list_id_prefix: "filters_list_",
