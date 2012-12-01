@@ -352,6 +352,42 @@
 
                 $this.removeData(pluginName);
             });
+        },
+
+        /**
+         * Get rules
+         * @example elem.jui_filter_rules("getRules", rules_group_index, a_rules);
+         * @param rules_group_index
+         * @param a_rules
+         * @return {*}
+         */
+        getRules: function(rules_group_index, a_rules) {
+            var elem = this,
+                rules_group, group_logical_operator, a_group_rules, r, group_rule, current_rule, pos;
+
+            rules_group = elem.find("dl").eq(rules_group_index);
+            group_logical_operator = rules_group.find("dt:first").find("select:first").val();
+
+            a_group_rules = rules_group.find("dd:first").find("ul:first").children().get();
+            for(r in a_group_rules) {
+                group_rule = a_group_rules[r];
+                if(group_rule.tagName == 'LI') {
+                    current_rule = {};
+                    current_rule.condition = {id: group_rule.id};
+                    current_rule.logical_operator = group_logical_operator;
+                    a_rules.push(current_rule);
+                } else if(group_rule.tagName == 'DL') {
+                    current_rule = {};
+                    current_rule.condition = [];
+                    current_rule.logical_operator = group_logical_operator;
+                    a_rules.push(current_rule);
+                    pos = a_rules.length - 1;
+
+                    rules_group_index = parseInt(rules_group_index) + 1;
+                    elem.jui_filter_rules("getRules", rules_group_index, a_rules[pos].condition);
+                }
+            }
+            return a_rules;
         }
     };
 

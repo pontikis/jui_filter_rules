@@ -14,9 +14,9 @@
 
 /* demo_rules1 --------------------------------------------------------------- */
 .rules1_container {
-    width: 750px;
-    padding: 5px;
-    background: none !important;
+    padding: 5px 10px 10px 10px;
+    border: 1px solid black;
+    width: 700px;
 }
 
 

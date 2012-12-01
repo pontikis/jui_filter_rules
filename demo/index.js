@@ -36,57 +36,22 @@ $(function() {
             }
         ],
 
-        filter_rules: [],
-
-        filters1: [
-            {
-                filterName: "Lastname", "filterType": "text", field: "lastname",
-                html: [
-                    {
-                        element: "",
-                        type: "text",
-                        label: "aaa"
-                    }
-                ],
-                widgets: [
-                    {
-                        type: "datepicker",
-                        dateformat: "aaaa",
-                        timeformat: ""
-                    }
-                ],
-                repeat: 0, // a number or 'auto' according to values_predefined or values_ajax_url (0 = no repeat)
-                values_predefined: [
-                    {
-                        option: "aaaa",
-                        value: ""
-                    }
-                ],
-                values_ajax_url: ""
-            }
-        ],
-
-        filter_rules1: [
-            {filterName: "Lastname", operator: "", value: []},
-            {filterName: "Lastname", operator: "", value: []},
-            {filterName: "Firstname", operator: "", value: []}
-        ]
+        containerClass: "rules1_container"
 
     });
 
-
     elem_dlg_rules.dialog({
         autoOpen: false,
-        width: 250,
-        height: 200,
+        width: 650,
+        height: 250,
         position: {
-            my: "left",
-            at: "right",
+            my: "top",
+            at: "top",
             of: '#demo_rules1'
         },
         title: "Rules",
         open: function() {
-            createrules(elem_dlg_rules)
+            elem_dlg_rules.html('<pre>' + JSON.stringify($("#demo_rules1").jui_filter_rules("getRules", 0, []), null, '    ') + '</pre>');
         }
     });
 
@@ -95,10 +60,4 @@ $(function() {
         return false;
     });
 
-
-
 });
-
-function createrules(elem_dlg_rules) {
-    elem_dlg_rules.html('<p>Hello world!');
-}
