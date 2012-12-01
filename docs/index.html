@@ -40,10 +40,11 @@
 <h1>jui_filter_rules documentation (v1.00)</h1>
 
 <div class="level1">
-    <p>jui_filter_rules is an Ajax-enabled jQuery plugin, useful to create dateset filters.
+    <p>jui_filter_rules is a jQuery plugin, useful to create dateset filters.
 
-    <p>Compatible with modern web browsers. Tested with: Google Chrome, Mozilla
-        Firefox, Microsoft Internet Explorer, (default) Android browser.
+    <p>Compatible with modern web browsers.
+    <br />Tested with: Google Chrome, Mozilla
+        Firefox, Microsoft Internet Explorer (>= 8, MSIE >=9 recommended), (default) Android browser.
 
     <p>Project page: <a href="https://github.com/pontikis/jui_filter_rules">https://github.com/pontikis/jui_filter_rules</a>
 
@@ -94,6 +95,40 @@
     </ul>
 </div>
 
+<!-- Operators ------------------------------------------------------------- -->
+<h2>Filter types and Operators</h2>
+
+<div class="level2">
+    <pre class="brush: js">
+    var filter_types = [
+            "text",
+            "number",
+            "date"
+        ], operators = [
+            {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+            {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
+            {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+            {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
+            {type: "less", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
+            {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+            {type: "greater", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+            {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+            {type: "between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
+            {type: "not_between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
+            {type: "begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "yes"},
+            {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+            {type: "contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+            {type: "not_contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+            {type: "ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+            {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
+            {type: "is_empty", accept_values: "no", apply_to: ["text"], start_a_group: "yes"},
+            {type: "is_not_empty", accept_values: "no", apply_to: ["text"], start_a_group: "no"},
+            {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "yes"},
+            {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "no"}
+        ];
+    </pre>
+
+</div>
 
 <!-- Usage ----------------------------------------------------------------- -->
 <h2>Usage</h2>
@@ -124,6 +159,32 @@
     <pre class="brush: js">
     $("#element_id").jui_filter_rules({
 
+        filters: [
+            {
+                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                use_operators: [],
+                interface: [
+                    {element: "input", type: "text", className: "test1"}
+                ],
+                interface_in: [
+                    {element: "input", type: "checkbox", option: "lbl1", value: 1},
+                    {element: "input", type: "checkbox", option: "lbl2", value: 2},
+                    {element: "input", type: "checkbox", option: "lbl3", value: 3}
+                ],
+                interface_between: [
+                    {element: "input", type: "text", label: "From"},
+                    {element: "input", type: "text", label: "Until"}
+                ]
+            },
+            {
+                filterName: "Firstname", "filterType": "number", field: "firstname", filterLabel: "First name",
+                interface: [
+                    {element: "input", type: "text"}
+                ]
+            }
+        ],
+
+        containerClass: "rules1_container"
 
     });
     </pre>
@@ -137,14 +198,45 @@
     <pre class="brush: js">
     $("#element_id").jui_filter_rules({
 
+        // DEFAULTS
+        filters: [],
 
-        filters: [
-            {"filterName": "", "filterType": "", field: "", operator: "",
-                value: "", value_range: {lower: "", upper: ""}, value_array: [],
-                foreignKey: {ref_table: "", ref_pk: "", ref_col: "", condition: ""},
-                ajax_autocomplete_url: ""
-            }
-        ],
+        // styles
+        containerClass: "filter_rules_container",
+
+        rulesGroupContainerClass: "rules_group_container",
+        rulesGroupHeaderClass: "rules_group_header",
+        rulesGroupBodyClass: "rules_group_body",
+
+        rulesGroupConditionContainerClass: "rules_group_condition_container",
+        rulesGroupConditionListClass: "rules_group_condition_list",
+
+        rulesGroupToolsContainerClass: "rules_group_tools_container",
+        rulesGroupToolsListClass: "rules_group_tools_list",
+
+        rulesListClass: "rules_list",
+        rulesListLiClass: "rules_list_li",
+
+        filterContainerClass: "filter_container",
+        filterListClass: "filter_list",
+
+        operatorContainerClass: "operator_container",
+
+        filterValueContainerClass: "filter_value_container",
+        filterInputTextClass: "filter_input_text",
+        filterInputNumberClass: "filter_input_number",
+        filterInputDateClass: "filter_input_date",
+
+        ruleToolsContainerClass: "rule_tools_container",
+        ruleToolsClass: "rule_tools_list",
+
+        // elements id prefix
+        group_tools_id_prefix: "group_tools_",
+        rule_li_id_prefix: "rule_",
+        filters_list_id_prefix: "filters_list_",
+        operators_list_id_prefix: "oper_list_",
+        filter_value_id_prefix: "filter_value_",
+        rule_tools_id_prefix: "rule_tools_"
 
     });
     </pre>
@@ -229,17 +321,28 @@
 </div>
 
 
+<div class="level3" style="margin-top: 50px;">
+    <span style="background-color: #d9dbdc; padding: 5px; font-size: 140%;">SPECIFIC</span>
+</div>
 
+
+<h3>getRules</h3>
+
+<div class="level3">
+    <pre class="brush: js">
+    $("#element_id").jui_filter_rules('getRules', 0, []);
+    </pre>
+</div>
 
 <!-- Events ---------------------------------------------------------------- -->
 <h2>Events</h2>
 
-<h3>onDisplay</h3>
+<h3>onError (not yet implemented)</h3>
 
 <div class="level3">
     <pre class="brush: js">
     $("#element_id").jui_filter_rules({
-        onDisplay: function() {
+        onError: function() {
         // your code here
         }
     });

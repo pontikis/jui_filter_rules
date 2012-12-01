@@ -270,7 +270,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filter_value">create_filter_value</a></b>(container_id, filter_index, operator_type)
 								</div>
-								<div class="description"></div>
+								<div class="description">Create inputs or widgets for the user to set filter values</div>
 							</td>
 						</tr>
 					
@@ -279,7 +279,25 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filters_list">create_filters_list</a></b>(container_id)
 								</div>
-								<div class="description"></div>
+								<div class="description">Create filters list</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_group_condition">create_group_condition</a></b>(container_id)
+								</div>
+								<div class="description">Create rules group condition select (AND - OR)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_id">create_id</a></b>(prefix, plugin_container_id)
+								</div>
+								<div class="description">Create element id</div>
 							</td>
 						</tr>
 					
@@ -288,7 +306,43 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_operators_list">create_operators_list</a></b>(filter_type)
 								</div>
-								<div class="description"></div>
+								<div class="description">Create operator list</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_rule_tools">create_rule_tools</a></b>(container_id)
+								</div>
+								<div class="description">Create rule tools dropdown list</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_rules_group_tools">create_rules_group_tools</a></b>(container_id)
+								</div>
+								<div class="description">Cgeate rules group tools dropdown list</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-createRule">createRule</a></b>(container_id)
+								</div>
+								<div class="description">Create rule</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-createRulesGroup">createRulesGroup</a></b>(container_id)
+								</div>
+								<div class="description">Create a group of rules (with the first rule)</div>
 							</td>
 						</tr>
 					
@@ -297,7 +351,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getOperator">getOperator</a></b>(operator_type)
 								</div>
-								<div class="description"></div>
+								<div class="description">Get operator attributes</div>
 							</td>
 						</tr>
 					
@@ -370,12 +424,12 @@ ul.inheritsList
 					<a name="-create_filter_value"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
+					<span class="light">{String}</span>
 					<b>create_filter_value</b>(container_id, filter_index, operator_type)
 					
 					</div>
 					<div class="description">
-						
+						Create inputs or widgets for the user to set filter values
 						
 						
 					</div>
@@ -410,6 +464,13 @@ ul.inheritsList
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
 						
 						
 
@@ -418,12 +479,55 @@ ul.inheritsList
 					<a name="-create_filters_list"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
+					<span class="light">{String}</span>
 					<b>create_filters_list</b>(container_id)
 					
 					</div>
 					<div class="description">
+						Create filters list
 						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
+								<dd>{string}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> filter list html</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-create_group_condition"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>create_group_condition</b>(container_id)
+					
+					</div>
+					<div class="description">
+						Create rules group condition select (AND - OR)
 						
 						
 					</div>
@@ -446,6 +550,62 @@ ul.inheritsList
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-create_id"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{*}</span>
+					<b>create_id</b>(prefix, plugin_container_id)
+					
+					</div>
+					<div class="description">
+						Create element id
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>prefix</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>plugin_container_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{*}</span> </dd>
+							
+							</dl>
+						
 						
 						
 
@@ -454,12 +614,12 @@ ul.inheritsList
 					<a name="-create_operators_list"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
+					<span class="light">{String}</span>
 					<b>create_operators_list</b>(filter_type)
 					
 					</div>
 					<div class="description">
-						
+						Create operator list
 						
 						
 					</div>
@@ -474,6 +634,178 @@ ul.inheritsList
 									<b>filter_type</b>
 									
 								</dt>
+								<dd>{String}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-create_rule_tools"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>create_rule_tools</b>(container_id)
+					
+					</div>
+					<div class="description">
+						Create rule tools dropdown list
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
+								<dd>{string}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-create_rules_group_tools"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>create_rules_group_tools</b>(container_id)
+					
+					</div>
+					<div class="description">
+						Cgeate rules group tools dropdown list
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
+								<dd>{String}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-createRule"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>createRule</b>(container_id)
+					
+					</div>
+					<div class="description">
+						Create rule
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
+								<dd>{String}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-createRulesGroup"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>createRulesGroup</b>(container_id)
+					
+					</div>
+					<div class="description">
+						Create a group of rules (with the first rule)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
 								<dd></dd>
 							
 							</dl>
@@ -481,6 +813,13 @@ ul.inheritsList
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
 						
 						
 						
@@ -490,12 +829,12 @@ ul.inheritsList
 					<a name="-getOperator"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
+					<span class="light">{*}</span>
 					<b>getOperator</b>(operator_type)
 					
 					</div>
 					<div class="description">
-						
+						Get operator attributes
 						
 						
 					</div>
@@ -517,6 +856,13 @@ ul.inheritsList
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{*}</span> </dd>
+							
+							</dl>
 						
 						
 						
@@ -614,7 +960,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Nov 27 2012 21:44:35 GMT+0200 (EET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sat Dec 01 2012 21:49:05 GMT+0200 (EET)
 		</div>
 	</body>
 </html>

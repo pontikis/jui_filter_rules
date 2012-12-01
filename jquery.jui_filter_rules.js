@@ -264,7 +264,6 @@
         getDefaults: function() {
             return {
                 filters: [],
-                filter_rules: [],
 
                 // styles
                 containerClass: "filter_rules_container",
@@ -356,10 +355,10 @@
 
         /**
          * Get rules
-         * @example elem.jui_filter_rules("getRules", rules_group_index, a_rules);
-         * @param rules_group_index
-         * @param a_rules
-         * @return {*}
+         * @example $(element).jui_filter_rules("getRules", 0, []);
+         * @param rules_group_index (Number} the index of rules group
+         * @param a_rules {Array} rules array
+         * @return {*} {Array}
          */
         getRules: function(rules_group_index, a_rules) {
             var elem = this,

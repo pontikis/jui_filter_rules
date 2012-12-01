@@ -12,4 +12,5 @@ License MIT
 
 UPCOMING Release 1.00 (?? Nov 2012)
 ---------------------------
+* Text filter
 * Localization
