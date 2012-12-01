@@ -1,6 +1,7 @@
 $(function() {
 
     var elem_dlg_rules = $("#dlg_rules");
+    var elem_dlg_sql = $("#dlg_sql");
 
     // theme switcher ----------------------------------------------------------
     $("#ui-theme-switcher").change(function() {
@@ -55,9 +56,31 @@ $(function() {
         }
     });
 
+    elem_dlg_sql.dialog({
+        autoOpen: false,
+        width: 650,
+        height: 250,
+        position: {
+            my: "top",
+            at: "top",
+            of: '#demo_rules1'
+        },
+        title: "SQL",
+        open: function() {
+            elem_dlg_sql.html('<pre>' + 'Under construction' + '</pre>');
+        }
+    });
+
+
     $("#show_rules").click(function() {
         elem_dlg_rules.dialog("open");
         return false;
     });
+
+    $("#create_sql_php").click(function() {
+        elem_dlg_sql.dialog("open");
+        return false;
+    });
+
 
 });
