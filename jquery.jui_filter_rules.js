@@ -103,7 +103,6 @@
                 //elem.unbind("onCustomEvent1").bind("onCustomEvent1", settings.onCustomEvent1);
 
                 var filters = settings.filters,
-                    filter_rules = settings.filter_rules,
 
                     filters_list_id_prefix = create_id(settings.filters_list_id_prefix, container_id) + '_',
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
@@ -115,17 +114,8 @@
                     selector, len, rule_id, filter_index, group_selected, tool_selected;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
-                    if(filters.length > 0 || filter_rules.length > 0) {
-
+                    if(filters.length > 0) {
                         elem.html(createRulesGroup(container_id));
-
-/*                        operators_list_id = operators_list_id_prefix + '1';
-                        filter_value_id = filter_value_id_prefix + '1';
-                        elem_operators_list = $("#" + operators_list_id);
-                        elem_filter_value = $("#" + filter_value_id);
-
-                        elem_operators_list.html(create_operators_list(filters[0].filterType));
-                        elem_filter_value.html(create_filter_value(container_id, 0, elem_operators_list.val()));*/
                     }
                 }
 
@@ -147,13 +137,16 @@
                             $(this).closest("dt").parent("dl").after(createRule(container_id));
                             break;
                         case "rule_insert_inside":
-                            $(this).closest("dt").next("dd").find("ul").prepend(createRule(container_id));
+                            $(this).closest("dt").next("dd:first").find("ul:first").prepend(createRule(container_id));
                             break;
                         case "group_insert_before":
                             $(this).closest("dl").before(createRulesGroup(container_id));
                             break;
                         case "group_insert_after":
                             $(this).closest("dl").after(createRulesGroup(container_id));
+                            break;
+                        case "group_insert_inside":
+                            $(this).closest("dt").next("dd:first").find("ul:first").prepend(createRulesGroup(container_id));
                             break;
                         case "group_delete":
                             $(this).closest("dl").remove();
@@ -362,7 +355,11 @@
          */
         getRules: function(rules_group_index, a_rules) {
             var elem = this,
-                rules_group, group_logical_operator, a_group_rules, r, group_rule, current_rule, pos;
+                container_id = elem.attr("id"),
+                rules_group, group_logical_operator,
+                a_group_rules, r, group_rule,
+                current_rule, filter_name, current_filter,
+                pos, i;
 
             rules_group = elem.find("dl").eq(rules_group_index);
             group_logical_operator = rules_group.find("dt:first").find("select:first").val();
@@ -370,9 +367,21 @@
             a_group_rules = rules_group.find("dd:first").find("ul:first").children().get();
             for(r in a_group_rules) {
                 group_rule = a_group_rules[r];
+
                 current_rule = {};
                 if(group_rule.tagName == 'LI') {
-                    current_rule.condition = {id: group_rule.id};
+                    // no filter set
+                    if($(group_rule).find("select:first").prop("selectedIndex") == 0) {
+                        continue;
+                    }
+
+                    current_rule.condition = {};
+
+                    filter_name = $(group_rule).find("select:first").val();
+                    current_filter = getFilterByName(container_id, filter_name);
+
+                    current_rule.condition.filterType = current_filter.filterType;
+                    current_rule.condition.field = current_filter.field;
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {
@@ -383,8 +392,12 @@
 
                     rules_group_index = parseInt(rules_group_index) + 1;
                     elem.jui_filter_rules("getRules", rules_group_index, a_rules[pos].condition);
+
+                    // cleanup empty groups
+                    cleanup_empty_groups(a_rules);
                 }
             }
+
             return a_rules;
         }
     };
@@ -569,12 +582,54 @@
 
 
     /**
+     * Get filter attributes by filter name
+     * @param {String} container_id
+     * @param {String} filter_name
+     * @return {*} filter object or undefined
+     */
+    var getFilterByName = function(container_id, filter_name) {
+        var elem = $("#" + container_id),
+            i, filters = elem.jui_filter_rules("getOption", "filters"),
+            flt = undefined;
+
+        for(i in filters) {
+            if(filters[i].filterName == filter_name) {
+                flt = filters[i];
+                break;
+            }
+        }
+        return flt;
+    };
+
+
+    /**
+     * Remove empty rule groups
+     * @param {Array} a_rules
+     */
+    var cleanup_empty_groups = function(a_rules) {
+        var i, condition;
+        for(i in a_rules) {
+            condition = a_rules[i].condition;
+            if($.isArray(condition)) {
+                if(condition.length == 0) {
+                    a_rules.splice(i,1);
+                } else {
+                    cleanup_empty_groups(condition);
+                }
+            }
+        }
+
+    };
+
+
+    /**
      * Get operator attributes
      * @param operator_type
-     * @return {*}
+     * @return {*} operator object or undefined
      */
     var getOperator = function(operator_type) {
-        var i, oper;
+        var i, oper = undefined;
+
         for(i in operators) {
             if(operators[i].type == operator_type) {
                 oper = operators[i];
@@ -617,6 +672,7 @@
         tools_html += '<optgroup label="' + rsc_jui_fr.group + '">';
         tools_html += '<option value="group_insert_before"' + disabled_html + '>' + rsc_jui_fr.group_insert_before + '</option>';
         tools_html += '<option value="group_insert_after"' + disabled_html + '>' + rsc_jui_fr.group_insert_after + '</option>';
+        tools_html += '<option value="group_insert_inside">' + rsc_jui_fr.group_insert_inside + '</option>';
         tools_html += '<option value="group_delete"' + disabled_html + '>' + rsc_jui_fr.group_delete + '</option>';
         tools_html += '</optgroup>';
 
