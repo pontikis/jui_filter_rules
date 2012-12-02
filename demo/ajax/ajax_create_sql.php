@@ -23,18 +23,16 @@ function parse_rules($a_rules, $is_group = false) {
 
 	foreach($a_rules as $i => $rule) {
 		if(!is_array($rule['condition'][0])) {
-			$sql .= PHP_EOL .
-				($is_group && $i == 0 ? '(' : '') .
-				$rule['condition']['field'] . ' ' .
-				$rule['condition']['operator'] . ' ' .
-				$rule['condition']['filterValue'] .
-				($i < $a_len - 1 ? ' ' . $rule['logical_operator'] : '') .
-				($is_group && $i == $a_len - 1 ? ')' : '');
+			$sql .= PHP_EOL;
+			$sql .= ($is_group && $i == 0 ? '(' : '');
+			$sql .= $rule['condition']['field'] . ' ';
+			$sql .= $rule['condition']['operator'] . ' ';
+			$sql .= $rule['condition']['filterValue'];
 		} else {
 			parse_rules($rule['condition'], true);
-			$sql .= ($i < $a_len - 1 ? ' ' . $rule['logical_operator'] : '') .
-				($is_group && $i == $a_len - 1 ? ')' : '');
 		}
+		$sql .= ($i < $a_len - 1 ? ' ' . $rule['logical_operator'] : '');
+		$sql .= ($is_group && $i == $a_len - 1 ? ')' : '');
 	}
 	return $sql;
 }
