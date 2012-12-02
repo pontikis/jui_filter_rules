@@ -370,13 +370,12 @@
             a_group_rules = rules_group.find("dd:first").find("ul:first").children().get();
             for(r in a_group_rules) {
                 group_rule = a_group_rules[r];
+                current_rule = {};
                 if(group_rule.tagName == 'LI') {
-                    current_rule = {};
                     current_rule.condition = {id: group_rule.id};
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {
-                    current_rule = {};
                     current_rule.condition = [];
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
