@@ -358,7 +358,7 @@
                 container_id = elem.attr("id"),
                 rules_group, group_logical_operator,
                 a_group_rules, r, group_rule,
-                current_rule, filter_name, current_filter,
+                current_rule, filter_name, filter_operator, current_filter,
                 pos, i;
 
             rules_group = elem.find("dl").eq(rules_group_index);
@@ -379,9 +379,12 @@
 
                     filter_name = $(group_rule).find("select:first").val();
                     current_filter = getFilterByName(container_id, filter_name);
+                    filter_operator = $(group_rule).find("select").eq(1).val();
 
                     current_rule.condition.filterType = current_filter.filterType;
                     current_rule.condition.field = current_filter.field;
+                    current_rule.condition.operator = filter_operator;
+                    current_rule.condition.filterValue = "value";
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {

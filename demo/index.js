@@ -67,7 +67,19 @@ $(function() {
         },
         title: "SQL",
         open: function() {
-            elem_dlg_sql.html('<pre>' + 'Under construction' + '</pre>');
+            var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+
+            $.ajax({
+                type: 'POST',
+                url: "ajax/ajax_create_sql.php",
+                data: {
+                    a_rules: a_rules
+                },
+                success: function(data) {
+                    elem_dlg_sql.html('<pre>' + data + '</pre>');
+                }
+            });
+
         }
     });
 
