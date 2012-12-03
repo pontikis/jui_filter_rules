@@ -295,7 +295,9 @@
                 operators_container_id_prefix: "oper_wrap_",
                 operators_list_id_prefix: "oper_list_",
                 filter_value_id_prefix: "filter_value_",
-                rule_tools_id_prefix: "rule_tools_"
+                rule_tools_id_prefix: "rule_tools_",
+
+                filter_ui_property_prefix: "prop_" // useful to prevent using of javascript preserved words
             };
         },
 

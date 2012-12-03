@@ -15,7 +15,6 @@ $(function() {
         filters: [
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                use_operators: [],
                 interface_common: [
                     {element: "input", type: "text", className: "test1"}
                 ],
@@ -23,10 +22,6 @@ $(function() {
                     {element: "input", type: "checkbox", option: "lbl1", value: 1},
                     {element: "input", type: "checkbox", option: "lbl2", value: 2},
                     {element: "input", type: "checkbox", option: "lbl3", value: 3}
-                ],
-                interface_between: [
-                    {element: "input", type: "text", label: "From"},
-                    {element: "input", type: "text", label: "Until"}
                 ]
             },
             {
