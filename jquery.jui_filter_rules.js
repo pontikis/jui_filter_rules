@@ -48,8 +48,6 @@
             {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
             {type: "greater", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
             {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
-            {type: "not_between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
             {type: "begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "yes"},
             {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
             {type: "contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
