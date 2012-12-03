@@ -651,7 +651,6 @@
                     }
                 }
             }
-
         }
 
         if(filter_type == "number") {
@@ -671,7 +670,6 @@
                     }
                 }
             }
-
         }
 
         return f_html;
