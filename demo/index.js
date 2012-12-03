@@ -31,7 +31,7 @@ $(function() {
             },
             {
                 filterName: "Firstname", "filterType": "number", field: "firstname", filterLabel: "First name",
-                interface: [
+                interface_common: [
                     {element: "input", type: "text"}
                 ]
             }
