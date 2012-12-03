@@ -16,7 +16,7 @@ $(function() {
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
                 use_operators: [],
-                interface: [
+                interface_common: [
                     {element: "input", type: "text", className: "test1"}
                 ],
                 interface_in: [

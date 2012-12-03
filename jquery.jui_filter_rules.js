@@ -638,18 +638,18 @@
 
         if(filter_type == "text") {
             if(operator.accept_values == "yes") {
-                for(i in filters[filter_index].interface) {
-                    filter_element = filters[filter_index].interface[i].element;
+                for(i in filters[filter_index].interface_common) {
+                    filter_element = filters[filter_index].interface_common[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
-                        if(filters[filter_index].interface[i].className !== undefined) {
-                            class_name = filters[filter_index].interface[i].className;
+                        if(filters[filter_index].interface_common[i].className !== undefined) {
+                            class_name = filters[filter_index].interface_common[i].className;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
                             }
                         }
                         class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filters[filter_index].interface[i].type + '"' + class_html + '>';
+                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
                     }
                 }
             }
@@ -658,18 +658,18 @@
 
         if(filter_type == "number") {
             if(operator.accept_values == "yes") {
-                for(i in filters[filter_index].interface) {
-                    filter_element = filters[filter_index].interface[i].element;
+                for(i in filters[filter_index].interface_common) {
+                    filter_element = filters[filter_index].interface_common[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
-/*                        if(filters[filter_index].interface[i].hasOwnProperty("class")) {
-                            class_name = filters[filter_index].interface[i].class;
+/*                        if(filters[filter_index].interface_common[i].hasOwnProperty("class")) {
+                            class_name = filters[filter_index].interface_common[i].class;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
                             }
                         }*/
                         class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filters[filter_index].interface[i].type + '"' + class_html + '>';
+                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
                     }
                 }
             }
