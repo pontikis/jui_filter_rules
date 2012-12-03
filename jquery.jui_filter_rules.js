@@ -660,12 +660,12 @@
                     filter_element = filters[filter_index].interface_common[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
-/*                        if(filters[filter_index].interface_common[i].hasOwnProperty("class")) {
+                        if(filters[filter_index].interface_common[i].className !== undefined) {
                             class_name = filters[filter_index].interface_common[i].class;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
                             }
-                        }*/
+                        }
                         class_html = ' class="' + class_name + '"';
                         f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
                     }
