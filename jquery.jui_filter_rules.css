@@ -49,8 +49,9 @@
 }
 
 .rules_list_li {
-    margin: 0;
+    margin: 0 0 2px 0;
     padding: 0;
+    background-color: #f3f3f3;
 }
 
 /* filter name -------------------------------------------------------------- */
@@ -65,21 +66,14 @@
 }
 
 /* operator ----------------------------------------------------------------- */
-.operator_container {
+.operators_list_container {
     display: inline-block;
     padding: 5px;
 }
 
-.operator_list {
-
-}
-
-.operator_list_option {
-
-}
-
-.operator_list_option_group {
-
+.operators_list {
+    padding: 0;
+    margin: 0;
 }
 
 /* filter value ------------------------------------------------------------- */
@@ -91,15 +85,19 @@
 .filter_input_text {
     width: 150px;
     margin: 0 5px;
+    padding: 0;
 }
 
 .filter_input_number {
     width: 75px;
     margin: 0 5px;
+    padding: 0;
 }
 
 .filter_input_date {
-
+    width: 100px;
+    margin: 0 5px;
+    padding: 0;
 }
 
 /* filter tools ------------------------------------------------------------- */
@@ -110,7 +108,8 @@
 }
 
 .rule_tools_list {
-
+    padding: 0;
+    margin: 0;
 }
 
 /* utility ------------------------------------------------------------------ */

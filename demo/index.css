@@ -22,4 +22,7 @@
 
 .test1 {
     background: red;
+    width: 150px;
+    margin: 0 5px;
+    padding: 0;
 }

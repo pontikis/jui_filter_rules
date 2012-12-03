@@ -30,7 +30,13 @@ $(function() {
                 ]
             },
             {
-                filterName: "Firstname", "filterType": "number", field: "firstname", filterLabel: "First name",
+                filterName: "AgeInYears", "filterType": "number", field: "age", filterLabel: "Age (years)",
+                interface_common: [
+                    {element: "input", type: "text"}
+                ]
+            },
+            {
+                filterName: "DateInserted", "filterType": "date", field: "date_inserted", filterLabel: "Date inserted",
                 interface_common: [
                     {element: "input", type: "text"}
                 ]

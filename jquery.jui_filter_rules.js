@@ -103,12 +103,13 @@
                 var filters = settings.filters,
 
                     filters_list_id_prefix = create_id(settings.filters_list_id_prefix, container_id) + '_',
+                    operators_container_id_prefix = create_id(settings.operators_container_id_prefix, container_id) + '_',
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
                     filter_value_id_prefix = create_id(settings.filter_value_id_prefix, container_id) + '_',
                     group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
-                    filters_list_id, operators_list_id, filter_value_id,
-                    elem_filters_list, elem_operators_list, elem_filter_value,
+                    filters_list_id, operators_list_id, operators_container_id, filter_value_id,
+                    elem_filters_list, elem_operators_list, elem_operators_container, elem_filter_value,
                     selector, len, rule_id, filter_index, group_selected, tool_selected;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
@@ -171,14 +172,14 @@
                             break;
                         case "rule_clear":
                             filters_list_id = filters_list_id_prefix + rule_id;
-                            operators_list_id = operators_list_id_prefix + rule_id;
+                            operators_container_id = operators_container_id_prefix + rule_id;
                             filter_value_id = filter_value_id_prefix + rule_id;
                             elem_filters_list = $("#" + filters_list_id);
-                            elem_operators_list = $("#" + operators_list_id);
+                            elem_operators_container = $("#" + operators_container_id);
                             elem_filter_value = $("#" + filter_value_id);
 
                             elem_filters_list.prop("selectedIndex", 0);
-                            elem_operators_list.html('');
+                            elem_operators_container.html('');
                             elem_filter_value.html('');
                             break;
                         case "rule_delete":
@@ -204,19 +205,20 @@
                     rule_id = $(this).attr("id").substr(len);
                     filter_index = $(this).prop('selectedIndex') - 1;
 
+                    operators_container_id = operators_container_id_prefix + rule_id;
                     operators_list_id = operators_list_id_prefix + rule_id;
                     filter_value_id = filter_value_id_prefix + rule_id;
-                    elem_operators_list = $("#" + operators_list_id);
+                    elem_operators_container = $("#" + operators_container_id);
                     elem_filter_value = $("#" + filter_value_id);
 
                     if(filter_index >= 0) {
-                        elem_operators_list.html(create_operators_list(filters[filter_index].filterType));
+                        elem_operators_container.html(create_operators_list(container_id, rule_id, filters[filter_index].filterType));
+                        elem_operators_list = $("#" + operators_list_id);
                         elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
                     } else {
-                        elem_operators_list.html('');
+                        elem_operators_container.html('');
                         elem_filter_value.html('');
                     }
-
 
                 });
 
@@ -275,7 +277,8 @@
                 filterContainerClass: "filter_container",
                 filterListClass: "filter_list",
 
-                operatorContainerClass: "operator_container",
+                operatorsListContainerClass: "operators_list_container",
+                operatorsListClass: "operators_list",
 
                 filterValueContainerClass: "filter_value_container",
                 filterInputTextClass: "filter_input_text",
@@ -289,6 +292,7 @@
                 group_tools_id_prefix: "group_tools_",
                 rule_li_id_prefix: "rule_",
                 filters_list_id_prefix: "filters_list_",
+                operators_container_id_prefix: "oper_wrap_",
                 operators_list_id_prefix: "oper_list_",
                 filter_value_id_prefix: "filter_value_",
                 rule_tools_id_prefix: "rule_tools_"
@@ -597,21 +601,28 @@
      * @param filter_type {String}
      * @return {String}
      */
-    var create_operators_list = function(filter_type) {
-        var oper = {}, i, len, oper_html = '';
+    var create_operators_list = function(container_id, rule_id, filter_type) {
+        var elem = $("#" + container_id),
+            operatorsListClass = elem.jui_filter_rules("getOption", "operatorsListClass"),
+            operators_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_list_id_prefix"), container_id) + '_',
+            operators_list_id = operators_list_id_prefix + rule_id,
+            oper, i, len, oper_html = '';
 
         oper = getOperators(filter_type);
         len = oper.length;
 
+        oper_html += '<select id="' + operators_list_id + '" class="' + operatorsListClass + '">';
         for(i in oper) {
             if(oper[i].start_a_group == "yes") {
-                oper_html += '<optgroup label="&raquo;" class="operator_list_option_group">';
+                oper_html += '<optgroup label="&raquo;">';
             }
-            oper_html += '<option value="' + oper[i].operator_type + '"' + ' class="operator_list_option"' + '>' + oper[i].operator_label + '</option>';
+            oper_html += '<option value="' + oper[i].operator_type + '"' + '>' + oper[i].operator_label + '</option>';
             if(i < len - 1 && oper[parseInt(i) + 1].start_a_group == "yes") {
                 oper_html += '</optgroup>';
             }
         }
+        oper_html += '</select>';
+
         return oper_html;
     };
 
@@ -663,6 +674,25 @@
                             class_name = filters[filter_index].interface_common[i].class;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
+                            }
+                        }
+                        class_html = ' class="' + class_name + '"';
+                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
+                    }
+                }
+            }
+        }
+
+        if(filter_type == "date") {
+            if(operator.accept_values == "yes") {
+                for(i in filters[filter_index].interface_common) {
+                    filter_element = filters[filter_index].interface_common[i].element;
+                    if(filter_element == "input") {
+                        class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
+                        if(filters[filter_index].interface_common[i].className !== undefined) {
+                            class_name = filters[filter_index].interface_common[i].class;
+                            if(class_name == "") {
+                                class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
                             }
                         }
                         class_html = ' class="' + class_name + '"';
@@ -757,18 +787,18 @@
     var createRule = function(container_id) {
         var elem = $("#" + container_id),
             rulesListLiClass = elem.jui_filter_rules("getOption", "rulesListLiClass"),
-            operatorContainerClass = elem.jui_filter_rules("getOption", "operatorContainerClass"),
+            operatorsListContainerClass = elem.jui_filter_rules("getOption", "operatorsListContainerClass"),
             filterValueContainerClass = elem.jui_filter_rules("getOption", "filterValueContainerClass"),
             rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
-            operators_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_list_id_prefix"), container_id) + '_',
+            operators_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_container_id_prefix"), container_id) + '_',
             filter_value_id_prefix = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_',
-            rule_li_id, operators_list_id, filter_value_id,
+            rule_li_id, operators_container_id, filter_value_id,
             r_html = '';
 
         var rule_id = parseInt(elem.data(pluginStatus)["rule_id"]) + 1;
         elem.data(pluginStatus)["rule_id"] = rule_id;
 
-        operators_list_id = operators_list_id_prefix + rule_id;
+        operators_container_id = operators_container_id_prefix + rule_id;
         filter_value_id = filter_value_id_prefix + rule_id;
         rule_li_id = rule_li_id_prefix + rule_id;
 
@@ -776,8 +806,7 @@
 
         r_html += create_filters_list(container_id);
 
-        r_html += '<div class="' + operatorContainerClass + '">';
-        r_html += '<select id="' + operators_list_id + '"></select>';
+        r_html += '<div id="' + operators_container_id + '" class="' + operatorsListContainerClass + '">';
         r_html += '</div>';
 
         r_html += '<div id="' + filter_value_id + '" class="' + filterValueContainerClass + '">';
