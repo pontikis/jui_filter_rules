@@ -430,6 +430,82 @@
     };
 
     /**
+     * Remove empty rule groups
+     * @param {Array} a_rules
+     */
+    var cleanup_empty_groups = function(a_rules) {
+        var i, condition;
+        for(i in a_rules) {
+            condition = a_rules[i].condition;
+            if($.isArray(condition)) {
+                if(condition.length == 0) {
+                    a_rules.splice(i,1);
+                } else {
+                    cleanup_empty_groups(condition);
+                }
+            }
+        }
+
+    };
+
+    /**
+     * Get filter attributes by filter name
+     * @param {String} container_id
+     * @param {String} filter_name
+     * @return {*} filter object or undefined
+     */
+    var getFilterByName = function(container_id, filter_name) {
+        var elem = $("#" + container_id),
+            i, filters = elem.jui_filter_rules("getOption", "filters"),
+            flt = undefined;
+
+        for(i in filters) {
+            if(filters[i].filterName == filter_name) {
+                flt = filters[i];
+                break;
+            }
+        }
+        return flt;
+    };
+
+    /**
+     * Get operators for filter type
+     * @param filter_type {string}
+     * @return {Array}
+     */
+    var getOperators = function(filter_type) {
+        var i, oper = [], item = {};
+        for(i in operators) {
+            if($.inArray(filter_type, operators[i].apply_to) > -1) {
+                item = {};
+                item.operator_type = operators[i].type;
+                item.operator_label = rsc_jui_fr['operator_' + operators[i].type];
+                item.start_a_group = operators[i].start_a_group;
+                oper.push(item);
+            }
+        }
+        return oper;
+
+    };
+
+    /**
+     * Get operator attributes
+     * @param operator_type
+     * @return {*} operator object or undefined
+     */
+    var getOperator = function(operator_type) {
+        var i, oper = undefined;
+
+        for(i in operators) {
+            if(operators[i].type == operator_type) {
+                oper = operators[i];
+                break;
+            }
+        }
+        return oper;
+    };
+
+    /**
      * Create rules group condition select (AND - OR)
      * @return {String}
      */
@@ -447,6 +523,48 @@
         gc_html += '</div>';
         return gc_html;
 
+    };
+
+    /**
+     * Cgeate rules group tools dropdown list
+     * @param container_id {String}
+     * @return {String}
+     */
+    var create_rules_group_tools = function(container_id) {
+        var elem = $("#" + container_id),
+            rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
+
+            rulesGroupToolsContainerClass = elem.jui_filter_rules("getOption", "rulesGroupToolsContainerClass"),
+            rulesGroupToolsListClass = elem.jui_filter_rules("getOption", "rulesGroupToolsListClass"),
+
+            group_tools_id = create_id(elem.jui_filter_rules("getOption", "group_tools_id_prefix"), container_id) + '_' + rule_id,
+
+            disabled_html = (rule_id == 0 ? ' disabled="disabled"' : ''),
+            shrink_class_html = ($.browser.msie && parseInt($.browser.version) < 9 ? '' : ' tools_list_shrink'),
+            tools_html = '';
+
+        tools_html += '<div class="' + rulesGroupToolsContainerClass + '">';
+        tools_html += '<select id="' + group_tools_id + '" class="' + rulesGroupToolsListClass + shrink_class_html + '">';
+
+        tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
+
+        tools_html += '<optgroup label="' + rsc_jui_fr.rule + '">';
+        tools_html += '<option value="rule_insert_before"' + disabled_html + '>' + rsc_jui_fr.rule_insert_before + '</option>';
+        tools_html += '<option value="rule_insert_after"' + disabled_html + '>' + rsc_jui_fr.rule_insert_after + '</option>';
+        tools_html += '<option value="rule_insert_inside">' + rsc_jui_fr.rule_insert_inside + '</option>';
+        tools_html += '</optgroup>';
+
+        tools_html += '<optgroup label="' + rsc_jui_fr.group + '">';
+        tools_html += '<option value="group_insert_before"' + disabled_html + '>' + rsc_jui_fr.group_insert_before + '</option>';
+        tools_html += '<option value="group_insert_after"' + disabled_html + '>' + rsc_jui_fr.group_insert_after + '</option>';
+        tools_html += '<option value="group_insert_inside">' + rsc_jui_fr.group_insert_inside + '</option>';
+        tools_html += '<option value="group_delete"' + disabled_html + '>' + rsc_jui_fr.group_delete + '</option>';
+        tools_html += '</optgroup>';
+
+        tools_html += '</select>';
+        tools_html += '</div>';
+
+        return tools_html;
     };
 
     /**
@@ -562,130 +680,6 @@
 
     };
 
-
-    /**
-     * Get operators for filter type
-     * @param filter_type {string}
-     * @return {Array}
-     */
-    var getOperators = function(filter_type) {
-        var i, oper = [], item = {};
-        for(i in operators) {
-            if($.inArray(filter_type, operators[i].apply_to) > -1) {
-                item = {};
-                item.operator_type = operators[i].type;
-                item.operator_label = rsc_jui_fr['operator_' + operators[i].type];
-                item.start_a_group = operators[i].start_a_group;
-                oper.push(item);
-            }
-        }
-        return oper;
-
-    };
-
-
-    /**
-     * Get filter attributes by filter name
-     * @param {String} container_id
-     * @param {String} filter_name
-     * @return {*} filter object or undefined
-     */
-    var getFilterByName = function(container_id, filter_name) {
-        var elem = $("#" + container_id),
-            i, filters = elem.jui_filter_rules("getOption", "filters"),
-            flt = undefined;
-
-        for(i in filters) {
-            if(filters[i].filterName == filter_name) {
-                flt = filters[i];
-                break;
-            }
-        }
-        return flt;
-    };
-
-
-    /**
-     * Remove empty rule groups
-     * @param {Array} a_rules
-     */
-    var cleanup_empty_groups = function(a_rules) {
-        var i, condition;
-        for(i in a_rules) {
-            condition = a_rules[i].condition;
-            if($.isArray(condition)) {
-                if(condition.length == 0) {
-                    a_rules.splice(i,1);
-                } else {
-                    cleanup_empty_groups(condition);
-                }
-            }
-        }
-
-    };
-
-
-    /**
-     * Get operator attributes
-     * @param operator_type
-     * @return {*} operator object or undefined
-     */
-    var getOperator = function(operator_type) {
-        var i, oper = undefined;
-
-        for(i in operators) {
-            if(operators[i].type == operator_type) {
-                oper = operators[i];
-                break;
-            }
-        }
-        return oper;
-    };
-
-
-    /**
-     * Cgeate rules group tools dropdown list
-     * @param container_id {String}
-     * @return {String}
-     */
-    var create_rules_group_tools = function(container_id) {
-        var elem = $("#" + container_id),
-            rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
-
-            rulesGroupToolsContainerClass = elem.jui_filter_rules("getOption", "rulesGroupToolsContainerClass"),
-            rulesGroupToolsListClass = elem.jui_filter_rules("getOption", "rulesGroupToolsListClass"),
-
-            group_tools_id = create_id(elem.jui_filter_rules("getOption", "group_tools_id_prefix"), container_id) + '_' + rule_id,
-
-            disabled_html = (rule_id == 0 ? ' disabled="disabled"' : ''),
-            shrink_class_html = ($.browser.msie && parseInt($.browser.version) < 9 ? '' : ' tools_list_shrink'),
-            tools_html = '';
-
-        tools_html += '<div class="' + rulesGroupToolsContainerClass + '">';
-        tools_html += '<select id="' + group_tools_id + '" class="' + rulesGroupToolsListClass + shrink_class_html + '">';
-
-        tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
-
-        tools_html += '<optgroup label="' + rsc_jui_fr.rule + '">';
-        tools_html += '<option value="rule_insert_before"' + disabled_html + '>' + rsc_jui_fr.rule_insert_before + '</option>';
-        tools_html += '<option value="rule_insert_after"' + disabled_html + '>' + rsc_jui_fr.rule_insert_after + '</option>';
-        tools_html += '<option value="rule_insert_inside">' + rsc_jui_fr.rule_insert_inside + '</option>';
-        tools_html += '</optgroup>';
-
-        tools_html += '<optgroup label="' + rsc_jui_fr.group + '">';
-        tools_html += '<option value="group_insert_before"' + disabled_html + '>' + rsc_jui_fr.group_insert_before + '</option>';
-        tools_html += '<option value="group_insert_after"' + disabled_html + '>' + rsc_jui_fr.group_insert_after + '</option>';
-        tools_html += '<option value="group_insert_inside">' + rsc_jui_fr.group_insert_inside + '</option>';
-        tools_html += '<option value="group_delete"' + disabled_html + '>' + rsc_jui_fr.group_delete + '</option>';
-        tools_html += '</optgroup>';
-
-        tools_html += '</select>';
-        tools_html += '</div>';
-
-        return tools_html;
-    };
-
-
     /**
      * Create rule tools dropdown list
      * @param container_id {string}
@@ -758,7 +752,6 @@
         return rg_html;
 
     };
-
 
     /**
      * Create rule
