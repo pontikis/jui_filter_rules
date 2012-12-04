@@ -23,3 +23,10 @@ Demo
 ----
 
 http://pontikis.net/jui_filter_rules/v1.00/demo/
+
+Sample
+------
+
+
+![jui_datagrid sample][sample]
+[sample]: https://raw.github.com/pontikis/jui_filter_rules/dev/demo/samples/v1.00/sample4.png
