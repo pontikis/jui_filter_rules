@@ -268,6 +268,24 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-array_has_duplicates">array_has_duplicates</a></b>(arr)
+								</div>
+								<div class="description">Check array for duplicated values</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-cleanup_empty_groups">cleanup_empty_groups</a></b>(a_rules)
+								</div>
+								<div class="description">Remove empty rule groups</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filter_value">create_filter_value</a></b>(container_id, filter_index, operator_type)
 								</div>
 								<div class="description">Create inputs or widgets for the user to set filter values</div>
@@ -304,7 +322,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_operators_list">create_operators_list</a></b>(filter_type)
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_operators_list">create_operators_list</a></b>(container_id, rule_id, filterName)
 								</div>
 								<div class="description">Create operator list</div>
 							</td>
@@ -349,6 +367,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getFilterByName">getFilterByName</a></b>(container_id, filter_name)
+								</div>
+								<div class="description">Get filter attributes by filter name</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getOperator">getOperator</a></b>(operator_type)
 								</div>
 								<div class="description">Get operator attributes</div>
@@ -358,7 +385,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getOperators">getOperators</a></b>(filter_type)
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getOperators">getOperators</a></b>(filterName, filterName)
 								</div>
 								<div class="description">Get operators for filter type</div>
 							</td>
@@ -420,6 +447,85 @@ ul.inheritsList
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="-array_has_duplicates"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{Boolean}</span>
+					<b>array_has_duplicates</b>(arr)
+					
+					</div>
+					<div class="description">
+						Check array for duplicated values
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>arr</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-cleanup_empty_groups"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>cleanup_empty_groups</b>(a_rules)
+					
+					</div>
+					<div class="description">
+						Remove empty rule groups
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>a_rules</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
 				
 					<a name="-create_filter_value"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
@@ -615,7 +721,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					<span class="light">{String}</span>
-					<b>create_operators_list</b>(filter_type)
+					<b>create_operators_list</b>(container_id, rule_id, filterName)
 					
 					</div>
 					<div class="description">
@@ -631,10 +737,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>filter_type</b>
+									<b>container_id</b>
 									
 								</dt>
-								<dd>{String}</dd>
+								<dd></dd>
+							
+								<dt>
+									<b>rule_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filterName</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -826,6 +944,55 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="-getFilterByName"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{*}</span>
+					<b>getFilterByName</b>(container_id, filter_name)
+					
+					</div>
+					<div class="description">
+						Get filter attributes by filter name
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>container_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>filter_name</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{*}</span> filter object or undefined</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="-getOperator"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -860,7 +1027,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{*}</span> </dd>
+								<dd><span class="light fixedFont">{*}</span> operator object or undefined</dd>
 							
 							</dl>
 						
@@ -873,7 +1040,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					<span class="light">{Array}</span>
-					<b>getOperators</b>(filter_type)
+					<b>getOperators</b>(filterName, filterName)
 					
 					</div>
 					<div class="description">
@@ -889,10 +1056,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>filter_type</b>
+									<b>filterName</b>
 									
 								</dt>
 								<dd>{string}</dd>
+							
+								<dt>
+									<b>filterName</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -960,7 +1133,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sat Dec 01 2012 21:49:05 GMT+0200 (EET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Dec 04 2012 14:04:23 GMT+0200 (EET)
 		</div>
 	</body>
 </html>

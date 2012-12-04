@@ -90,7 +90,13 @@
 
 <div class="level2">
     <ul>
+        <li>Create rules as JSON object
+        <li>Create WHERE SQL from rules (available in php)
+        <li>Support nested filter groups
+        <li>Restrict operators per filter
         <li>Text filter
+        <li>Number filter
+        <li>Date filter
         <li>Localization
     </ul>
 </div>
@@ -105,26 +111,24 @@
             "number",
             "date"
         ], operators = [
-            {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
-            {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
-            {type: "less", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
-            {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "greater", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
-            {type: "not_between", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "yes"},
-            {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "not_contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "is_empty", accept_values: "no", apply_to: ["text"], start_a_group: "yes"},
-            {type: "is_not_empty", accept_values: "no", apply_to: ["text"], start_a_group: "no"},
-            {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "no"}
+            {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], group: "equality"},
+            {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], group: "equality"},
+            {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], group: "multiple_choice"},
+            {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], group: "multiple_choice"},
+            {type: "less", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "greater", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "begins_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "contains", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_contains", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "ends_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "is_empty", accept_values: "no", apply_to: ["text"], group: "empty_string"},
+            {type: "is_not_empty", accept_values: "no", apply_to: ["text"], group: "empty_string"},
+            {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], group: "null"},
+            {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], group: "null"}
         ];
     </pre>
 
@@ -220,7 +224,8 @@
         filterContainerClass: "filter_container",
         filterListClass: "filter_list",
 
-        operatorContainerClass: "operator_container",
+        operatorsListContainerClass: "operators_list_container",
+        operatorsListClass: "operators_list",
 
         filterValueContainerClass: "filter_value_container",
         filterInputTextClass: "filter_input_text",
@@ -234,9 +239,12 @@
         group_tools_id_prefix: "group_tools_",
         rule_li_id_prefix: "rule_",
         filters_list_id_prefix: "filters_list_",
+        operators_container_id_prefix: "oper_wrap_",
         operators_list_id_prefix: "oper_list_",
         filter_value_id_prefix: "filter_value_",
-        rule_tools_id_prefix: "rule_tools_"
+        rule_tools_id_prefix: "rule_tools_",
+
+        filter_ui_property_prefix: "flt_" // useful to prevent using of javascript preserved words
 
     });
     </pre>

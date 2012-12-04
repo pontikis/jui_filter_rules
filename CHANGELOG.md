@@ -12,5 +12,11 @@ License MIT
 
 UPCOMING Release 1.00 (?? Nov 2012)
 ---------------------------
+* Create rules as JSON object
+* Create WHERE SQL from rules (available in php)
+* Support nested filter groups
+* Restrict operators per filter
 * Text filter
+* Number filter
+* Date filter
 * Localization
