@@ -361,7 +361,7 @@
             var elem = this,
                 container_id = elem.attr("id"),
                 rules_group, group_logical_operator,
-                a_group_rules, r, group_rule,
+                a_group_rules, a_group_rules_len, r, group_rule,
                 current_rule, filter_name, filter_operator, current_filter,
                 pos;
 
@@ -369,7 +369,8 @@
             group_logical_operator = rules_group.find("dt:first").find("select:first").val();
 
             a_group_rules = rules_group.find("dd:first").find("ul:first").children().get();
-            for(r in a_group_rules) {
+            a_group_rules_len = a_group_rules.length;
+            for(r = 0; r < a_group_rules_len; r++) {
                 group_rule = a_group_rules[r];
 
                 current_rule = {};
@@ -422,10 +423,12 @@
     var validate_input = function(container_id) {
         var elem = $("#" + container_id),
             err_msg, i,
-            filters = elem.jui_filter_rules("getOption", "filters"), filternames = [];
+            filters = elem.jui_filter_rules("getOption", "filters"),
+            filters_len = filters.length,
+            filternames = [];
 
         // unique filter name
-        for(i in filters) {
+        for(i = 0; i < filters_len; i++) {
             filternames.push(filters[i].filterName);
         }
         if(array_has_duplicates(filternames)) {
@@ -469,8 +472,8 @@
      * @param {Array} a_rules
      */
     var cleanup_empty_groups = function(a_rules) {
-        var i, condition;
-        for(i in a_rules) {
+        var i, condition, len = a_rules.length;
+        for(i = 0; i < len; i++) {
             condition = a_rules[i].condition;
             if($.isArray(condition)) {
                 if(condition.length == 0) {
@@ -492,9 +495,10 @@
     var getFilterByName = function(container_id, filter_name) {
         var elem = $("#" + container_id),
             i, filters = elem.jui_filter_rules("getOption", "filters"),
+            filters_len = filters.length,
             flt = undefined;
 
-        for(i in filters) {
+        for(i = 0; i < filters_len; i++) {
             if(filters[i].filterName == filter_name) {
                 flt = filters[i];
                 break;
@@ -512,13 +516,14 @@
         var elem = $("#" + container_id),
             filters = elem.jui_filter_rules("getOption", "filters"),
             filter, filter_type, excluded_operators,
+            operators_len = operators.length,
             i, oper = [], item;
 
         filter = getFilterByName(container_id, filterName);
         filter_type = filter.filterType;
         excluded_operators = (filter.excluded_operators === undefined ? [] : filter.excluded_operators);
 
-        for(i in operators) {
+        for(i = 0; i < operators_len; i++) {
             if($.inArray(operators[i].type, excluded_operators) > -1) {
                 continue;
             }
@@ -540,9 +545,11 @@
      * @return {*} operator object or undefined
      */
     var getOperator = function(operator_type) {
-        var i, oper = undefined;
+        var i,
+            operators_len = operators.length,
+            oper = undefined;
 
-        for(i in operators) {
+        for(i = 0; i < operators_len; i++) {
             if(operators[i].type == operator_type) {
                 oper = operators[i];
                 break;
@@ -622,6 +629,7 @@
         var elem = $("#" + container_id),
             rule_id = parseInt(elem.data(pluginStatus)["rule_id"]),
             filters = elem.jui_filter_rules('getOption', 'filters'),
+            filters_len = filters.length,
             filterContainerClass = elem.jui_filter_rules("getOption", "filterContainerClass"),
             filterListClass = elem.jui_filter_rules("getOption", "filterListClass"),
             filters_list_id = create_id(elem.jui_filter_rules("getOption", "filters_list_id_prefix"), container_id) + '_' + rule_id,
@@ -630,7 +638,7 @@
         f_html += '<div class="' + filterContainerClass + '">';
         f_html += '<select id="' + filters_list_id + '" class="' + filterListClass + '">';
         f_html += '<option value="no_filter">' + rsc_jui_fr.filter_please_select + '</option>';
-        for(i in filters) {
+        for(i = 0; i < filters_len; i++) {
             f_html += '<option value="' + filters[i].filterName + '">' + filters[i].filterLabel + '</option>';
         }
         f_html += '</select>';
@@ -658,7 +666,7 @@
         len = oper.length;
 
         oper_html += '<select id="' + operators_list_id + '" class="' + operatorsListClass + '">';
-        for(i in oper) {
+        for(i = 0; i < len; i++) {
             if(oper[i].group !== operators_group) {
                 oper_html += '<optgroup label="&raquo;">';
                 operators_group = oper[i].group;
