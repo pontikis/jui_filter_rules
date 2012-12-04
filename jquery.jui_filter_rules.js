@@ -363,7 +363,7 @@
                 rules_group, group_logical_operator,
                 a_group_rules, r, group_rule,
                 current_rule, filter_name, filter_operator, current_filter,
-                pos, i;
+                pos;
 
             rules_group = elem.find("dl").eq(rules_group_index);
             group_logical_operator = rules_group.find("dt:first").find("select:first").val();
@@ -505,7 +505,7 @@
 
     /**
      * Get operators for filter type
-     * @param filter_type {string}
+     * @param filterName {string}
      * @return {Array}
      */
     var getOperators = function(container_id, filterName) {
@@ -642,7 +642,9 @@
 
     /**
      * Create operator list
-     * @param filter_type {String}
+     * @param container_id
+     * @param rule_id
+     * @param filterName
      * @return {String}
      */
     var create_operators_list = function(container_id, rule_id, filterName) {
