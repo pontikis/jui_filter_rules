@@ -42,7 +42,7 @@ $(function() {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
                 excluded_operators: ["in","not_in"],
                 interface_common: [
-                    {element: "input", type: "text", className: "test1"}
+                    {element: "input", type: "text", className: ""}
                 ],
                 interface_in: [
                     {element: "input", type: "checkbox", option: "lbl1", value: 1},
