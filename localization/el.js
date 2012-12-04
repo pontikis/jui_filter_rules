@@ -27,8 +27,8 @@ var rsc_jui_fr = {
 
     operator_equal: 'ισούται',
     operator_not_equal: 'δεν ισούται',
-    operator_in: 'περιλαμβάνεται',
-    operator_not_in: 'δεν περιλαμβάνεται',
+    operator_in: 'περιλαμβάνεται σε',
+    operator_not_in: 'δεν περιλαμβάνεται σε',
     operator_less: 'μικρότερο',
     operator_less_or_equal: 'μικρότερο είτε ίσο',
     operator_greater: 'μεγαλύτερο',

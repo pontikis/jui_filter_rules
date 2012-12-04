@@ -40,24 +40,24 @@
             "number",
             "date"
         ], operators = [
-            {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
-            {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], start_a_group: "no"},
-            {type: "less", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "yes"},
-            {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "greater", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], start_a_group: "no"},
-            {type: "begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "yes"},
-            {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "not_contains", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], start_a_group: "no"},
-            {type: "is_empty", accept_values: "no", apply_to: ["text"], start_a_group: "yes"},
-            {type: "is_not_empty", accept_values: "no", apply_to: ["text"], start_a_group: "no"},
-            {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "yes"},
-            {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], start_a_group: "no"}
+            {type: "equal", accept_values: "yes", apply_to: ["text", "number", "date"], group: "equality"},
+            {type: "not_equal", accept_values: "yes", apply_to: ["text", "number", "date"], group: "equality"},
+            {type: "in", accept_values: "yes", apply_to: ["text", "number", "date"], group: "multiple_choice"},
+            {type: "not_in", accept_values: "yes", apply_to: ["text", "number", "date"], group: "multiple_choice"},
+            {type: "less", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "less_or_equal", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "greater", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "greater_or_equal", accept_values: "yes", apply_to: ["number", "date"], group: "inequality"},
+            {type: "begins_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_begins_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "contains", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_contains", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "ends_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "not_ends_with", accept_values: "yes", apply_to: ["text"], group: "substring"},
+            {type: "is_empty", accept_values: "no", apply_to: ["text"], group: "empty_string"},
+            {type: "is_not_empty", accept_values: "no", apply_to: ["text"], group: "empty_string"},
+            {type: "is_null", accept_values: "no", apply_to: ["text", "number", "date"], group: "null"},
+            {type: "is_not_null", accept_values: "no", apply_to: ["text", "number", "date"], group: "null"}
         ];
 
 
@@ -212,7 +212,7 @@
                     elem_filter_value = $("#" + filter_value_id);
 
                     if(filter_index >= 0) {
-                        elem_operators_container.html(create_operators_list(container_id, rule_id, filters[filter_index].filterType));
+                        elem_operators_container.html(create_operators_list(container_id, rule_id, $(this).val()));
                         elem_operators_list = $("#" + operators_list_id);
                         elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
                     } else {
@@ -508,14 +508,25 @@
      * @param filter_type {string}
      * @return {Array}
      */
-    var getOperators = function(filter_type) {
-        var i, oper = [], item;
+    var getOperators = function(container_id, filterName) {
+        var elem = $("#" + container_id),
+            filters = elem.jui_filter_rules("getOption", "filters"),
+            filter, filter_type,excluded_operators,
+            i, oper = [], item;
+
+        filter = getFilterByName(container_id, filterName);
+        filter_type = filter.filterType;
+        excluded_operators = (filter.excluded_operators === undefined ? [] : filter.excluded_operators);
+
         for(i in operators) {
+            if($.inArray(operators[i].type, excluded_operators) > -1) {
+                continue;
+            }
             if($.inArray(filter_type, operators[i].apply_to) > -1) {
                 item = {};
                 item.operator_type = operators[i].type;
                 item.operator_label = rsc_jui_fr['operator_' + operators[i].type];
-                item.start_a_group = operators[i].start_a_group;
+                item.group = operators[i].group;
                 oper.push(item);
             }
         }
@@ -634,23 +645,24 @@
      * @param filter_type {String}
      * @return {String}
      */
-    var create_operators_list = function(container_id, rule_id, filter_type) {
+    var create_operators_list = function(container_id, rule_id, filterName) {
         var elem = $("#" + container_id),
             operatorsListClass = elem.jui_filter_rules("getOption", "operatorsListClass"),
             operators_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_list_id_prefix"), container_id) + '_',
             operators_list_id = operators_list_id_prefix + rule_id,
-            oper, i, len, oper_html = '';
+            oper, i, len, oper_html = '', operators_group = '';
 
-        oper = getOperators(filter_type);
+        oper = getOperators(container_id, filterName);
         len = oper.length;
 
         oper_html += '<select id="' + operators_list_id + '" class="' + operatorsListClass + '">';
         for(i in oper) {
-            if(oper[i].start_a_group == "yes") {
+            if(oper[i].group !== operators_group) {
                 oper_html += '<optgroup label="&raquo;">';
+                operators_group = oper[i].group;
             }
             oper_html += '<option value="' + oper[i].operator_type + '"' + '>' + oper[i].operator_label + '</option>';
-            if(i < len - 1 && oper[parseInt(i) + 1].start_a_group == "yes") {
+            if(i < len - 1 && oper[parseInt(i) + 1].group !== operators_group) {
                 oper_html += '</optgroup>';
             }
         }
@@ -704,7 +716,7 @@
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
                         if(filters[filter_index].interface_common[i].className !== undefined) {
-                            class_name = filters[filter_index].interface_common[i].class;
+                            class_name = filters[filter_index].interface_common[i].className;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
                             }
@@ -723,7 +735,7 @@
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
                         if(filters[filter_index].interface_common[i].className !== undefined) {
-                            class_name = filters[filter_index].interface_common[i].class;
+                            class_name = filters[filter_index].interface_common[i].className;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
                             }

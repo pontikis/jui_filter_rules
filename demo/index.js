@@ -12,9 +12,35 @@ $(function() {
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1").jui_filter_rules({
 
+
+        test_filters: [
+            {
+                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                exclude_operators: ["in","not_in"],
+                filter_interface: [
+                    {
+                        operators: [],
+                        filter_html: {
+                            filter_element: "input", filter_element_prop: {flt_type: "text", flt_class: "test1"},
+                            filter_element_repeat: false,
+                            predefined_values: [],
+                            predefined_values_ajax_url: "",
+                            filter_widget: "foo", filter_widget_prop: {flt_type: "text", flt_class: "test1"}
+                        }
+                    },
+                    {
+                        operators: ["in","not_in"],
+                        hhh: {flt_element: "input", type: "text", className: "test1"}
+                    }
+                ]
+            }
+        ],
+
+
         filters: [
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                excluded_operators: ["in","not_in"],
                 interface_common: [
                     {element: "input", type: "text", className: "test1"}
                 ],
@@ -32,6 +58,7 @@ $(function() {
             },
             {
                 filterName: "DateInserted", "filterType": "date", field: "date_inserted", filterLabel: "Date inserted",
+                excluded_operators: ["in","not_in"],
                 interface_common: [
                     {element: "input", type: "text"}
                 ]
