@@ -95,7 +95,7 @@
                 var container_id = elem.attr("id");
 
                 // simple validation
-                //validate_input(container_id);
+                validate_input(container_id);
 
                 // bind events
                 //elem.unbind("onCustomEvent1").bind("onCustomEvent1", settings.onCustomEvent1);
@@ -297,7 +297,7 @@
                 filter_value_id_prefix: "filter_value_",
                 rule_tools_id_prefix: "rule_tools_",
 
-                filter_ui_property_prefix: "prop_" // useful to prevent using of javascript preserved words
+                filter_ui_property_prefix: "flt_" // useful to prevent using of javascript preserved words
             };
         },
 
@@ -420,7 +420,20 @@
      * @param container_id
      */
     var validate_input = function(container_id) {
-        // your code here (OPTIONAL)
+        var elem = $("#" + container_id),
+            err_msg, i,
+            filters = elem.jui_filter_rules("getOption", "filters"), filternames = [];
+
+        // unique filter name
+        for(i in filters) {
+            filternames.push(filters[i].filterName);
+        }
+        if(array_has_duplicates(filternames)) {
+            err_msg = 'Filternames are not unique...';
+            elem.html('<span style="color: red;">' + 'ERROR: ' + err_msg + '</span>');
+            $.error(err_msg);
+        }
+
     };
 
     /**
@@ -432,6 +445,24 @@
     var create_id = function(prefix, plugin_container_id) {
         return prefix + plugin_container_id;
     };
+
+
+    /**
+     * Check array for duplicated values
+     * @param arr
+     * @return {Boolean}
+     */
+    function array_has_duplicates(arr) {
+
+        var x = {}, len = arr.length, i;
+        for (i = 0; i < len; i++) {
+            if (x[arr[i]] === true) {
+                return true;
+            }
+            x[arr[i]] = true;
+        }
+        return false;
+    }
 
     /**
      * Remove empty rule groups
@@ -478,7 +509,7 @@
      * @return {Array}
      */
     var getOperators = function(filter_type) {
-        var i, oper = [], item = {};
+        var i, oper = [], item;
         for(i in operators) {
             if($.inArray(filter_type, operators[i].apply_to) > -1) {
                 item = {};
