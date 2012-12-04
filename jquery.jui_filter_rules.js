@@ -455,8 +455,8 @@
     function array_has_duplicates(arr) {
 
         var x = {}, len = arr.length, i;
-        for (i = 0; i < len; i++) {
-            if (x[arr[i]] === true) {
+        for(i = 0; i < len; i++) {
+            if(x[arr[i]] === true) {
                 return true;
             }
             x[arr[i]] = true;
@@ -474,7 +474,7 @@
             condition = a_rules[i].condition;
             if($.isArray(condition)) {
                 if(condition.length == 0) {
-                    a_rules.splice(i,1);
+                    a_rules.splice(i, 1);
                 } else {
                     cleanup_empty_groups(condition);
                 }
@@ -511,7 +511,7 @@
     var getOperators = function(container_id, filterName) {
         var elem = $("#" + container_id),
             filters = elem.jui_filter_rules("getOption", "filters"),
-            filter, filter_type,excluded_operators,
+            filter, filter_type, excluded_operators,
             i, oper = [], item;
 
         filter = getFilterByName(container_id, filterName);
