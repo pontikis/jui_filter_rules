@@ -69,6 +69,7 @@
 .operators_list_container {
     display: inline-block;
     padding: 5px;
+    width: 180px;
 }
 
 .operators_list {
