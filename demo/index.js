@@ -9,65 +9,119 @@ $(function() {
         $("#ui-theme").attr("href", theme_url);
     });
 
+    // N O T E S
+    var operators_tmpl = ["equal", "not_equal", "in", "not_in",
+        "less", "less_or_equal", "greater", "greater_or_equal",
+        "begins_with", "not_begins_with", "contains", "not_contains", "ends_with", "not_ends_with", "is_empty", "is_not_empty",
+        "is_null", "is_not_null"];
+
+    var filters_template = [
+        {
+            filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+            excluded_operators: ["in", "not_in"],
+            filter_interface: [
+                {
+                    filter_element: "input", filter_element_properties: {type: "text", class: "test1"},
+                    filter_widget: "datepicker", filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
+                    filter_element_repeat: false,
+                    filter_widget_locale: "",
+                    returns_no_value: ""
+                }
+            ],
+            lookup_values: [], lookup_values_ajax_url: "",
+            default_values: []
+
+        }
+    ];
+    // N O T E S
+
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1").jui_filter_rules({
-
-
-        test_filters: [
-            {
-                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                exclude_operators: ["in","not_in"],
-                filter_interface: [
-                    {
-                        operators: [],
-                        filter_html: {
-                            filter_element: "input", filter_element_prop: {flt_type: "text", flt_class: "test1"},
-                            filter_element_repeat: false,
-                            predefined_values: [],
-                            predefined_values_ajax_url: "",
-                            filter_widget: "foo", filter_widget_prop: {flt_type: "text", flt_class: "test1"}
-                        }
-                    },
-                    {
-                        operators: ["in","not_in"],
-                        hhh: {flt_element: "input", type: "text", className: "test1"}
-                    }
-                ]
-            }
-        ],
-
 
         filters: [
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                excluded_operators: ["in","not_in"],
-                interface_common: [
-                    {element: "input", type: "text", className: ""}
-                ],
-                interface_in: [
-                    {element: "input", type: "checkbox", option: "lbl1", value: 1},
-                    {element: "input", type: "checkbox", option: "lbl2", value: 2},
-                    {element: "input", type: "checkbox", option: "lbl3", value: 3}
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text", class: "lastname"}
+                    }
                 ]
             },
             {
                 filterName: "AgeInYears", "filterType": "number", field: "age", filterLabel: "Age (years)",
-                interface_common: [
-                    {element: "input", type: "text"}
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text"}
+                    }
                 ]
             },
             {
                 filterName: "DateInserted", "filterType": "date", field: "date_inserted", filterLabel: "Date inserted",
-                excluded_operators: ["in","not_in"],
-                interface_common: [
-                    {element: "input", type: "text"}
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text"},
+                        filter_widget: "datepicker", filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true}
+                    }
+                ]
+            },
+            {
+                filterName: "Category", "filterType": "number", field: "category", filterLabel: "Category",
+                excluded_operators: ["equal", "not_equal", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "checkbox"},
+                        filter_element_repeat: true
+                    }
+                ],
+                lookup_values: [
+                    {lk_option: "Category1", lk_value: 1},
+                    {lk_option: "Category2", lk_value: 2},
+                    {lk_option: "Category3", lk_value: 3},
+                    {lk_option: "Category4", lk_value: 4}
+                ]
+            },
+            {
+                filterName: "Company", "filterType": "number", field: "company", filterLabel: "Company",
+                excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "select", filter_element_properties: {size: "1"}
+                    }
+                ],
+                lookup_values: [
+                    {lk_option: "Company1", lk_value: 1},
+                    {lk_option: "Company2", lk_value: 2},
+                    {lk_option: "Company3", lk_value: 3}
+                ]
+            },
+            {
+                filterName: "Country", "filterType": "number", field: "country", filterLabel: "Country",
+                excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text", class: "ftl_autocomplete"}
+                    },
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text"},
+                        filter_widget: "autocomplete", filter_widget_properties: {source: "", minLength: 2},
+                        filter_widget_locale: "",
+                        returns_no_value: "yes"
+                    }
+                ],
+                lookup_values: [
+                    {lk_option: "Company1", lk_value: 1},
+                    {lk_option: "Company2", lk_value: 2},
+                    {lk_option: "Company3", lk_value: 3}
                 ]
             }
         ],
 
         containerClass: "rules1_container"
 
-    });
+    }).resizable();
 
     elem_dlg_rules.dialog({
         autoOpen: false,
@@ -111,7 +165,6 @@ $(function() {
         }
     });
 
-
     $("#show_rules").click(function() {
         elem_dlg_rules.dialog("open");
         return false;
@@ -121,6 +174,5 @@ $(function() {
         elem_dlg_sql.dialog("open");
         return false;
     });
-
 
 });
