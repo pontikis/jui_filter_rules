@@ -295,9 +295,7 @@
                 operators_container_id_prefix: "oper_wrap_",
                 operators_list_id_prefix: "oper_list_",
                 filter_value_id_prefix: "filter_value_",
-                rule_tools_id_prefix: "rule_tools_",
-
-                filter_ui_property_prefix: "flt_" // useful to prevent using of javascript preserved words
+                rule_tools_id_prefix: "rule_tools_"
             };
         },
 
@@ -692,69 +690,39 @@
     var create_filter_value = function(container_id, filterName, operator_type) {
         var elem = $("#" + container_id),
             filters = elem.jui_filter_rules('getOption', 'filters'),
-            filter, operator,
-            f_html = '', class_html = '', class_name,
-            i, filter_type, filter_element;
+            filter = getFilterByName(container_id, filterName),
+            filter_type = filter.filterType,
+            filter_interface = filter.filter_interface,
+            filter_interface_len = filter_interface.length,
+            i,
+            filter_element,
+            filter_element_properties,
+            class_html = '',
+            class_name,
+            class_name_default,
+            default_class = {"text": "filterInputTextClass", "number": "filterInputNumberClass", "date": "filterInputDateClass"},
+            operator = getOperator(operator_type),
+            f_html = '';
 
-        filter = getFilterByName(container_id, filterName);
-        filter_type = filter.filterType;
-
-        operator = getOperator(operator_type);
-
-        if(filter_type == "text") {
-            if(operator.accept_values == "yes") {
-                for(i in filter.interface_common) {
-                    filter_element = filter.interface_common[i].element;
-                    if(filter_element == "input") {
-                        class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
-                        if(filter.interface_common[i].className !== undefined) {
-                            class_name = filter.interface_common[i].className;
-                            if(class_name == "") {
-                                class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
-                            }
-                        }
-                        class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filter.interface_common[i].type + '"' + class_html + '>';
-                    }
-                }
-            }
+        if(operator.accept_values !== "yes") {
+            return f_html;
         }
 
-        if(filter_type == "number") {
-            if(operator.accept_values == "yes") {
-                for(i in filters[filter_index].interface_common) {
-                    filter_element = filters[filter_index].interface_common[i].element;
-                    if(filter_element == "input") {
-                        class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
-                        if(filters[filter_index].interface_common[i].className !== undefined) {
-                            class_name = filters[filter_index].interface_common[i].className;
-                            if(class_name == "") {
-                                class_name = elem.jui_filter_rules('getOption', 'filterInputNumberClass');
-                            }
-                        }
-                        class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
-                    }
-                }
-            }
-        }
+        for(i = 0; i < filter_interface_len; i++) {
+            filter_element = filter_interface[i].filter_element;
+            filter_element_properties = filter_interface[i].filter_element_properties;
+            if(filter_element == "input") {
+                class_name_default = elem.jui_filter_rules('getOption', default_class[filter_type]);
+                class_name = class_name_default;
 
-        if(filter_type == "date") {
-            if(operator.accept_values == "yes") {
-                for(i in filters[filter_index].interface_common) {
-                    filter_element = filters[filter_index].interface_common[i].element;
-                    if(filter_element == "input") {
-                        class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
-                        if(filters[filter_index].interface_common[i].className !== undefined) {
-                            class_name = filters[filter_index].interface_common[i].className;
-                            if(class_name == "") {
-                                class_name = elem.jui_filter_rules('getOption', 'filterInputDateClass');
-                            }
-                        }
-                        class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
+                if(filter_element_properties["class"] !== undefined) {
+                    class_name = filter_element_properties["class"];
+                    if(class_name == "") {
+                        class_name = class_name_default;
                     }
                 }
+                class_html = ' class="' + class_name + '"';
+                f_html += '<input type="' + filter_element_properties["type"] + '"' + class_html + '>';
             }
         }
 
