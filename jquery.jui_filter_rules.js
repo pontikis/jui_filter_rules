@@ -214,7 +214,7 @@
                     if(filter_index >= 0) {
                         elem_operators_container.html(create_operators_list(container_id, rule_id, $(this).val()));
                         elem_operators_list = $("#" + operators_list_id);
-                        elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
+                        elem_filter_value.html(create_filter_value(container_id, $(this).val(), elem_operators_list.val()));
                     } else {
                         elem_operators_container.html('');
                         elem_filter_value.html('');
@@ -237,7 +237,7 @@
 
                     filter_index = elem_filters_list.prop('selectedIndex') - 1;
                     if(filter_index >= 0) {
-                        elem_filter_value.html(create_filter_value(container_id, filter_index, elem_operators_list.val()));
+                        elem_filter_value.html(create_filter_value(container_id, elem_filters_list.val(), elem_operators_list.val()));
                     } else {
                         elem_filter_value.html('');
                     }
@@ -684,36 +684,37 @@
 
     /**
      * Create inputs or widgets for the user to set filter values
-     * @param container_id
-     * @param filter_index
-     * @param operator_type
-     * @return {String}
+     * @param container_id {String}
+     * @param filterName {String}
+     * @param operator_type {String}
+     * @return {String} html of filter value input elements/widgets
      */
-    var create_filter_value = function(container_id, filter_index, operator_type) {
+    var create_filter_value = function(container_id, filterName, operator_type) {
         var elem = $("#" + container_id),
             filters = elem.jui_filter_rules('getOption', 'filters'),
-            operator,
+            filter, operator,
             f_html = '', class_html = '', class_name,
             i, filter_type, filter_element;
 
-        filter_type = filters[filter_index].filterType;
+        filter = getFilterByName(container_id, filterName);
+        filter_type = filter.filterType;
 
         operator = getOperator(operator_type);
 
         if(filter_type == "text") {
             if(operator.accept_values == "yes") {
-                for(i in filters[filter_index].interface_common) {
-                    filter_element = filters[filter_index].interface_common[i].element;
+                for(i in filter.interface_common) {
+                    filter_element = filter.interface_common[i].element;
                     if(filter_element == "input") {
                         class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
-                        if(filters[filter_index].interface_common[i].className !== undefined) {
-                            class_name = filters[filter_index].interface_common[i].className;
+                        if(filter.interface_common[i].className !== undefined) {
+                            class_name = filter.interface_common[i].className;
                             if(class_name == "") {
                                 class_name = elem.jui_filter_rules('getOption', 'filterInputTextClass');
                             }
                         }
                         class_html = ' class="' + class_name + '"';
-                        f_html += '<input type="' + filters[filter_index].interface_common[i].type + '"' + class_html + '>';
+                        f_html += '<input type="' + filter.interface_common[i].type + '"' + class_html + '>';
                     }
                 }
             }
