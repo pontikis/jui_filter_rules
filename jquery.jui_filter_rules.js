@@ -214,7 +214,7 @@
                     if(filter_index >= 0) {
                         elem_operators_container.html(create_operators_list(container_id, rule_id, $(this).val()));
                         elem_operators_list = $("#" + operators_list_id);
-                        elem_filter_value.html(create_filter_value(container_id, $(this).val(), elem_operators_list.val()));
+                        create_filter_value(container_id, rule_id, $(this).val(), elem_operators_list.val());
                     } else {
                         elem_operators_container.html('');
                         elem_filter_value.html('');
@@ -237,7 +237,7 @@
 
                     filter_index = elem_filters_list.prop('selectedIndex') - 1;
                     if(filter_index >= 0) {
-                        elem_filter_value.html(create_filter_value(container_id, elem_filters_list.val(), elem_operators_list.val()));
+                        create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
                     } else {
                         elem_filter_value.html('');
                     }
@@ -651,10 +651,11 @@
      * @param container_id
      * @param rule_id
      * @param filterName
-     * @return {String}
      */
     var create_operators_list = function(container_id, rule_id, filterName) {
         var elem = $("#" + container_id),
+            operators_container_id = create_id(elem.jui_filter_rules("getOption", "operators_container_id_prefix"), container_id) + '_' + rule_id,
+            elem_operators_container = $("#" + operators_container_id),
             operatorsListClass = elem.jui_filter_rules("getOption", "operatorsListClass"),
             operators_list_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_list_id_prefix"), container_id) + '_',
             operators_list_id = operators_list_id_prefix + rule_id,
@@ -676,19 +677,21 @@
         }
         oper_html += '</select>';
 
-        return oper_html;
+        elem_operators_container.html(oper_html);
     };
 
 
     /**
      * Create inputs or widgets for the user to set filter values
      * @param container_id {String}
+     * @param rule_id {String}
      * @param filterName {String}
      * @param operator_type {String}
-     * @return {String} html of filter value input elements/widgets
      */
-    var create_filter_value = function(container_id, filterName, operator_type) {
+    var create_filter_value = function(container_id, rule_id, filterName, operator_type) {
         var elem = $("#" + container_id),
+            filter_value_id = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_' + rule_id,
+            elem_filter_value = $("#" + filter_value_id),
             filters = elem.jui_filter_rules('getOption', 'filters'),
             filter = getFilterByName(container_id, filterName),
             filter_type = filter.filterType,
@@ -704,29 +707,27 @@
             operator = getOperator(operator_type),
             f_html = '';
 
-        if(operator.accept_values !== "yes") {
-            return f_html;
-        }
+        if(operator.accept_values == "yes") {
 
-        for(i = 0; i < filter_interface_len; i++) {
-            filter_element = filter_interface[i].filter_element;
-            filter_element_properties = filter_interface[i].filter_element_properties;
-            if(filter_element == "input") {
-                class_name_default = elem.jui_filter_rules('getOption', default_class[filter_type]);
-                class_name = class_name_default;
+            for(i = 0; i < filter_interface_len; i++) {
+                filter_element = filter_interface[i].filter_element;
+                filter_element_properties = filter_interface[i].filter_element_properties;
+                if(filter_element == "input") {
+                    class_name_default = elem.jui_filter_rules('getOption', default_class[filter_type]);
+                    class_name = class_name_default;
 
-                if(filter_element_properties["class"] !== undefined) {
-                    class_name = filter_element_properties["class"];
-                    if(class_name == "") {
-                        class_name = class_name_default;
+                    if(filter_element_properties["class"] !== undefined) {
+                        class_name = filter_element_properties["class"];
+                        if(class_name == "") {
+                            class_name = class_name_default;
+                        }
                     }
+                    class_html = ' class="' + class_name + '"';
+                    f_html += '<input type="' + filter_element_properties["type"] + '"' + class_html + '>';
                 }
-                class_html = ' class="' + class_name + '"';
-                f_html += '<input type="' + filter_element_properties["type"] + '"' + class_html + '>';
             }
         }
-
-        return f_html;
+        elem_filter_value.html(f_html);
 
     };
 
