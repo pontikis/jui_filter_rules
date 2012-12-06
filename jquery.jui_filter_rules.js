@@ -284,6 +284,9 @@
                 filterInputTextClass: "filter_input_text",
                 filterInputNumberClass: "filter_input_number",
                 filterInputDateClass: "filter_input_date",
+                filterInputCheckboxClass: "filter_input_checkbox",
+                filterInputRadioClass: "filter_input_radio",
+                filterSelectClass: "filter_select",
 
                 ruleToolsContainerClass: "rule_tools_container",
                 ruleToolsClass: "rule_tools_list",
@@ -687,6 +690,7 @@
      * @param rule_id {String}
      * @param filterName {String}
      * @param operator_type {String}
+     * @return {Boolean}
      */
     var create_filter_value = function(container_id, rule_id, filterName, operator_type) {
         var elem = $("#" + container_id),
@@ -696,38 +700,158 @@
             filter = getFilterByName(container_id, filterName),
             filter_type = filter.filterType,
             filter_interface = filter.filter_interface,
-            filter_interface_len = filter_interface.length,
-            i,
-            filter_element,
-            filter_element_properties,
-            class_html = '',
-            class_name,
-            class_name_default,
-            default_class = {"text": "filterInputTextClass", "number": "filterInputNumberClass", "date": "filterInputDateClass"},
+            filter_interface_len = filter_interface.length, i,
+            filter_element, filter_input_type, filter_element_properties, prop, filter_element_repeat, r,
+            a_ignore_properties = ["id", "name"],
+            class_name_default = "", class_option = "", user_defined_class = false,
+            filter_server_call, filter_server_data, filter_server_data_len, lk,
+            filter_local_data, filter_local_data_len,
+            lookup_values_ajax_url = "",
             operator = getOperator(operator_type),
             f_html = '';
 
-        if(operator.accept_values == "yes") {
+        if(operator.accept_values !== "yes") {
+            elem_filter_value.html(f_html);
+            return true;
+        }
 
-            for(i = 0; i < filter_interface_len; i++) {
-                filter_element = filter_interface[i].filter_element;
-                filter_element_properties = filter_interface[i].filter_element_properties;
-                if(filter_element == "input") {
-                    class_name_default = elem.jui_filter_rules('getOption', default_class[filter_type]);
-                    class_name = class_name_default;
 
-                    if(filter_element_properties["class"] !== undefined) {
-                        class_name = filter_element_properties["class"];
-                        if(class_name == "") {
-                            class_name = class_name_default;
-                        }
-                    }
-                    class_html = ' class="' + class_name + '"';
-                    f_html += '<input type="' + filter_element_properties["type"] + '"' + class_html + '>';
-                }
+
+        if(filter.hasOwnProperty("lookup_values_ajax_url")) {
+            lookup_values_ajax_url = filter["lookup_values_ajax_url"];
+            if(lookup_values_ajax_url !== "") {
+                filter_server_call = $.ajax({
+                    url: lookup_values_ajax_url
+                });
             }
         }
-        elem_filter_value.html(f_html);
+
+        if(filter.hasOwnProperty("lookup_values")) {
+            if(filter["lookup_values"] !== "") {
+                filter_local_data = filter["lookup_values"];
+                filter_local_data_len = filter_local_data.length;
+            }
+        }
+
+
+        for(i = 0; i < filter_interface_len; i++) {
+
+            filter_element = filter_interface[i].filter_element;
+            filter_element_properties = filter_interface[i].filter_element_properties;
+
+            if(filter_type == "input") {
+                filter_input_type = filter_element_properties["type"];
+                if(filter_input_type == "text") {
+                    a_ignore_properties = ["id", "name"]
+                } else if(filter_input_type == "radio") {
+                    a_ignore_properties = ["id", "name", "value", "checked"]
+                } else if(filter_input_type == "checkbox") {
+                    a_ignore_properties = ["id", "name", "value", "checked"]
+                }
+            } else if(filter_type == "select") {
+                a_ignore_properties = ["id", "name"]
+            }
+
+
+            filter_element_repeat = 1;
+            if(filter_interface[i].hasOwnProperty("filter_element_repeat")) {
+                if(filter_interface[i]["filter_element_repeat"] == "yes") {
+                    if(filter.hasOwnProperty("lookup_values")) {
+                        filter_element_repeat = filter_local_data_len;
+                    } else {
+
+                    }
+                }
+            }
+
+
+
+
+            class_name_default = "";
+            class_option = "";
+            user_defined_class = false;
+
+            // define default class --------------------------------------------
+            if(filter_element == "input") {
+                filter_input_type = filter_element_properties["type"];
+                if(filter_input_type == "text") {
+                    if(filter_type == "text") {
+                        class_option = "filterInputTextClass";
+                    } else if(filter_type == "number") {
+                        class_option = "filterInputNumberClass";
+                    } else if(filter_type == "date") {
+                        class_option = "filterInputDateClass";
+                    }
+                } else if(filter_input_type == "radio") {
+                    class_option = "filterInputRadioClass";
+                } else if(filter_input_type == "checkbox") {
+                    class_option = "filterInputCheckboxClass";
+                }
+            } else if(filter_element == "select") {
+                class_option = "filterSelectClass";
+            }
+            if(class_option !== "") {
+                class_name_default = elem.jui_filter_rules('getOption', class_option);
+            }
+
+            // filter element properties ---------------------------------------
+            for(r = 0; r < filter_element_repeat; r++) {
+                f_html += '<' + filter_element;
+                for(prop in filter_element_properties) {
+                    if(filter_element_properties.hasOwnProperty(prop)) {
+                        if($.inArray(prop, a_ignore_properties) > -1) {
+                            continue;
+                        }
+                        if(user_defined_class == false) {
+                            if(prop == "class" && filter_element_properties["class"] !== "") {
+                                user_defined_class = true;
+                            }
+                        }
+                        f_html += ' ' + prop + '="' + filter_element_properties[prop] + '"';
+                    }
+                }
+                if(user_defined_class == false) {
+                    if(class_name_default !== "") {
+                        f_html += ' class="' + class_name_default + '"';
+                    }
+                }
+
+
+
+
+                f_html += '>';
+
+                if(filter_element == "select") {
+                    if(filter.hasOwnProperty("lookup_values_ajax_url")) {
+                        $.when(filter_server_call).then(function(data) {
+                            filter_server_data = $.parseJSON(data);
+                            filter_server_data_len = filter_server_data.length;
+
+                            for(lk = 0; lk < filter_server_data_len; lk++) {
+                                f_html += '<option value="' + filter_server_data[lk]["lk_value"] + '">' + filter_server_data[lk]["lk_option"] + '</option>';
+                            }
+                            f_html += '</select>';
+                            elem_filter_value.html(f_html);
+                        });
+                    } else {
+                        for(lk = 0; lk < filter_local_data_len; lk++) {
+                            f_html += '<option value="' + filter_local_data[lk]["lk_value"] + '">' + filter_local_data[lk]["lk_option"] + '</option>';
+                        }
+                        f_html += '</select>';
+                        elem_filter_value.html(f_html);
+                    }
+
+                } else {
+                    elem_filter_value.html(f_html);
+                }
+
+            }
+
+
+        }
+
+
+        return true;
 
     };
 

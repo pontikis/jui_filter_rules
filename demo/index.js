@@ -21,15 +21,17 @@ $(function() {
             excluded_operators: ["in", "not_in"],
             filter_interface: [
                 {
-                    filter_element: "input", filter_element_properties: {type: "text", class: "test1"},
-                    filter_widget: "datepicker", filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
-                    filter_element_repeat: false,
+                    filter_element: "input",
+                    filter_element_properties: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
+                    vertical_orientation: "no", // default
+                    filter_element_repeat: "no", // ???
+                    filter_widget: "datepicker",
+                    filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
                     filter_widget_locale: "",
                     returns_no_value: ""
                 }
             ],
-            lookup_values: [], lookup_values_ajax_url: "",
-            default_values: []
+            lookup_values: [], lookup_values_ajax_url: ""
 
         }
     ];
@@ -44,7 +46,7 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text", class: "lastname"}
+                        filter_element: "input", filter_element_properties: {"type": "text", "value": "Smith", "class": "lastname"}
                     }
                 ]
             },
@@ -68,20 +70,43 @@ $(function() {
                 ]
             },
             {
-                filterName: "Category", "filterType": "number", field: "category", filterLabel: "Category",
+                filterName: "Category", "filterType": "number", field: "category", filterLabel: "Category (ajax data)",
                 excluded_operators: ["equal", "not_equal", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "checkbox"},
-                        filter_element_repeat: true
+                        filter_element: "input",
+                        filter_element_properties: {type: "checkbox"},
+                        vertical_orientation: "yes",
+                        filter_element_repeat: "yes"
+                    }
+                ],
+                lookup_values_ajax_url: "ajax/ajax_categories.php"
+            },
+            {
+                filterName: "Level", "filterType": "number", field: "level", filterLabel: "Level",
+                excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_properties: {type: "radio"},
+                        filter_element_repeat: "yes"
                     }
                 ],
                 lookup_values: [
-                    {lk_option: "Category1", lk_value: 1},
-                    {lk_option: "Category2", lk_value: 2},
-                    {lk_option: "Category3", lk_value: 3},
-                    {lk_option: "Category4", lk_value: 4}
+                    {lk_option: "Level1", lk_value: 1, checked: "checked"},
+                    {lk_option: "Level2", lk_value: 2},
+                    {lk_option: "Level3", lk_value: 3}
                 ]
+            },
+            {
+                filterName: "Language", "filterType": "number", field: "language", filterLabel: "Language (ajax data)",
+                excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "select", filter_element_properties: {size: "1"}
+                    }
+                ],
+                lookup_values_ajax_url: "ajax/ajax_languages.php"
             },
             {
                 filterName: "Company", "filterType": "number", field: "company", filterLabel: "Company",
@@ -102,19 +127,14 @@ $(function() {
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text", class: "ftl_autocomplete"}
+                        filter_element: "input", filter_element_properties: {type: "text"}
                     },
                     {
-                        filter_element: "input", filter_element_properties: {type: "text"},
-                        filter_widget: "autocomplete", filter_widget_properties: {source: "", minLength: 2},
+                        filter_element: "input", filter_element_properties: {type: "text", "class": "ftl_autocomplete"},
+                        filter_widget: "autocomplete", filter_widget_properties: {source: "ajax/ajax_countries.php", minLength: 2},
                         filter_widget_locale: "",
                         returns_no_value: "yes"
                     }
-                ],
-                lookup_values: [
-                    {lk_option: "Company1", lk_value: 1},
-                    {lk_option: "Company2", lk_value: 2},
-                    {lk_option: "Company3", lk_value: 3}
                 ]
             }
         ],

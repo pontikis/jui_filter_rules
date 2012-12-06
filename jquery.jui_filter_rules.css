@@ -96,9 +96,21 @@
 }
 
 .filter_input_date {
-    width: 100px;
+    width: 120px;
     margin: 0 5px;
     padding: 0;
+}
+
+.filter_input_checkbox {
+    margin: 0 5px;
+}
+
+.filter_input_radio {
+    margin: 0 5px;
+}
+
+.filter_select {
+    margin: 0 5px;
 }
 
 /* filter tools ------------------------------------------------------------- */
