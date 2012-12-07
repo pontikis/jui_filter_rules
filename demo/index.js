@@ -24,7 +24,6 @@ $(function() {
                     filter_element: "input",
                     filter_element_properties: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
                     vertical_orientation: "no", // default
-                    filter_element_repeat: "no", // ???
                     filter_widget: "datepicker",
                     filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
                     filter_widget_locale: "",
@@ -65,7 +64,12 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input", filter_element_properties: {type: "text"},
-                        filter_widget: "datepicker", filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true}
+                        filter_widget: "datepicker",
+                        filter_widget_properties: {
+                            dateformat: "yy-mm-dd",
+                            changeMonth: true,
+                            changeYear: true
+                        }
                     }
                 ]
             },
@@ -76,8 +80,7 @@ $(function() {
                     {
                         filter_element: "input",
                         filter_element_properties: {type: "checkbox"},
-                        vertical_orientation: "yes",
-                        filter_element_repeat: "yes"
+                        vertical_orientation: "yes"
                     }
                 ],
                 lookup_values_ajax_url: "ajax/ajax_categories.php"
@@ -88,14 +91,13 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_properties: {type: "radio"},
-                        filter_element_repeat: "yes"
+                        filter_element_properties: {type: "radio"}
                     }
                 ],
                 lookup_values: [
-                    {lk_option: "Level1", lk_value: 1, checked: "checked"},
+                    {lk_option: "Level1", lk_value: 1},
                     {lk_option: "Level2", lk_value: 2},
-                    {lk_option: "Level3", lk_value: 3}
+                    {lk_option: "Level3", lk_value: 3, lk_selected: "yes"}
                 ]
             },
             {
@@ -119,11 +121,11 @@ $(function() {
                 lookup_values: [
                     {lk_option: "Company1", lk_value: 1},
                     {lk_option: "Company2", lk_value: 2},
-                    {lk_option: "Company3", lk_value: 3}
+                    {lk_option: "Company3", lk_value: 3, lk_selected: "yes"}
                 ]
             },
             {
-                filterName: "Country", "filterType": "number", field: "country", filterLabel: "Country",
+                filterName: "Country", "filterType": "text", field: "country", filterLabel: "Country",
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
@@ -131,7 +133,11 @@ $(function() {
                     },
                     {
                         filter_element: "input", filter_element_properties: {type: "text", "class": "ftl_autocomplete"},
-                        filter_widget: "autocomplete", filter_widget_properties: {source: "ajax/ajax_countries.php", minLength: 2},
+                        filter_widget: "autocomplete",
+                        filter_widget_properties: {
+                            source: "ajax/ajax_countries.php",
+                            minLength: 2
+                        },
                         filter_widget_locale: "",
                         returns_no_value: "yes"
                     }

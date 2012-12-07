@@ -13,7 +13,8 @@ $categories = array(
 	),
 	array(
 		"lk_value" => "3",
-		"lk_option" => "Category 3"
+		"lk_option" => "Category 3",
+		"lk_selected" => "yes"
 	),
 	array(
 		"lk_value" => "4",

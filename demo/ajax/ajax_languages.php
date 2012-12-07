@@ -63,7 +63,8 @@ $langs = array(
 	),
 	array(
 		"lk_option" => "English",
-		"lk_value" => "EN"
+		"lk_value" => "EN",
+		"lk_selected" => "yes"
 	),
 	array(
 		"lk_option" => "Estonian",

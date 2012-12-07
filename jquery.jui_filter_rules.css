@@ -57,7 +57,8 @@
 /* filter name -------------------------------------------------------------- */
 .filter_container {
     display: inline-block;
-    padding: 5px 5px 5px 0px;
+    padding: 5px 5px 5px 0;
+    vertical-align: top;
 }
 
 .filter_list {
@@ -70,6 +71,7 @@
     display: inline-block;
     padding: 5px;
     width: 180px;
+    vertical-align: top;
 }
 
 .operators_list {
@@ -102,15 +104,31 @@
 }
 
 .filter_input_checkbox {
-    margin: 0 5px;
+    margin: 0 5px 0 0;
 }
 
 .filter_input_radio {
-    margin: 0 5px;
+    margin: 0 5px 0 0;
 }
 
 .filter_select {
     margin: 0 5px;
+}
+
+.filter_group_list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.filter_group_list_item_horizontal {
+    display: inline;
+    margin: 0 5px;
+    padding: 0;
+}
+
+.filter_group_list_item_vertical {
+    margin: 0 0 5px 5px;
+    padding: 0;
 }
 
 /* filter tools ------------------------------------------------------------- */
@@ -118,6 +136,7 @@
     display: inline-block;
     padding: 5px;
     float: right;
+    vertical-align: top;
 }
 
 .rule_tools_list {
@@ -129,4 +148,5 @@
 .tools_list_shrink {
     width: 35px;
 }
+
 /* -------------------------------------------------------------------------- */

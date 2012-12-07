@@ -288,6 +288,10 @@
                 filterInputRadioClass: "filter_input_radio",
                 filterSelectClass: "filter_select",
 
+                filterGroupListClass: "filter_group_list",
+                filterGroupListItemHorizontalClass: "filter_group_list_item_horizontal",
+                filterGroupListItemVerticalClass: "filter_group_list_item_vertical",
+
                 ruleToolsContainerClass: "rule_tools_container",
                 ruleToolsClass: "rule_tools_list",
 
@@ -298,6 +302,8 @@
                 operators_container_id_prefix: "oper_wrap_",
                 operators_list_id_prefix: "oper_list_",
                 filter_value_id_prefix: "filter_value_",
+                filter_element_id_prefix: "flt_",
+                filter_element_name_prefix: "flt_name_",
                 rule_tools_id_prefix: "rule_tools_"
             };
         },
@@ -467,6 +473,24 @@
         }
         return false;
     }
+
+
+    /**
+     * Remove empty object properties
+     * @param obj
+     * @return {Object}
+     */
+    var remove_obj_empty_props = function(obj) {
+        var obj_clone = {}, prop;
+        for(prop in obj) {
+            if(obj.hasOwnProperty(prop)) {
+                if(obj[prop] !== "") {
+                    obj_clone[prop] = obj[prop];
+                }
+            }
+        }
+        return obj_clone;
+    };
 
     /**
      * Remove empty rule groups
@@ -694,53 +718,110 @@
      */
     var create_filter_value = function(container_id, rule_id, filterName, operator_type) {
         var elem = $("#" + container_id),
+            operator = getOperator(operator_type),
             filter_value_id = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_' + rule_id,
             elem_filter_value = $("#" + filter_value_id),
             filters = elem.jui_filter_rules('getOption', 'filters'),
-            filter = getFilterByName(container_id, filterName),
+            filter = remove_obj_empty_props(getFilterByName(container_id, filterName)),
             filter_type = filter.filterType,
             filter_interface = filter.filter_interface,
             filter_interface_len = filter_interface.length, i,
-            filter_element, filter_input_type, filter_element_properties, prop, filter_element_repeat, r,
+            filter_element, filter_element_id, filter_element_name, filter_input_type = "", filter_element_properties, prop,
             a_ignore_properties = ["id", "name"],
-            class_name_default = "", class_option = "", user_defined_class = false,
-            filter_server_call, filter_server_data, filter_server_data_len, lk,
-            filter_local_data, filter_local_data_len,
-            lookup_values_ajax_url = "",
-            operator = getOperator(operator_type),
+            class_name_default = "",
+            filter_lookup_data, filter_lookup_data_len, lk, selected_html, lookup_values_ajax_url = "",
+            vertical_orientation = "no", group_list_item_class,
+            group_list_class = elem.jui_filter_rules("getOption", "filterGroupListClass"),
+            filterGroupListItemHorizontalClass = elem.jui_filter_rules("getOption", "filterGroupListItemHorizontalClass"),
+            filterGroupListItemVerticalClass = elem.jui_filter_rules("getOption", "filterGroupListItemVerticalClass"),
             f_html = '';
 
         if(operator.accept_values !== "yes") {
-            elem_filter_value.html(f_html);
+            elem_filter_value.html('');
             return true;
         }
 
-
-
         if(filter.hasOwnProperty("lookup_values_ajax_url")) {
             lookup_values_ajax_url = filter["lookup_values_ajax_url"];
-            if(lookup_values_ajax_url !== "") {
-                filter_server_call = $.ajax({
-                    url: lookup_values_ajax_url
-                });
+
+            $.ajax({
+                url: lookup_values_ajax_url,
+                success: (function(data) {
+                    filter_lookup_data = $.parseJSON(data);
+                    elem_filter_value.html(create_filter_value_html());
+                })
+            });
+
+        } else {
+            if(filter.hasOwnProperty("lookup_values")) {
+                filter_lookup_data = filter["lookup_values"];
             }
+            elem_filter_value.html(create_filter_value_html());
         }
 
-        if(filter.hasOwnProperty("lookup_values")) {
-            if(filter["lookup_values"] !== "") {
-                filter_local_data = filter["lookup_values"];
-                filter_local_data_len = filter_local_data.length;
+        // ---------------------------------------------------------------------
+        function create_filter_value_html() {
+            for(i = 0; i < filter_interface_len; i++) {
+
+                filter_element = filter_interface[i].filter_element;
+                filter_element_properties = remove_obj_empty_props(filter_interface[i].filter_element_properties);
+                if(filter_element == "input") {
+                    filter_input_type = filter_element_properties["type"];
+                }
+                setFilterElementIgnoreProperties();
+
+                if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+
+                    setFilterGroupClass();
+                    filter_lookup_data_len = filter_lookup_data.length;
+                    f_html += '<ul class="' + group_list_class + '">';
+                    for(lk = 0; lk < filter_lookup_data_len; lk++) {
+                        f_html += '<li class="' + group_list_item_class + '">';
+                        f_html += '<' + filter_element;
+                        setFilterElementID(lk);
+                        f_html += ' id="' + filter_element_id + '"';
+                        if(filter_input_type == "radio") {
+                            setFilterElementName();
+                            f_html += ' name="' + filter_element_name + '"';
+                        }
+                        setFilterElementProperties();
+                        f_html += ' value="' + filter_lookup_data[lk]["lk_value"] + '"';
+                        selected_html = (filter_lookup_data[lk]["lk_selected"] == 'yes' ? ' checked="checked"' : '');
+                        f_html += selected_html;
+                        f_html += '>';
+                        f_html += '<label for="' + filter_element_id + '">' + filter_lookup_data[lk]["lk_option"] + '</label>';
+                        f_html += '</li>';
+                    }
+                    f_html += '</ul>';
+
+                } else {
+                    f_html += '<' + filter_element;
+                    setFilterElementID(i);
+                    f_html += ' id="' + filter_element_id + '"';
+                    setFilterElementProperties();
+                    f_html += '>';
+                    if(filter_element == "select") {
+                        createFilterElemntSelectOptions();
+                    }
+                }
             }
+            return f_html;
         }
 
+        // ---------------------------------------------------------------------
+        function setFilterElementID(group_index) {
+            filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id) + '_' + rule_id
+                + (group_index > 0 ? '_' + group_index : '');
+        }
 
-        for(i = 0; i < filter_interface_len; i++) {
+        // ---------------------------------------------------------------------
+        function setFilterElementName() {
+            filter_element_name = create_id(elem.jui_filter_rules("getOption", "filter_element_name_prefix"), container_id) + '_' + rule_id;
+        }
 
-            filter_element = filter_interface[i].filter_element;
-            filter_element_properties = filter_interface[i].filter_element_properties;
-
-            if(filter_type == "input") {
-                filter_input_type = filter_element_properties["type"];
+        // ---------------------------------------------------------------------
+        function setFilterElementIgnoreProperties() {
+            if(filter_element == "input") {
                 if(filter_input_type == "text") {
                     a_ignore_properties = ["id", "name"]
                 } else if(filter_input_type == "radio") {
@@ -748,32 +829,17 @@
                 } else if(filter_input_type == "checkbox") {
                     a_ignore_properties = ["id", "name", "value", "checked"]
                 }
-            } else if(filter_type == "select") {
-                a_ignore_properties = ["id", "name"]
+            } else if(filter_element == "select") {
+                a_ignore_properties = ["id", "name", "value"]
             }
+        }
 
-
-            filter_element_repeat = 1;
-            if(filter_interface[i].hasOwnProperty("filter_element_repeat")) {
-                if(filter_interface[i]["filter_element_repeat"] == "yes") {
-                    if(filter.hasOwnProperty("lookup_values")) {
-                        filter_element_repeat = filter_local_data_len;
-                    } else {
-
-                    }
-                }
-            }
-
-
-
-
+        // ---------------------------------------------------------------------
+        function setFilterElementDefaultClass() {
+            var class_option = "";
             class_name_default = "";
-            class_option = "";
-            user_defined_class = false;
 
-            // define default class --------------------------------------------
             if(filter_element == "input") {
-                filter_input_type = filter_element_properties["type"];
                 if(filter_input_type == "text") {
                     if(filter_type == "text") {
                         class_option = "filterInputTextClass";
@@ -793,66 +859,48 @@
             if(class_option !== "") {
                 class_name_default = elem.jui_filter_rules('getOption', class_option);
             }
-
-            // filter element properties ---------------------------------------
-            for(r = 0; r < filter_element_repeat; r++) {
-                f_html += '<' + filter_element;
-                for(prop in filter_element_properties) {
-                    if(filter_element_properties.hasOwnProperty(prop)) {
-                        if($.inArray(prop, a_ignore_properties) > -1) {
-                            continue;
-                        }
-                        if(user_defined_class == false) {
-                            if(prop == "class" && filter_element_properties["class"] !== "") {
-                                user_defined_class = true;
-                            }
-                        }
-                        f_html += ' ' + prop + '="' + filter_element_properties[prop] + '"';
-                    }
-                }
-                if(user_defined_class == false) {
-                    if(class_name_default !== "") {
-                        f_html += ' class="' + class_name_default + '"';
-                    }
-                }
-
-
-
-
-                f_html += '>';
-
-                if(filter_element == "select") {
-                    if(filter.hasOwnProperty("lookup_values_ajax_url")) {
-                        $.when(filter_server_call).then(function(data) {
-                            filter_server_data = $.parseJSON(data);
-                            filter_server_data_len = filter_server_data.length;
-
-                            for(lk = 0; lk < filter_server_data_len; lk++) {
-                                f_html += '<option value="' + filter_server_data[lk]["lk_value"] + '">' + filter_server_data[lk]["lk_option"] + '</option>';
-                            }
-                            f_html += '</select>';
-                            elem_filter_value.html(f_html);
-                        });
-                    } else {
-                        for(lk = 0; lk < filter_local_data_len; lk++) {
-                            f_html += '<option value="' + filter_local_data[lk]["lk_value"] + '">' + filter_local_data[lk]["lk_option"] + '</option>';
-                        }
-                        f_html += '</select>';
-                        elem_filter_value.html(f_html);
-                    }
-
-                } else {
-                    elem_filter_value.html(f_html);
-                }
-
-            }
-
-
         }
 
+        // ---------------------------------------------------------------------
+        function setFilterElementProperties() {
+            for(prop in filter_element_properties) {
+                if(filter_element_properties.hasOwnProperty(prop)) {
+                    if($.inArray(prop, a_ignore_properties) > -1) {
+                        continue;
+                    }
+                    f_html += ' ' + prop + '="' + filter_element_properties[prop] + '"';
+                }
+            }
+            if(!filter_element_properties.hasOwnProperty("class")) {
+                setFilterElementDefaultClass();
+                if(class_name_default !== "") {
+                    f_html += ' class="' + class_name_default + '"';
+                }
+            }
+        }
 
+        // ---------------------------------------------------------------------
+        function createFilterElemntSelectOptions() {
+            filter_lookup_data_len = filter_lookup_data.length;
+
+            for(lk = 0; lk < filter_lookup_data_len; lk++) {
+                selected_html = (filter_lookup_data[lk]["lk_selected"] == 'yes' ? ' selected="selected"' : '');
+                f_html += '<option value="' + filter_lookup_data[lk]["lk_value"] + '"' + selected_html + '>' + filter_lookup_data[lk]["lk_option"] + '</option>';
+            }
+            f_html += '</select>';
+        }
+
+        // ---------------------------------------------------------------------
+        function setFilterGroupClass() {
+            vertical_orientation = "no";
+            if(filter_interface[i].hasOwnProperty("vertical_orientation")) {
+                vertical_orientation = filter_interface[i].vertical_orientation;
+            }
+            group_list_item_class = (vertical_orientation == "yes" ? filterGroupListItemVerticalClass : filterGroupListItemHorizontalClass);
+        }
+
+        // ---------------------------------------------------------------------
         return true;
-
     };
 
     /**
