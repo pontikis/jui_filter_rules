@@ -286,9 +286,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filter_value">create_filter_value</a></b>(container_id, filter_index, operator_type)
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filter_value">create_filter_value</a></b>(container_id, rule_id, filterName, operator_type)
 								</div>
 								<div class="description">Create inputs or widgets for the user to set filter values</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_filter_value_html">create_filter_value_html</a></b>()
+								</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -331,15 +340,6 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_rule_tools">create_rule_tools</a></b>(container_id)
-								</div>
-								<div class="description">Create rule tools dropdown list</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-create_rules_group_tools">create_rules_group_tools</a></b>(container_id)
 								</div>
 								<div class="description">Cgeate rules group tools dropdown list</div>
@@ -349,27 +349,27 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-createRule">createRule</a></b>(container_id)
-								</div>
-								<div class="description">Create rule</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-createRulesGroup">createRulesGroup</a></b>(container_id)
-								</div>
-								<div class="description">Create a group of rules (with the first rule)</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getFilterByName">getFilterByName</a></b>(container_id, filter_name)
 								</div>
 								<div class="description">Get filter attributes by filter name</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getFilterElementDefaultClass">getFilterElementDefaultClass</a></b>(container_id, filter_type, filter_element, filter_input_type)
+								</div>
+								<div class="description">Get filter elemnt default class</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getFilterElementIgnoreProperties">getFilterElementIgnoreProperties</a></b>(filter_element, filter_input_type)
+								</div>
+								<div class="description">Get filter element properties to ignore (from user input)</div>
 							</td>
 						</tr>
 					
@@ -388,6 +388,15 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-getOperators">getOperators</a></b>(filterName, filterName)
 								</div>
 								<div class="description">Get operators for filter type</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_private_methods.html#-remove_obj_empty_props">remove_obj_empty_props</a></b>(obj)
+								</div>
+								<div class="description">Remove empty object properties</div>
 							</td>
 						</tr>
 					
@@ -530,8 +539,8 @@ ul.inheritsList
 					<a name="-create_filter_value"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{String}</span>
-					<b>create_filter_value</b>(container_id, filter_index, operator_type)
+					<span class="light">{Boolean}</span>
+					<b>create_filter_value</b>(container_id, rule_id, filterName, operator_type)
 					
 					</div>
 					<div class="description">
@@ -550,19 +559,25 @@ ul.inheritsList
 									<b>container_id</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>{String}</dd>
 							
 								<dt>
-									<b>filter_index</b>
+									<b>rule_id</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>{String}</dd>
+							
+								<dt>
+									<b>filterName</b>
+									
+								</dt>
+								<dd>{String}</dd>
 							
 								<dt>
 									<b>operator_type</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>{String}</dd>
 							
 							</dl>
 						
@@ -573,9 +588,34 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{String}</span> </dd>
+								<dd><span class="light fixedFont">{Boolean}</span> </dd>
 							
 							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-create_filter_value_html"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>create_filter_value_html</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
 						
 						
 						
@@ -720,7 +760,7 @@ ul.inheritsList
 					<a name="-create_operators_list"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{String}</span>
+					
 					<b>create_operators_list</b>(container_id, rule_id, filterName)
 					
 					</div>
@@ -760,56 +800,6 @@ ul.inheritsList
 						
 						
 						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{String}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-create_rule_tools"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{String}</span>
-					<b>create_rule_tools</b>(container_id)
-					
-					</div>
-					<div class="description">
-						Create rule tools dropdown list
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>container_id</b>
-									
-								</dt>
-								<dd>{string}</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{String}</span> </dd>
-							
-							</dl>
-						
 						
 						
 
@@ -839,92 +829,6 @@ ul.inheritsList
 									
 								</dt>
 								<dd>{String}</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{String}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-createRule"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{String}</span>
-					<b>createRule</b>(container_id)
-					
-					</div>
-					<div class="description">
-						Create rule
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>container_id</b>
-									
-								</dt>
-								<dd>{String}</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{String}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-createRulesGroup"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{String}</span>
-					<b>createRulesGroup</b>(container_id)
-					
-					</div>
-					<div class="description">
-						Create a group of rules (with the first rule)
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>container_id</b>
-									
-								</dt>
-								<dd></dd>
 							
 							</dl>
 						
@@ -985,6 +889,116 @@ ul.inheritsList
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{*}</span> filter object or undefined</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-getFilterElementDefaultClass"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{String}</span>
+					<b>getFilterElementDefaultClass</b>(container_id, filter_type, filter_element, filter_input_type)
+					
+					</div>
+					<div class="description">
+						Get filter elemnt default class
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>container_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filter_type</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filter_element</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filter_input_type</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-getFilterElementIgnoreProperties"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{Array}</span>
+					<b>getFilterElementIgnoreProperties</b>(filter_element, filter_input_type)
+					
+					</div>
+					<div class="description">
+						Get filter element properties to ignore (from user input)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>filter_element</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filter_input_type</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> </dd>
 							
 							</dl>
 						
@@ -1085,6 +1099,49 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="-remove_obj_empty_props"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{Object}</span>
+					<b>remove_obj_empty_props</b>(obj)
+					
+					</div>
+					<div class="description">
+						Remove empty object properties
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>obj</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="-validate_input"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -1133,7 +1190,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Dec 04 2012 14:04:23 GMT+0200 (EET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Dec 07 2012 14:01:26 GMT+0200 (EET)
 		</div>
 	</body>
 </html>
