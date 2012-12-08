@@ -22,7 +22,7 @@ $(function() {
             filter_interface: [
                 {
                     filter_element: "input",
-                    filter_element_properties: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
+                    filter_element_attributes: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
                     vertical_orientation: "no", // default
                     filter_widget: "datepicker",
                     filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
@@ -47,7 +47,7 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {"type": "text", "value": "Smith", "class": "lastname"}
+                        filter_element: "input", filter_element_attributes: {"type": "text", "value": "Smith", "class": "lastname"}
                     }
                 ]
             },
@@ -56,7 +56,7 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text"}
+                        filter_element: "input", filter_element_attributes: {type: "text"}
                     }
                 ]
             },
@@ -65,7 +65,7 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text"},
+                        filter_element: "input", filter_element_attributes: {type: "text"},
                         filter_widget: "datepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -80,7 +80,7 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text"},
+                        filter_element: "input", filter_element_attributes: {type: "text"},
                         filter_widget: "datetimepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -98,7 +98,7 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_properties: {type: "checkbox"},
+                        filter_element_attributes: {type: "checkbox"},
                         vertical_orientation: "yes"
                     }
                 ],
@@ -110,7 +110,7 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_properties: {type: "radio"}
+                        filter_element_attributes: {type: "radio"}
                     }
                 ],
                 lookup_values: [
@@ -124,7 +124,7 @@ $(function() {
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "select", filter_element_properties: {size: "1"}
+                        filter_element: "select", filter_element_attributes: {size: "1"}
                     }
                 ],
                 lookup_values_ajax_url: "ajax/ajax_languages.php"
@@ -134,7 +134,7 @@ $(function() {
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "select", filter_element_properties: {size: "1"}
+                        filter_element: "select", filter_element_attributes: {size: "1"}
                     }
                 ],
                 lookup_values: [
@@ -149,10 +149,10 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_properties: {type: "text", disabled: "disabled", "class": "ftl_autocomplete_value"}
+                        filter_element_attributes: {type: "text", disabled: "disabled", "class": "ftl_autocomplete_value"}
                     },
                     {
-                        filter_element: "input", filter_element_properties: {type: "text", "class": "ftl_autocomplete"},
+                        filter_element: "input", filter_element_attributes: {type: "text", "class": "ftl_autocomplete"},
                         filter_widget: "autocomplete",
                         filter_widget_properties: {
                             source: "ajax/ajax_countries.php",

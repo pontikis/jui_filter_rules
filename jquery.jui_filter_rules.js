@@ -728,8 +728,8 @@
             filter_type = filter.filterType,
             filter_interface = filter.filter_interface,
             filter_interface_len = filter_interface.length, i,
-            filter_element, filter_element_id, filter_element_name, filter_input_type = "", filter_element_properties, prop,
-            a_ignore_properties = ["id", "name"],
+            filter_element, filter_element_id, filter_element_name, filter_input_type = "", filter_element_attributes, fe_attr,
+            a_ignore_attributes = ["id", "name"],
             class_name_default = "",
             filter_lookup_data, filter_lookup_data_len, lk, selected_html, lookup_values_ajax_url = "",
             vertical_orientation = "no", group_list_item_class,
@@ -811,9 +811,9 @@
             for(i = 0; i < filter_interface_len; i++) {
 
                 filter_element = filter_interface[i].filter_element;
-                filter_element_properties = remove_obj_empty_props(filter_interface[i].filter_element_properties);
+                filter_element_attributes = remove_obj_empty_props(filter_interface[i].filter_element_attributes);
                 if(filter_element == "input") {
-                    filter_input_type = filter_element_properties["type"];
+                    filter_input_type = filter_element_attributes["type"];
                 }
                 setFilterElementIgnoreProperties();
 
@@ -831,7 +831,7 @@
                             setFilterElementName();
                             f_html += ' name="' + filter_element_name + '"';
                         }
-                        setFilterElementProperties();
+                        setFilterElementAttributes();
                         f_html += ' value="' + filter_lookup_data[lk]["lk_value"] + '"';
                         selected_html = (filter_lookup_data[lk]["lk_selected"] == 'yes' ? ' checked="checked"' : '');
                         f_html += selected_html;
@@ -845,10 +845,10 @@
                     f_html += '<' + filter_element;
                     setFilterElementID(i);
                     f_html += ' id="' + filter_element_id + '"';
-                    setFilterElementProperties();
+                    setFilterElementAttributes();
                     f_html += '>';
                     if(filter_element == "select") {
-                        createFilterElemntSelectOptions();
+                        createFilterElementSelectOptions();
                     }
                 }
             }
@@ -871,14 +871,14 @@
         function setFilterElementIgnoreProperties() {
             if(filter_element == "input") {
                 if(filter_input_type == "text") {
-                    a_ignore_properties = ["id", "name"]
+                    a_ignore_attributes = ["id", "name"]
                 } else if(filter_input_type == "radio") {
-                    a_ignore_properties = ["id", "name", "value", "checked"]
+                    a_ignore_attributes = ["id", "name", "value", "checked"]
                 } else if(filter_input_type == "checkbox") {
-                    a_ignore_properties = ["id", "name", "value", "checked"]
+                    a_ignore_attributes = ["id", "name", "value", "checked"]
                 }
             } else if(filter_element == "select") {
-                a_ignore_properties = ["id", "name", "value"]
+                a_ignore_attributes = ["id", "name", "value"]
             }
         }
 
@@ -910,16 +910,16 @@
         }
 
         // ---------------------------------------------------------------------
-        function setFilterElementProperties() {
-            for(prop in filter_element_properties) {
-                if(filter_element_properties.hasOwnProperty(prop)) {
-                    if($.inArray(prop, a_ignore_properties) > -1) {
+        function setFilterElementAttributes() {
+            for(fe_attr in filter_element_attributes) {
+                if(filter_element_attributes.hasOwnProperty(fe_attr)) {
+                    if($.inArray(fe_attr, a_ignore_attributes) > -1) {
                         continue;
                     }
-                    f_html += ' ' + prop + '="' + filter_element_properties[prop] + '"';
+                    f_html += ' ' + fe_attr + '="' + filter_element_attributes[fe_attr] + '"';
                 }
             }
-            if(!filter_element_properties.hasOwnProperty("class")) {
+            if(!filter_element_attributes.hasOwnProperty("class")) {
                 setFilterElementDefaultClass();
                 if(class_name_default !== "") {
                     f_html += ' class="' + class_name_default + '"';
@@ -928,7 +928,7 @@
         }
 
         // ---------------------------------------------------------------------
-        function createFilterElemntSelectOptions() {
+        function createFilterElementSelectOptions() {
             filter_lookup_data_len = filter_lookup_data.length;
 
             for(lk = 0; lk < filter_lookup_data_len; lk++) {
