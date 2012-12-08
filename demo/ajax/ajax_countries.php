@@ -33,5 +33,4 @@ if($pos === false) {
 	}
 }
 
-
 echo json_encode($res);
