@@ -372,6 +372,8 @@
                 rules_group, group_logical_operator,
                 a_group_rules, a_group_rules_len, r, group_rule,
                 current_rule, filter_name, filter_operator, current_filter,
+                rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
+                rule_li_id_prefix_len = rule_li_id_prefix.length, rule_id,
                 pos;
 
             rules_group = elem.find("dl").eq(rules_group_index);
@@ -389,6 +391,7 @@
                         continue;
                     }
 
+                    rule_id = $(group_rule).attr("id").substr(rule_li_id_prefix_len);
                     current_rule.condition = {};
 
                     filter_name = $(group_rule).find("select:first").val();
@@ -398,7 +401,7 @@
                     current_rule.condition.filterType = current_filter.filterType;
                     current_rule.condition.field = current_filter.field;
                     current_rule.condition.operator = filter_operator;
-                    current_rule.condition.filterValue = "value";
+                    current_rule.condition.filterValue = get_filter_value(container_id, rule_id, current_filter, filter_operator);
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {
@@ -765,48 +768,6 @@
         }
 
         // ---------------------------------------------------------------------
-        function apply_widgets() {
-
-            if(filter_input_type == "checkbox" || filter_input_type == "radio") {
-                return true;
-            }
-
-            for(i = 0; i < filter_interface_len; i++) {
-                if(!filter_interface[i].hasOwnProperty("filter_widget")) {
-                    continue;
-                }
-
-                filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id) + '_' + rule_id
-                    +  '_' + i ;
-                var elem_filter = $("#" + filter_element_id);
-                var filter_widget = filter_interface[i]["filter_widget"];
-                var filter_widget_properties = filter_interface[i]["filter_widget_properties"];
-
-                if(filter_widget == "datepicker") {
-                    elem_filter.datepicker(
-                        filter_widget_properties,
-                        $.datepicker.regional[ filter_widget_locale ]
-                    );
-                }
-                if(filter_widget == "datetimepicker") {
-                    elem_filter.datetimepicker(
-                        filter_widget_properties,
-                        $.datepicker.regional[ filter_widget_locale ],
-                        $.timepicker.regional[ filter_widget_locale ]);
-                }
-
-                if(filter_widget == "autocomplete") {
-                    elem_filter.autocomplete(filter_widget_properties);
-                }
-
-            }
-
-            return true;
-        }
-
-
-
-        // ---------------------------------------------------------------------
         function create_filter_value_html() {
             for(i = 0; i < filter_interface_len; i++) {
 
@@ -821,7 +782,7 @@
 
                     setFilterGroupClass();
                     filter_lookup_data_len = filter_lookup_data.length;
-                    f_html += '<ul class="' + group_list_class + '">';
+                    f_html += '<ul                         createFilterElementSelectOptions();class="' + group_list_class + '">';
                     for(lk = 0; lk < filter_lookup_data_len; lk++) {
                         f_html += '<li class="' + group_list_item_class + '">';
                         f_html += '<' + filter_element;
@@ -849,6 +810,9 @@
                     f_html += '>';
                     if(filter_element == "select") {
                         createFilterElementSelectOptions();
+                    }
+                    if(filter_element == "div") {
+                        f_html += '</div>';
                     }
                 }
             }
@@ -945,6 +909,53 @@
                 vertical_orientation = filter_interface[i].vertical_orientation;
             }
             group_list_item_class = (vertical_orientation == "yes" ? filterGroupListItemVerticalClass : filterGroupListItemHorizontalClass);
+        }
+
+        // ---------------------------------------------------------------------
+        function apply_widgets() {
+
+            if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+                return true;
+            }
+
+            for(i = 0; i < filter_interface_len; i++) {
+                if(!filter_interface[i].hasOwnProperty("filter_widget")) {
+                    continue;
+                }
+
+                filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id) + '_' + rule_id
+                    + '_' + i;
+                var elem_filter = $("#" + filter_element_id);
+                var filter_widget = filter_interface[i]["filter_widget"];
+                var filter_widget_properties = filter_interface[i]["filter_widget_properties"];
+
+                if(filter_widget == "datepicker") {
+                    elem_filter.datepicker(
+                        filter_widget_properties,
+                        $.datepicker.regional[ filter_widget_locale ]
+                    );
+                }
+                if(filter_widget == "datetimepicker") {
+                    elem_filter.datetimepicker(
+                        filter_widget_properties,
+                        $.datepicker.regional[ filter_widget_locale ],
+                        $.timepicker.regional[ filter_widget_locale ]);
+                }
+
+                if(filter_widget == "autocomplete") {
+                    elem_filter.autocomplete(filter_widget_properties);
+                }
+
+                if(filter_widget == "spinner") {
+                    elem_filter.spinner(filter_widget_properties);
+                }
+
+                if(filter_widget == "slider") {
+                    elem_filter.slider(filter_widget_properties);
+                }
+            }
+
+            return true;
         }
 
         // ---------------------------------------------------------------------
@@ -1065,6 +1076,74 @@
 
     };
 
+
+    var get_filter_value = function(container_id, rule_id, filter, operator_type) {
+        var elem = $("#" + container_id),
+            filter_type = filter.filterType,
+            filter_interface = filter.filter_interface,
+            filter_interface_len = filter_interface.length, i,
+            filter_element,
+            filter_element_id_prefix = elem.jui_filter_rules("getOption", "filter_element_id_prefix"),
+            filter_element_id, filter_input_type = "", filter_element_attributes, fe_attr,
+            operator = getOperator(operator_type),
+            elem_filter, filter_value = [];
+
+        if(operator.accept_values !== "yes") {
+            return filter_value;
+        }
+
+        for(i = 0; i < filter_interface_len; i++) {
+
+            if(filter_interface[i].hasOwnProperty("returns_no_value")) {
+                if(filter_interface[i]["returns_no_value"] == "yes") {
+                    continue;
+                }
+            }
+
+            filter_element = filter_interface[i].filter_element;
+            filter_element_attributes = filter_interface[i].filter_element_attributes;
+
+            if(filter_element == "input") {
+                filter_input_type = filter_element_attributes["type"];
+                if(filter_input_type == "text") {
+                    filter_element_id = getFilterElementID(i);
+                    elem_filter = $("#" + filter_element_id);
+                    filter_value.push(elem_filter.val());
+                    if(filter_type == "text") {
+
+                    } else if(filter_type == "number") {
+
+                    } else if(filter_type == "date") {
+
+                    }
+                }
+                if(filter_input_type == "checkbox") {
+
+                }
+                if(filter_input_type == "radio") {
+
+                }
+            }
+            if(filter_element == "select") {
+                filter_element_id = getFilterElementID(i);
+                elem_filter = $("#" + filter_element_id);
+                if(filter_element_attributes.hasOwnProperty("multiple")) {
+                    filter_value = elem_filter.val();
+                } else {
+                    filter_value.push(elem_filter.val());
+                }
+
+            }
+        }
+
+
+        function getFilterElementID(group_index) {
+            return create_id(filter_element_id_prefix, container_id) + '_' + rule_id + '_' + group_index;
+        }
+
+        return filter_value
+
+    };
 
     /**
      * jui_filter_rules - Create rules to filter dataset using jquery.

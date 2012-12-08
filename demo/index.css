@@ -39,6 +39,19 @@
     display: none;
 }
 
+.ftl_slider {
+    float: right;
+    width: 200px;
+    margin: 2px 0 0 15px;
+}
+
+.ftl_slider_value {
+    width: 50px;
+    margin: 0 5px;
+    padding: 0;
+/*    display: none;*/
+}
+
 /* demo_rules1 widgets ------------------------------------------------------ */
 .ui-datepicker{
     font-size: 12px;

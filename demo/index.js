@@ -25,7 +25,7 @@ $(function() {
                     filter_element_attributes: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
                     vertical_orientation: "no", // default
                     filter_widget: "datepicker",
-                    filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
+                    filter_widget_properties: {dateFormat: "yy-mm-dd", changeMonth: true, changeYear: true},
                     returns_no_value: ""
                 }
             ],
@@ -47,7 +47,8 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_attributes: {"type": "text", "value": "Smith", "class": "lastname"}
+                        filter_element: "input",
+                        filter_element_attributes: {"type": "text", "value": "Smith", "class": "lastname"}
                     }
                 ]
             },
@@ -56,7 +57,47 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_attributes: {type: "text"}
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"}
+                    }
+                ]
+            },
+            {
+                filterName: "GroupMembers", "filterType": "number", field: "group_members", filterLabel: "Group Members",
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"},
+                        filter_widget: "spinner",
+                        filter_widget_properties: {
+                            min: 0,
+                            max: 10
+                        }
+                    }
+
+                ]
+            },
+            {
+                filterName: "PerCentCompleted", "filterType": "number", field: "percent_completed", filterLabel: "PerCent Completed",
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text", disabled: "disabled", "class": "ftl_slider_value"}
+                    },
+                    {
+                        filter_element: "div",
+                        filter_element_attributes: {"class": "ftl_slider"},
+                        filter_widget: "slider",
+                        filter_widget_properties: {
+                            min: 0,
+                            max: 100,
+                            slide: function (event, ui) {
+                                $(this).prev("input").val(ui.value);
+                            }
+                        },
+                        returns_no_value: "yes"
                     }
                 ]
             },
@@ -65,7 +106,8 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_attributes: {type: "text"},
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"},
                         filter_widget: "datepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -80,7 +122,8 @@ $(function() {
                 excluded_operators: ["in", "not_in"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_attributes: {type: "text"},
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"},
                         filter_widget: "datetimepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -124,7 +167,8 @@ $(function() {
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "select", filter_element_attributes: {size: "1"}
+                        filter_element: "select",
+                        filter_element_attributes: {size: "1"}
                     }
                 ],
                 lookup_values_ajax_url: "ajax/ajax_languages.php"
@@ -134,7 +178,8 @@ $(function() {
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "select", filter_element_attributes: {size: "1"}
+                        filter_element: "select",
+                        filter_element_attributes: {size: "1"}
                     }
                 ],
                 lookup_values: [
@@ -152,7 +197,8 @@ $(function() {
                         filter_element_attributes: {type: "text", disabled: "disabled", "class": "ftl_autocomplete_value"}
                     },
                     {
-                        filter_element: "input", filter_element_attributes: {type: "text", "class": "ftl_autocomplete"},
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text", "class": "ftl_autocomplete"},
                         filter_widget: "autocomplete",
                         filter_widget_properties: {
                             source: "ajax/ajax_countries.php",
