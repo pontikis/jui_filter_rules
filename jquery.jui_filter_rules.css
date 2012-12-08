@@ -1,7 +1,6 @@
 /* container ---------------------------------------------------------------- */
 .filter_rules_container {
     padding: 5px 10px 10px 10px;
-    width: 700px;
 }
 
 /* rules group -------------------------------------------------------------- */
@@ -86,7 +85,7 @@
 }
 
 .filter_input_text {
-    width: 150px;
+    width: 180px;
     margin: 0 5px;
     padding: 0;
 }
@@ -98,7 +97,7 @@
 }
 
 .filter_input_date {
-    width: 120px;
+    width: 150px;
     margin: 0 5px;
     padding: 0;
 }

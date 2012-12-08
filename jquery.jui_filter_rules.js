@@ -258,6 +258,8 @@
             return {
                 filters: [],
 
+                filter_widget_locale: "",
+
                 // styles
                 containerClass: "filter_rules_container",
 
@@ -734,6 +736,7 @@
             group_list_class = elem.jui_filter_rules("getOption", "filterGroupListClass"),
             filterGroupListItemHorizontalClass = elem.jui_filter_rules("getOption", "filterGroupListItemHorizontalClass"),
             filterGroupListItemVerticalClass = elem.jui_filter_rules("getOption", "filterGroupListItemVerticalClass"),
+            filter_widget_locale = elem.jui_filter_rules("getOption", "filter_widget_locale"),
             f_html = '';
 
         if(operator.accept_values !== "yes") {
@@ -749,6 +752,7 @@
                 success: (function(data) {
                     filter_lookup_data = $.parseJSON(data);
                     elem_filter_value.html(create_filter_value_html());
+                    apply_widgets();
                 })
             });
 
@@ -757,7 +761,50 @@
                 filter_lookup_data = filter["lookup_values"];
             }
             elem_filter_value.html(create_filter_value_html());
+            apply_widgets();
         }
+
+        // ---------------------------------------------------------------------
+        function apply_widgets() {
+
+            if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+                return true;
+            }
+
+            for(i = 0; i < filter_interface_len; i++) {
+                if(!filter_interface[i].hasOwnProperty("filter_widget")) {
+                    continue;
+                }
+
+                filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id) + '_' + rule_id
+                    +  '_' + i ;
+                var elem_filter = $("#" + filter_element_id);
+                var filter_widget = filter_interface[i]["filter_widget"];
+                var filter_widget_properties = filter_interface[i]["filter_widget_properties"];
+
+                if(filter_widget == "datepicker") {
+                    elem_filter.datepicker(
+                        filter_widget_properties,
+                        $.datepicker.regional[ filter_widget_locale ]
+                    );
+                }
+                if(filter_widget == "datetimepicker") {
+                    elem_filter.datetimepicker(
+                        filter_widget_properties,
+                        $.datepicker.regional[ filter_widget_locale ],
+                        $.timepicker.regional[ filter_widget_locale ]);
+                }
+
+                if(filter_widget == "autocomplete") {
+                    elem_filter.autocomplete(filter_widget_properties);
+                }
+
+            }
+
+            return true;
+        }
+
+
 
         // ---------------------------------------------------------------------
         function create_filter_value_html() {
@@ -810,8 +857,9 @@
 
         // ---------------------------------------------------------------------
         function setFilterElementID(group_index) {
-            filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id) + '_' + rule_id
-                + (group_index > 0 ? '_' + group_index : '');
+            filter_element_id = create_id(elem.jui_filter_rules("getOption", "filter_element_id_prefix"), container_id)
+                + '_' + rule_id
+                + '_' + group_index;
         }
 
         // ---------------------------------------------------------------------

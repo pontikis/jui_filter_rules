@@ -26,7 +26,6 @@ $(function() {
                     vertical_orientation: "no", // default
                     filter_widget: "datepicker",
                     filter_widget_properties: {dateformat: "yy-mm-dd", changeMonth: true, changeYear: true},
-                    filter_widget_locale: "",
                     returns_no_value: ""
                 }
             ],
@@ -37,6 +36,9 @@ $(function() {
     // N O T E S
 
     // demo_rules1 -------------------------------------------------------------
+    $("#demo_rules1_container").resizable();
+
+
     $("#demo_rules1").jui_filter_rules({
 
         filters: [
@@ -66,9 +68,26 @@ $(function() {
                         filter_element: "input", filter_element_properties: {type: "text"},
                         filter_widget: "datepicker",
                         filter_widget_properties: {
-                            dateformat: "yy-mm-dd",
+                            dateFormat: "dd/mm/yy",
                             changeMonth: true,
                             changeYear: true
+                        }
+                    }
+                ]
+            },
+            {
+                filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input", filter_element_properties: {type: "text"},
+                        filter_widget: "datetimepicker",
+                        filter_widget_properties: {
+                            dateFormat: "dd/mm/yy",
+                            timeFormat: "HH:mm:ss",
+                            changeMonth: true,
+                            changeYear: true,
+                            showSecond: true
                         }
                     }
                 ]
@@ -125,29 +144,39 @@ $(function() {
                 ]
             },
             {
-                filterName: "Country", "filterType": "text", field: "country", filterLabel: "Country",
+                filterName: "Country", "filterType": "number", field: "country", filterLabel: "Country",
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
-                        filter_element: "input", filter_element_properties: {type: "text"}
+                        filter_element: "input",
+                        filter_element_properties: {type: "text", disabled: "disabled", "class": "ftl_autocomplete_value"}
                     },
                     {
                         filter_element: "input", filter_element_properties: {type: "text", "class": "ftl_autocomplete"},
                         filter_widget: "autocomplete",
                         filter_widget_properties: {
                             source: "ajax/ajax_countries.php",
-                            minLength: 2
+                            minLength: 2,
+                            select: function (event, ui) {
+                                $(this).prev("input").val(ui.item.id);
+                            },
+                            // mustMatch implementation
+                            change: function (event, ui) {
+                                if (ui.item == null) {
+                                    $(this).val('');
+                                    $(this).prev("input").val('');
+                                }
+                            }
                         },
-                        filter_widget_locale: "",
                         returns_no_value: "yes"
                     }
                 ]
             }
         ],
 
-        containerClass: "rules1_container"
+        filter_widget_locale: "el"
 
-    }).resizable();
+    });
 
     elem_dlg_rules.dialog({
         autoOpen: false,

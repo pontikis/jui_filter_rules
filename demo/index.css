@@ -13,12 +13,11 @@
 }
 
 /* demo_rules1 --------------------------------------------------------------- */
-.rules1_container {
+.demo_rules1_container {
     padding: 5px 10px 10px 10px;
     border: 1px solid black;
-    width: 700px;
+    width: 800px;
 }
-
 
 .lastname {
     background: #edf3d3;
@@ -28,8 +27,23 @@
 }
 
 .ftl_autocomplete {
-    background: #208df3;
     width: 150px;
     margin: 0 5px;
     padding: 0;
+}
+
+.ftl_autocomplete_value {
+    width: 50px;
+    margin: 0 5px;
+    padding: 0;
+    display: none;
+}
+
+/* demo_rules1 widgets ------------------------------------------------------ */
+.ui-datepicker{
+    font-size: 12px;
+}
+
+.ui-autocomplete{
+    font-size: 12px;
 }
