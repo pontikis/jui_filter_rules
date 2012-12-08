@@ -156,7 +156,7 @@ $(function() {
                         filter_widget: "autocomplete",
                         filter_widget_properties: {
                             source: "ajax/ajax_countries.php",
-                            minLength: 2,
+                            minLength: 1,
                             select: function (event, ui) {
                                 $(this).prev("input").val(ui.item.id);
                             },
