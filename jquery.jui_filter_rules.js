@@ -1077,6 +1077,14 @@
     };
 
 
+    /**
+     *
+     * @param container_id
+     * @param rule_id
+     * @param filter
+     * @param operator_type
+     * @return {Array}
+     */
     var get_filter_value = function(container_id, rule_id, filter, operator_type) {
         var elem = $("#" + container_id),
             filter_type = filter.filterType,
