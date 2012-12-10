@@ -259,6 +259,8 @@
                 filters: [],
 
                 filter_widget_locale: "",
+                decimal_separator: ".",
+                htmlentities: false,
 
                 // styles
                 containerClass: "filter_rules_container",
@@ -308,8 +310,6 @@
                 filter_element_id_prefix: "flt_",
                 filter_element_name_prefix: "flt_name_",
                 rule_tools_id_prefix: "rule_tools_",
-
-                decimal_separator: ",",
 
                 onValidationError: function() {
                 }
@@ -478,7 +478,7 @@
      * @param arr
      * @return {Boolean}
      */
-    function array_has_duplicates(arr) {
+    var array_has_duplicates = function(arr) {
 
         var x = {}, len = arr.length, i;
         for(i = 0; i < len; i++) {
@@ -488,7 +488,33 @@
             x[arr[i]] = true;
         }
         return false;
-    }
+    };
+
+    /**
+     *
+     * @param value
+     * @return {*}
+     */
+    var htmlEncode = function(value){
+        if (value) {
+            return jQuery('<div />').text(value).html();
+        } else {
+            return '';
+        }
+    };
+
+    /**
+     *
+     * @param value
+     * @return {*}
+     */
+    var htmlDecode = function(value) {
+        if (value) {
+            return $('<div />').html(value).text();
+        } else {
+            return '';
+        }
+    };
 
 
     /**
@@ -1111,6 +1137,7 @@
             rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
             decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
             dc_regex_pattern = new RegExp(decimal_separator,"g"),
+            htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
             elem_filter, filter_value = [], filter_value_len, v;
 
         if(operator.accept_values !== "yes") {
@@ -1168,8 +1195,16 @@
                     return false;
                 }
             }
-        } else {
+        }
 
+        // encode html (against xss attack)
+        if(filter_type !== "number") {
+            if(htmlentities) {
+                filter_value_len = filter_value.length;
+                for(v = 0; v < filter_value_len; v++) {
+                    filter_value[v] = htmlEncode(filter_value[v]);
+                }
+            }
         }
 
         // ---------------------------------------------------------------------

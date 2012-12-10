@@ -222,6 +222,10 @@ $(function() {
 
         filter_widget_locale: "el",
 
+        htmlentities: true,
+
+        decimal_separator: ',',
+
         onValidationError: function(event, data) {
             alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
         }
