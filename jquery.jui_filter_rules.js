@@ -1197,7 +1197,7 @@
             }
         }
 
-        // encode html (against xss attack)
+        // encode html (against XSS attack)
         if(filter_type !== "number") {
             if(htmlentities) {
                 filter_value_len = filter_value.length;
