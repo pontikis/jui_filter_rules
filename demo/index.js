@@ -183,9 +183,9 @@ $(function() {
                     }
                 ],
                 lookup_values: [
-                    {lk_option: "Company1", lk_value: 1},
-                    {lk_option: "Company2", lk_value: 2},
-                    {lk_option: "Company3", lk_value: 3, lk_selected: "yes"}
+                    {lk_option: "Company1", lk_value: "1"},
+                    {lk_option: "Company2", lk_value: "2"},
+                    {lk_option: "Company3", lk_value: "3", lk_selected: "yes"}
                 ]
             },
             {
@@ -221,10 +221,9 @@ $(function() {
         ],
 
         filter_widget_locale: "el",
-
-        htmlentities: true,
-
         decimal_separator: ',',
+
+        htmlentities: false,
 
         onValidationError: function(event, data) {
             alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
