@@ -43,8 +43,9 @@
     <p>jui_filter_rules is a jQuery plugin, useful to create SQL filters.
 
     <p>Compatible with modern web browsers.
-    <br />Tested with: Google Chrome, Mozilla
-        Firefox, Microsoft Internet Explorer (>= 8, MSIE >=9 recommended), (default) Android browser.
+        <br/>Tested with: Google Chrome, Mozilla
+        Firefox, Microsoft Internet Explorer (>= 8, MSIE >=9 recommended),
+        (default) Android browser.
 
     <p>Project page: <a href="https://github.com/pontikis/jui_filter_rules">https://github.com/pontikis/jui_filter_rules</a>
 
@@ -92,11 +93,27 @@
     <ul>
         <li>Create rules as JSON object
         <li>Create WHERE SQL from rules (available in php)
+        <li>Supported widgets:
+            <ul>
+                <li><a href="http://jqueryui.com/datepicker/">jquery ui datepicker</a> and <a href="http://trentrichardson.com/examples/timepicker/">timepicker (by Trent Richardson)</a>
+                <li><a href="http://jqueryui.com/autocomplete/">jquery ui autocomplete</a>
+                <li><a href="http://jqueryui.com/slider/">jquery ui slider</a>
+                <li><a href="http://jqueryui.com/spinner/">jquery ui spinner</a> (jqueru ui >= 1.9)
+            </ul>
+        <li>Supported form elements
+        <ul>
+            <li>input (text, radio, checkbox)
+            <li>select
+        </ul>
+        <li>Filter types
+        <ul>
+            <li>text
+            <li>number
+            <li>date
+        </ul>
+        <li>Filter value validation
         <li>Support nested filter groups
         <li>Restrict operators per filter
-        <li>Text filter
-        <li>Number filter
-        <li>Date filter
         <li>Localization
     </ul>
 </div>
@@ -161,34 +178,65 @@
 
 <div class="level3">
     <pre class="brush: js">
-    $("#element_id").jui_filter_rules({
+    $("#demo_rules1").jui_filter_rules({
 
         filters: [
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                use_operators: [],
-                interface: [
-                    {element: "input", type: "text", className: "test1"}
-                ],
-                interface_in: [
-                    {element: "input", type: "checkbox", option: "lbl1", value: 1},
-                    {element: "input", type: "checkbox", option: "lbl2", value: 2},
-                    {element: "input", type: "checkbox", option: "lbl3", value: 3}
-                ],
-                interface_between: [
-                    {element: "input", type: "text", label: "From"},
-                    {element: "input", type: "text", label: "Until"}
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {"type": "text", "value": "Smith", "class": "lastname"}
+                    }
                 ]
             },
             {
-                filterName: "Firstname", "filterType": "number", field: "firstname", filterLabel: "First name",
-                interface: [
-                    {element: "input", type: "text"}
+                filterName: "AgeInYears", "filterType": "number", field: "age", filterLabel: "Age (years)",
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"}
+                    }
+                ]
+            },
+            {
+                filterName: "DateInserted", "filterType": "date", field: "date_inserted", filterLabel: "Date inserted",
+                excluded_operators: ["in", "not_in"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {type: "text"},
+                        filter_widget: "datepicker",
+                        filter_widget_properties: {
+                            dateFormat: "dd/mm/yy",
+                            changeMonth: true,
+                            changeYear: true
+                        }
+                    }
+                ]
+            },
+            {
+                filterName: "Level", "filterType": "number", field: "level", filterLabel: "Level",
+                excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
+                filter_interface: [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {type: "radio"}
+                    }
+                ],
+                lookup_values: [
+                    {lk_option: "Level1", lk_value: "1"},
+                    {lk_option: "Level2", lk_value: "2"},
+                    {lk_option: "Level3", lk_value: "3", lk_selected: "yes"}
                 ]
             }
         ],
 
-        containerClass: "rules1_container"
+        onValidationError: function(event, data) {
+            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+        }
 
     });
     </pre>
@@ -205,6 +253,10 @@
         // DEFAULTS
         filters: [],
 
+        filter_widget_locale: "",
+        decimal_separator: ".",
+        htmlentities: false,
+
         // styles
         containerClass: "filter_rules_container",
 
@@ -220,6 +272,7 @@
 
         rulesListClass: "rules_list",
         rulesListLiClass: "rules_list_li",
+        rulesListLiErrorClass: "rules_list_error_li",
 
         filterContainerClass: "filter_container",
         filterListClass: "filter_list",
@@ -231,6 +284,13 @@
         filterInputTextClass: "filter_input_text",
         filterInputNumberClass: "filter_input_number",
         filterInputDateClass: "filter_input_date",
+        filterInputCheckboxClass: "filter_input_checkbox",
+        filterInputRadioClass: "filter_input_radio",
+        filterSelectClass: "filter_select",
+
+        filterGroupListClass: "filter_group_list",
+        filterGroupListItemHorizontalClass: "filter_group_list_item_horizontal",
+        filterGroupListItemVerticalClass: "filter_group_list_item_vertical",
 
         ruleToolsContainerClass: "rule_tools_container",
         ruleToolsClass: "rule_tools_list",
@@ -242,9 +302,12 @@
         operators_container_id_prefix: "oper_wrap_",
         operators_list_id_prefix: "oper_list_",
         filter_value_id_prefix: "filter_value_",
+        filter_element_id_prefix: "flt_",
+        filter_element_name_prefix: "flt_name_",
         rule_tools_id_prefix: "rule_tools_",
 
-        filter_ui_property_prefix: "flt_" // useful to prevent using of javascript preserved words
+        onValidationError: function() {
+        }
 
     });
     </pre>
@@ -343,19 +406,19 @@
 </div>
 
 <!-- Events ---------------------------------------------------------------- -->
-<!--<h2>Events</h2>
+<h2>Events</h2>
 
-<h3>onError (not yet implemented)</h3>
+<h3>onValidationError</h3>
 
 <div class="level3">
     <pre class="brush: js">
     $("#element_id").jui_filter_rules({
-        onError: function() {
-        // your code here
+        onValidationError: function(event, data) {
+            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
         }
     });
     </pre>
-</div>-->
+</div>
 
 
 <!-- Screenshots ----------------------------------------------------------- -->
@@ -381,6 +444,15 @@
          title="jui_filter_rules">
 </div>
 
+<div class="level2">
+    <img src="../demo/samples/v1.00/sample5.png"
+         title="jui_filter_rules">
+</div>
+
+<div class="level2">
+    <img src="../demo/samples/v1.00/sample6.png"
+         title="jui_filter_rules">
+</div>
 
 <br/><br/><br/>
 
