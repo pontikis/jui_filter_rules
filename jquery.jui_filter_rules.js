@@ -98,7 +98,7 @@
                 validate_input(container_id);
 
                 // bind events
-                //elem.unbind("onCustomEvent1").bind("onCustomEvent1", settings.onCustomEvent1);
+                elem.unbind("onValidationError").bind("onValidationError", settings.onValidationError);
 
                 var filters = settings.filters,
 
@@ -275,6 +275,7 @@
 
                 rulesListClass: "rules_list",
                 rulesListLiClass: "rules_list_li",
+                rulesListLiErrorClass: "rules_list_error_li",
 
                 filterContainerClass: "filter_container",
                 filterListClass: "filter_list",
@@ -306,7 +307,12 @@
                 filter_value_id_prefix: "filter_value_",
                 filter_element_id_prefix: "flt_",
                 filter_element_name_prefix: "flt_name_",
-                rule_tools_id_prefix: "rule_tools_"
+                rule_tools_id_prefix: "rule_tools_",
+
+                decimal_separator: ",",
+
+                onValidationError: function() {
+                }
             };
         },
 
@@ -364,14 +370,14 @@
          * @example $(element).jui_filter_rules("getRules", 0, []);
          * @param rules_group_index (Number} the index of rules group
          * @param a_rules {Array} rules array
-         * @return {*} {Array}
+         * @return {*} rules array of false (on validation error)
          */
         getRules: function(rules_group_index, a_rules) {
             var elem = this,
                 container_id = elem.attr("id"),
                 rules_group, group_logical_operator,
                 a_group_rules, a_group_rules_len, r, group_rule,
-                current_rule, filter_name, filter_operator, current_filter,
+                current_rule, filter_name, filter_operator, current_filter, current_filter_value,
                 rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
                 rule_li_id_prefix_len = rule_li_id_prefix.length, rule_id,
                 pos;
@@ -401,7 +407,12 @@
                     current_rule.condition.filterType = current_filter.filterType;
                     current_rule.condition.field = current_filter.field;
                     current_rule.condition.operator = filter_operator;
-                    current_rule.condition.filterValue = get_filter_value(container_id, rule_id, current_filter, filter_operator);
+                    current_filter_value = get_filter_value(container_id, rule_id, current_filter, filter_operator);
+                    if(current_filter_value === false) {
+                        return false;
+                    } else {
+                        current_rule.condition.filterValue = current_filter_value;
+                    }
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {
@@ -1078,12 +1089,12 @@
 
 
     /**
-     *
+     * Get filter value
      * @param container_id
      * @param rule_id
      * @param filter
      * @param operator_type
-     * @return {Array}
+     * @return {*}
      */
     var get_filter_value = function(container_id, rule_id, filter, operator_type) {
         var elem = $("#" + container_id),
@@ -1092,13 +1103,21 @@
             filter_interface_len = filter_interface.length, i,
             filter_element,
             filter_element_id_prefix = elem.jui_filter_rules("getOption", "filter_element_id_prefix"),
-            filter_element_id, filter_input_type = "", filter_element_attributes, fe_attr,
+            filter_element_id, filter_input_type = "", filter_element_attributes,
+            group_elems,
             operator = getOperator(operator_type),
-            elem_filter, filter_value = [];
+            elem_rule_id = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_' + rule_id,
+            elem_rule = $("#" + elem_rule_id),
+            rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
+            decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
+            dc_regex_pattern = new RegExp(decimal_separator,"g"),
+            elem_filter, filter_value = [], filter_value_len, v;
 
         if(operator.accept_values !== "yes") {
             return filter_value;
         }
+
+        elem_rule.removeClass(rulesListLiErrorClass);
 
         for(i = 0; i < filter_interface_len; i++) {
 
@@ -1117,19 +1136,13 @@
                     filter_element_id = getFilterElementID(i);
                     elem_filter = $("#" + filter_element_id);
                     filter_value.push(elem_filter.val());
-                    if(filter_type == "text") {
-
-                    } else if(filter_type == "number") {
-
-                    } else if(filter_type == "date") {
-
-                    }
                 }
-                if(filter_input_type == "checkbox") {
-
-                }
-                if(filter_input_type == "radio") {
-
+                if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+                    group_elems = $('[id^="' + create_id(filter_element_id_prefix, container_id) + '_' + rule_id + '_' + '"]');
+                    group_elems.each(function() {
+                        if($(this).is(":checked"))
+                            filter_value.push($(this).val());
+                    })
                 }
             }
             if(filter_element == "select") {
@@ -1144,12 +1157,27 @@
             }
         }
 
+        // Nimeric validation
+        if(filter_type == "number") {
+            filter_value_len = filter_value.length;
+            for(v = 0; v < filter_value_len; v++) {
+                filter_value[v] = filter_value[v].replace(dc_regex_pattern, ".");
+                if(!$.isNumeric(filter_value[v])) {
+                    elem_rule.addClass(rulesListLiErrorClass);
+                    elem.triggerHandler("onValidationError", {err_num: 1, err_description: "Value is not numeric"});
+                    return false;
+                }
+            }
+        } else {
 
+        }
+
+        // ---------------------------------------------------------------------
         function getFilterElementID(group_index) {
             return create_id(filter_element_id_prefix, container_id) + '_' + rule_id + '_' + group_index;
         }
 
-        return filter_value
+        return filter_value;
 
     };
 

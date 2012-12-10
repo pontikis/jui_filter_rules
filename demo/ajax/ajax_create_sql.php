@@ -78,7 +78,11 @@ function create_filter_value_sql($filter_type, $operator_type, $a_values) {
 		} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
 			$res = $conn->qstr('%' . $a_values[0]);
 		} else if(in_array($operator_type, array("in", "not_in"))) {
-			$res = '(' . implode(",", $a_values) . ')';
+			for($i = 0; $i < $vlen; $i++) {
+				$res .= ($i == 0 ? '(' : '');
+				$res .= ($filter_type == "number" ? $a_values[$i] : $conn->qstr($a_values[$i]));
+				$res .= ($i < $vlen - 1 ? ',' : ')');
+			}
 		}
 	}
 	return $res;

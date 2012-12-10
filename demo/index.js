@@ -93,7 +93,7 @@ $(function() {
                         filter_widget_properties: {
                             min: 0,
                             max: 100,
-                            slide: function (event, ui) {
+                            slide: function(event, ui) {
                                 $(this).prev("input").val(ui.value);
                             }
                         },
@@ -157,9 +157,9 @@ $(function() {
                     }
                 ],
                 lookup_values: [
-                    {lk_option: "Level1", lk_value: 1},
-                    {lk_option: "Level2", lk_value: 2},
-                    {lk_option: "Level3", lk_value: 3, lk_selected: "yes"}
+                    {lk_option: "Level1", lk_value: "1"},
+                    {lk_option: "Level2", lk_value: "2"},
+                    {lk_option: "Level3", lk_value: "3", lk_selected: "yes"}
                 ]
             },
             {
@@ -203,12 +203,12 @@ $(function() {
                         filter_widget_properties: {
                             source: "ajax/ajax_countries.php",
                             minLength: 1,
-                            select: function (event, ui) {
+                            select: function(event, ui) {
                                 $(this).prev("input").val(ui.item.id);
                             },
                             // mustMatch implementation
-                            change: function (event, ui) {
-                                if (ui.item == null) {
+                            change: function(event, ui) {
+                                if(ui.item == null) {
                                     $(this).val('');
                                     $(this).prev("input").val('');
                                 }
@@ -220,7 +220,11 @@ $(function() {
             }
         ],
 
-        filter_widget_locale: "el"
+        filter_widget_locale: "el",
+
+        onValidationError: function(event, data) {
+            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+        }
 
     });
 
@@ -250,30 +254,33 @@ $(function() {
         },
         title: "SQL",
         open: function() {
-            var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
-
             $.ajax({
                 type: 'POST',
                 url: "ajax/ajax_create_sql.php",
                 data: {
-                    a_rules: a_rules
+                    a_rules: $("#demo_rules1").jui_filter_rules("getRules", 0, [])
                 },
                 success: function(data) {
                     elem_dlg_sql.html('<pre>' + data + '</pre>');
                 }
             });
-
         }
     });
 
     $("#show_rules").click(function() {
-        elem_dlg_rules.dialog("open");
-        return false;
+        var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        if(a_rules !== false) {
+            elem_dlg_rules.dialog("open");
+            return false;
+        }
     });
 
     $("#create_sql_php").click(function() {
-        elem_dlg_sql.dialog("open");
-        return false;
+        var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        if(a_rules !== false) {
+            elem_dlg_sql.dialog("open");
+            return false;
+        }
     });
 
 });
