@@ -197,7 +197,6 @@
 
                 });
 
-
                 // change filter
                 selector = '[id^="' + filters_list_id_prefix + '"]';
                 elem.off('change', selector).on('change', selector, function() {
@@ -219,7 +218,6 @@
                         elem_operators_container.html('');
                         elem_filter_value.html('');
                     }
-
                 });
 
                 // change operator
@@ -241,10 +239,7 @@
                     } else {
                         elem_filter_value.html('');
                     }
-
                 });
-
-
             });
 
         },
