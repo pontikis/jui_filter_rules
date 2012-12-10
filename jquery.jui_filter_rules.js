@@ -782,7 +782,7 @@
 
                     setFilterGroupClass();
                     filter_lookup_data_len = filter_lookup_data.length;
-                    f_html += '<ul                         createFilterElementSelectOptions();class="' + group_list_class + '">';
+                    f_html += '<ul class="' + group_list_class + '">';
                     for(lk = 0; lk < filter_lookup_data_len; lk++) {
                         f_html += '<li class="' + group_list_item_class + '">';
                         f_html += '<' + filter_element;
