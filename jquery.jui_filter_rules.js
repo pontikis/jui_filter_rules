@@ -1206,11 +1206,13 @@
         // Date validation (using date.js)
         if(filter_type == "date") {
             filter_value_len = filter_value.length;
-            for(v = 0; v < filter_value_len; v++) {
-                if(Date.parseExact(filter_value[v], filter.validate_dateformat) == null) {
-                    elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: elem_filter});
-                    return false;
+            if(filter.hasOwnProperty("validate_dateformat")) {
+                for(v = 0; v < filter_value_len; v++) {
+                    if(Date.parseExact(filter_value[v], filter.validate_dateformat) == null) {
+                        elem_rule.addClass(rulesListLiErrorClass);
+                        elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: elem_filter});
+                        return false;
+                    }
                 }
             }
         }
