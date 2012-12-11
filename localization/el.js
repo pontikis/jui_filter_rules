@@ -44,7 +44,11 @@ var rsc_jui_fr = {
     operator_is_empty: 'είναι κενό',
     operator_is_not_empty: 'δεν είναι κενό',
     operator_is_null: 'δεν έχει δοθεί',
-    operator_is_not_null: 'έχει δοθεί'
+    operator_is_not_null: 'έχει δοθεί',
+
+    error_no_value_given: "Δεν δόθηκε τιμή",
+    error_invalid_number: "Η τιμή δεν είναι αριθμός",
+    error_invalid_datetime: "Η ημερομηνία δεν είναι σωστή"
 };
 
 

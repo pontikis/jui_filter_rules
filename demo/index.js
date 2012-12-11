@@ -115,7 +115,9 @@ $(function() {
                             changeYear: true
                         }
                     }
-                ]
+                ],
+                validate_dateformat: ["dd/MM/yyyy"],
+                format_value: ""
             },
             {
                 filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
@@ -133,7 +135,10 @@ $(function() {
                             showSecond: true
                         }
                     }
-                ]
+                ],
+                validate_dateformat: ["dd/MM/yyyy HH:mm:ss"],
+                format_value: ""
+
             },
             {
                 filterName: "Category", "filterType": "number", field: "category", filterLabel: "Category (ajax data)",
@@ -227,6 +232,7 @@ $(function() {
 
         onValidationError: function(event, data) {
             alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+            data.elem_filter.focus();
         }
 
     });
@@ -287,3 +293,39 @@ $(function() {
     });
 
 });
+
+/**
+ * Convert local timezone date string to UTC timestamp
+ * @param dateformat
+ * @param timeformat
+ * @param date_str
+ */
+function toUTCtimestamp(dateformat, timeformat, date_str) {
+    var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
+
+    return  date.getUTCFullYear() +
+        PadDigits(date.getUTCMonth(), 2) +
+        PadDigits(date.getUTCDate(), 2) +
+        PadDigits(date.getUTCHours(), 2) +
+        PadDigits(date.getUTCMinutes(), 2) +
+        PadDigits(date.getUTCSeconds(), 2);
+
+}
+
+/**
+ * Add leading zeros
+ * @param n
+ * @param totalDigits
+ * @return {String}
+ * @constructor
+ */
+function PadDigits(n, totalDigits) {
+    n = n.toString();
+    var pd = '';
+    if(totalDigits > n.length) {
+        for(i = 0; i < (totalDigits - n.length); i++) {
+            pd += '0';
+        }
+    }
+    return pd + n.toString();
+}

@@ -44,6 +44,10 @@ var rsc_jui_fr = {
     operator_is_empty: 'is empty',
     operator_is_not_empty: 'is not empty',
     operator_is_null: 'is null',
-    operator_is_not_null: 'is not null'
+    operator_is_not_null: 'is not null',
+
+    error_no_value_given: "Value not given",
+    error_invalid_number: "Value is not numeric",
+    error_invalid_datetime: "Invalid date format"
 };
 

@@ -490,8 +490,8 @@
      * @param value
      * @return {*}
      */
-    var htmlEncode = function(value){
-        if (value) {
+    var htmlEncode = function(value) {
+        if(value) {
             return jQuery('<div />').text(value).html();
         } else {
             return '';
@@ -504,7 +504,7 @@
      * @return {*}
      */
     var htmlDecode = function(value) {
-        if (value) {
+        if(value) {
             return $('<div />').html(value).text();
         } else {
             return '';
@@ -1131,15 +1131,15 @@
             elem_rule = $("#" + elem_rule_id),
             rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
             decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
-            dc_regex_pattern = new RegExp(decimal_separator,"g"),
+            dc_regex_pattern = new RegExp(decimal_separator, "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
             elem_filter, filter_value = [], filter_value_len, v;
+
+        elem_rule.removeClass(rulesListLiErrorClass);
 
         if(operator.accept_values !== "yes") {
             return filter_value;
         }
-
-        elem_rule.removeClass(rulesListLiErrorClass);
 
         for(i = 0; i < filter_interface_len; i++) {
 
@@ -1179,14 +1179,37 @@
             }
         }
 
-        // Nimeric validation
+        // No value validation
+        filter_value_len = filter_value.length;
+        for(v = 0; v < filter_value_len; v++) {
+            if($.trim(filter_value[v]).length == 0) {
+                elem_rule.addClass(rulesListLiErrorClass);
+                elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: elem_filter});
+                return false;
+            }
+        }
+
+        // Numeric validation
         if(filter_type == "number") {
             filter_value_len = filter_value.length;
             for(v = 0; v < filter_value_len; v++) {
+                // set decimal separator
                 filter_value[v] = filter_value[v].replace(dc_regex_pattern, ".");
                 if(!$.isNumeric(filter_value[v])) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 1, err_description: "Value is not numeric"});
+                    elem.triggerHandler("onValidationError", {err_num: 2, err_description: rsc_jui_fr.error_invalid_number, elem_filter: elem_filter});
+                    return false;
+                }
+            }
+        }
+
+        // Date validation (using date.js)
+        if(filter_type == "date") {
+            filter_value_len = filter_value.length;
+            for(v = 0; v < filter_value_len; v++) {
+                if(Date.parseExact(filter_value[v], filter.validate_dateformat) == null) {
+                    elem_rule.addClass(rulesListLiErrorClass);
+                    elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: elem_filter});
                     return false;
                 }
             }

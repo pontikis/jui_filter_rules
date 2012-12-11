@@ -58,13 +58,12 @@
     <p>Requires
     <ul>
         <li><a href="http://jquery.com" target="_blank">jquery</a>
-        <li><a href="http://jqueryui.com" target="_blank">jquery-ui</a>
-        <li><a href="http://jqueryui.com/themeroller/" target="_blank">jquery-ui
-            themes</a>
-
-        <li>For touch event support <a href="http://touchpunch.furf.com/"
-                                       target="_blank">jquery.ui.touch-punch.min.js</a>
-            could be used
+        <li><a href="http://jqueryui.com" target="_blank">jquery-ui</a> (if
+            jquery ui widgets are in use)
+        <li><a href="http://www.datejs.com//" target="_blank">datejs library</a>
+            (for datetime validation - see <a href="http://code.google.com/p/datejs/wiki/FormatSpecifiers">FormatSpecifiers</a>)
+        <li>For touch event support could be used <a
+                href="http://touchpunch.furf.com/" target="_blank">jquery.ui.touch-punch.min.js</a>
     </ul>
 
     <p>Tested with jquery >= 1.8.2 and >= jquery-ui 1.8.23 (recommended
@@ -95,23 +94,28 @@
         <li>Create WHERE SQL from rules (available in php)
         <li>Supported widgets:
             <ul>
-                <li><a href="http://jqueryui.com/datepicker/">jquery ui datepicker</a> and <a href="http://trentrichardson.com/examples/timepicker/">timepicker (by Trent Richardson)</a>
-                <li><a href="http://jqueryui.com/autocomplete/">jquery ui autocomplete</a>
+                <li><a href="http://jqueryui.com/datepicker/">jquery ui
+                    datepicker</a> and <a
+                        href="http://trentrichardson.com/examples/timepicker/">timepicker
+                    (by Trent Richardson)</a>
+                <li><a href="http://jqueryui.com/autocomplete/">jquery ui
+                    autocomplete</a>
                 <li><a href="http://jqueryui.com/slider/">jquery ui slider</a>
-                <li><a href="http://jqueryui.com/spinner/">jquery ui spinner</a> (jqueru ui >= 1.9)
+                <li><a href="http://jqueryui.com/spinner/">jquery ui spinner</a>
+                    (jqueru ui >= 1.9)
             </ul>
         <li>Supported form elements
-        <ul>
-            <li>input (text, radio, checkbox)
-            <li>select
-        </ul>
+            <ul>
+                <li>input (text, radio, checkbox)
+                <li>select
+            </ul>
         <li>Filter types
-        <ul>
-            <li>text
-            <li>number
-            <li>date
-        </ul>
-        <li>Filter value validation
+            <ul>
+                <li>text
+                <li>number
+                <li>date
+            </ul>
+        <li>Filter value validation ('numeric' using jqiery <code>$.isNumeric</code> and 'date' using <code>datejs</code> library)
         <li>Support nested filter groups
         <li>Restrict operators per filter
         <li>Localization
