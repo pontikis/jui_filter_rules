@@ -419,8 +419,19 @@
     $("#element_id").jui_filter_rules({
         onValidationError: function(event, data) {
             alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+            data.elem_filter.focus();
         }
     });
+    </pre>
+
+    <p><code>data</code> is an object:</p>
+
+    <pre class="brush: js">
+    {
+        err_num: 'n',
+        err_description: 'description',
+        elem_filter: 'the filter element as jquery object'
+    }
     </pre>
 </div>
 
