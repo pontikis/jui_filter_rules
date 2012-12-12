@@ -311,7 +311,7 @@ function toUTCtimestamp(dateformat, timeformat, date_str) {
     var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
 
     return  date.getUTCFullYear() +
-        PadDigits(date.getUTCMonth(), 2) +
+        PadDigits(date.getUTCMonth() + 1, 2) +
         PadDigits(date.getUTCDate(), 2) +
         PadDigits(date.getUTCHours(), 2) +
         PadDigits(date.getUTCMinutes(), 2) +
