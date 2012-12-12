@@ -15,7 +15,7 @@
     "dependencies": {
         "jquery": ">=1.6",
         "jquery-ui": ">=1.8",
-        "moment.js": "latest"
+        "moment.js": "1.7.2"
     },
     "description": "Create dataset filter rules (as JSON).",
     "homepage": "https://github.com/pontikis/jui_filter_rules",
