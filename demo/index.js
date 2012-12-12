@@ -126,7 +126,7 @@ $(function() {
                 ],
                 validate_dateformat: ["dd/MM/yyyy"],
                 filter_value_conversion: {
-                    function_name: "toUTCtimestamp",
+                    function_name: "date_to_UTC_timestamp",
                     args: ["dd/mm/yy", ""]
                 }
             },
@@ -148,8 +148,10 @@ $(function() {
                     }
                 ],
                 validate_dateformat: ["dd/MM/yyyy HH:mm:ss"],
-                format_value: ""
-
+                filter_value_conversion: {
+                    function_name: "date_to_UTC_timestamp",
+                    args: ["dd/mm/yy", "HH:mm:ss"]
+                }
             },
             {
                 filterName: "Category", "filterType": "number", field: "category", filterLabel: "Category (ajax data)",
@@ -310,8 +312,10 @@ $(function() {
  * @param dateformat
  * @param timeformat
  * @param date_str
+ * @return {String}
  */
-function toUTCtimestamp(dateformat, timeformat, date_str) {
+function date_to_UTC_timestamp(dateformat, timeformat, date_str) {
+
     var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
 
     return  date.getUTCFullYear() +
@@ -328,7 +332,6 @@ function toUTCtimestamp(dateformat, timeformat, date_str) {
  * @param n
  * @param totalDigits
  * @return {String}
- * @constructor
  */
 function PadDigits(n, totalDigits) {
     n = n.toString();
@@ -419,6 +422,10 @@ function getTimezoneName() {
     return 'US/Pacific';
 }
 
+/**
+ *
+ * @return {String}
+ */
 function getTZoffset() {
     var today = new Date();
     var offset = -(today.getTimezoneOffset()/60);

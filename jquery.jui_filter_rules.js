@@ -1232,7 +1232,14 @@
                     arg_len = conversion_args.length;
                     conversion_args[arg_len - 1] = filter_value[v];
                 }
-                filter_value[v] = window[conversion_function].apply(null, conversion_args);
+                try {
+                    filter_value[v] = window[conversion_function].apply(null, conversion_args);
+                }
+                catch(err) {
+                    elem_rule.addClass(rulesListLiErrorClass);
+                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: err.message, elem_filter: elem_filter});
+                    return false;
+                }
             }
         }
 
