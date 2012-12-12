@@ -2,6 +2,7 @@ $(function() {
 
     var elem_dlg_rules = $("#dlg_rules");
     var elem_dlg_sql = $("#dlg_sql");
+    var a_rules;
 
     // theme switcher ----------------------------------------------------------
     $("#ui-theme-switcher").change(function() {
@@ -107,7 +108,10 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_attributes: {type: "text"},
+                        filter_element_attributes: {
+                            type: "text",
+                            title: "Set the date using format: dd/mm/yyyy"
+                        },
                         filter_widget: "datepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -117,7 +121,10 @@ $(function() {
                     }
                 ],
                 validate_dateformat: ["dd/MM/yyyy"],
-                format_value: ""
+                filter_value_conversion: {
+                    function_name: "toUTCtimestamp",
+                    args: ["dd/mm/yy", ""]
+                }
             },
             {
                 filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
@@ -248,7 +255,7 @@ $(function() {
         },
         title: "Rules",
         open: function() {
-            elem_dlg_rules.html('<pre>' + JSON.stringify($("#demo_rules1").jui_filter_rules("getRules", 0, []), null, '    ') + '</pre>');
+            elem_dlg_rules.html('<pre>' + JSON.stringify(a_rules, null, '    ') + '</pre>');
         }
     });
 
@@ -267,7 +274,7 @@ $(function() {
                 type: 'POST',
                 url: "ajax/ajax_create_sql.php",
                 data: {
-                    a_rules: $("#demo_rules1").jui_filter_rules("getRules", 0, [])
+                    a_rules: a_rules
                 },
                 success: function(data) {
                     elem_dlg_sql.html('<pre>' + data + '</pre>');
@@ -277,7 +284,7 @@ $(function() {
     });
 
     $("#show_rules").click(function() {
-        var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
         if(a_rules !== false) {
             elem_dlg_rules.dialog("open");
             return false;
@@ -285,7 +292,7 @@ $(function() {
     });
 
     $("#create_sql_php").click(function() {
-        var a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
         if(a_rules !== false) {
             elem_dlg_sql.dialog("open");
             return false;

@@ -92,6 +92,19 @@
     <ul>
         <li>Create rules as JSON object
         <li>Create WHERE SQL from rules (available in php)
+        <li>Support nested filter groups
+        <li>Restrict operators per filter
+        <li>Filter types
+            <ul>
+                <li>text
+                <li>number
+                <li>date
+            </ul>
+        <li>Supported form elements
+            <ul>
+                <li>input (text, radio, checkbox)
+                <li>select
+            </ul>
         <li>Supported widgets:
             <ul>
                 <li><a href="http://jqueryui.com/datepicker/">jquery ui
@@ -104,20 +117,8 @@
                 <li><a href="http://jqueryui.com/spinner/">jquery ui spinner</a>
                     (jqueru ui >= 1.9)
             </ul>
-        <li>Supported form elements
-            <ul>
-                <li>input (text, radio, checkbox)
-                <li>select
-            </ul>
-        <li>Filter types
-            <ul>
-                <li>text
-                <li>number
-                <li>date
-            </ul>
         <li>Filter value validation ('numeric' using jqiery <code>$.isNumeric</code> and 'date' using <code>datejs</code> library)
-        <li>Support nested filter groups
-        <li>Restrict operators per filter
+        <li>Filter value conversion using javascript (or server side) function
         <li>Localization
     </ul>
 </div>
@@ -169,8 +170,9 @@
 
     &lt;script type="text/javascript" src="/path/to/jquery.js" type="text/javascript">&lt;/script>
     &lt;script type="text/javascript" src="/path/to/jquery-ui.js" type="text/javascript">&lt;/script>
+    &lt;script type="text/javascript" src="/path/to/date.js" type="text/javascript">&lt;/script>
 
-    &lt;!--  if touch event support for touch devices is needed (see folder /lib) -->
+    &lt;!--  if touch event support for touch devices is needed -->
     &lt;script src="/path/to/jquery.ui.touch-punch.min.js" type="text/javascript">&lt;/script>
 
     &lt;script type="text/javascript" src="/path/to/jquery.jui_filter_rules.min.js" type="text/javascript">&lt;/script>

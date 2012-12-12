@@ -396,7 +396,7 @@
                     current_rule.condition = {};
 
                     filter_name = $(group_rule).find("select:first").val();
-                    current_filter = getFilterByName(container_id, filter_name);
+                    current_filter = remove_obj_empty_props(getFilterByName(container_id, filter_name));
                     filter_operator = $(group_rule).find("select").eq(1).val();
 
                     current_rule.condition.filterType = current_filter.filterType;
@@ -1115,7 +1115,7 @@
      * @param rule_id
      * @param filter
      * @param operator_type
-     * @return {*}
+     * @return {Array} or false if input validation failed
      */
     var get_filter_value = function(container_id, rule_id, filter, operator_type) {
         var elem = $("#" + container_id),
@@ -1133,7 +1133,8 @@
             decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
             dc_regex_pattern = new RegExp(decimal_separator, "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
-            elem_filter, filter_value = [], filter_value_len, v;
+            elem_filter, filter_value = [], filter_value_len, v,
+            filter_value_conversion, conversion_function, conversion_args, arg_len;
 
         elem_rule.removeClass(rulesListLiErrorClass);
 
@@ -1214,6 +1215,24 @@
                         return false;
                     }
                 }
+            }
+        }
+
+        // apply value conversion (if any)
+        if(filter.hasOwnProperty("filter_value_conversion")) {
+            filter_value_conversion = filter.filter_value_conversion;
+            conversion_function = filter_value_conversion["function_name"];
+            conversion_args = filter_value_conversion["args"];
+
+            filter_value_len = filter_value.length;
+            for(v = 0; v < filter_value_len; v++) {
+                if(v == 0) {
+                    conversion_args.push(filter_value[v]);
+                } else {
+                    arg_len = conversion_args.length;
+                    conversion_args[arg_len - 1] = filter_value[v];
+                }
+                filter_value[v] = window[conversion_function].apply(null, conversion_args);
             }
         }
 
