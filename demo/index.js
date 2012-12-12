@@ -124,7 +124,7 @@ $(function() {
                         }
                     }
                 ],
-                validate_dateformat: ["dd/MM/yyyy"],
+                validate_dateformat: ["DD/MM/YYYY"],
                 filter_value_conversion: {
                     function_name: "date_to_UTC_timestamp",
                     args: ["dd/mm/yy", ""]
@@ -136,7 +136,10 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_attributes: {type: "text"},
+                        filter_element_attributes: {
+                            type: "text",
+                            title: "Set the date and time using format: dd/mm/yyyy hh:mm:ss"
+                        },
                         filter_widget: "datetimepicker",
                         filter_widget_properties: {
                             dateFormat: "dd/mm/yy",
@@ -147,7 +150,7 @@ $(function() {
                         }
                     }
                 ],
-                validate_dateformat: ["dd/MM/yyyy HH:mm:ss"],
+                validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
                 filter_value_conversion: {
                     function_name: "date_to_UTC_timestamp",
                     args: ["dd/mm/yy", "HH:mm:ss"]
@@ -309,6 +312,7 @@ $(function() {
 
 /**
  * Convert local timezone date string to UTC timestamp
+ * @see http://stackoverflow.com/questions/948532/how-do-you-convert-a-javascript-date-to-utc
  * @param dateformat
  * @param timeformat
  * @param date_str
@@ -435,9 +439,4 @@ function getTZoffset() {
         return 'GMT +' + offset;
     }
 
-}
-
-function getTZ() {
-    var today = Date.today();
-    return Date.getTimezoneAbbreviation(today.getTimezoneOffset, today.isDa); // "UTC", "GMT", "EST", "PDT", etc.
 }
