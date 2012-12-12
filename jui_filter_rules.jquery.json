@@ -1,0 +1,38 @@
+{
+    "name": "jui_filter_rules",
+    "version": "1.0.0",
+    "title": "jui_filter_rules",
+    "author": {
+        "name": "Christos Pontikis",
+        "url": "http://pontikis.net"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.example.com/licenses/gpl.html"
+        }
+    ],
+    "dependencies": {
+        "jquery": ">=1.6",
+        "jquery-ui": ">=1.8",
+        "moment.js": "latest"
+    },
+    "description": "Create dataset filter rules (as JSON).",
+    "homepage": "https://github.com/pontikis/jui_filter_rules",
+    "docs": "http://pontikis.net/jui_filter_rules/docs",
+    "demo": "http://pontikis.net/jui_filter_rules/demo",
+    "download": "https://github.com/pontikis/jui_filter_rules",
+    "keywords": [
+        "filter",
+        "datagrid",
+        "SQL",
+        "i18n"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pontikis/jui_filter_rules"
+    },
+    "bugs": {
+        "url": "https://github.com/pontikis/jui_filter_rules/issues"
+    }
+}

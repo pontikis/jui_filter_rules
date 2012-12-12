@@ -436,3 +436,8 @@ function getTZoffset() {
     }
 
 }
+
+function getTZ() {
+    var today = Date.today();
+    return Date.getTimezoneAbbreviation(today.getTimezoneOffset, today.isDa); // "UTC", "GMT", "EST", "PDT", etc.
+}
