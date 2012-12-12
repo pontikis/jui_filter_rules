@@ -48,7 +48,8 @@ var rsc_jui_fr = {
 
     error_no_value_given: "Δεν δόθηκε τιμή",
     error_invalid_number: "Η τιμή δεν είναι αριθμός",
-    error_invalid_datetime: "Η ημερομηνία δεν είναι σωστή"
+    error_invalid_datetime: "Η ημερομηνία δεν είναι σωστή",
+    error_converting_value: "Λάθος κατά τη μετατροπή της τιμής που δόθηκε"
 };
 
 

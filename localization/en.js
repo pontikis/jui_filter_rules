@@ -48,6 +48,7 @@ var rsc_jui_fr = {
 
     error_no_value_given: "Value not given",
     error_invalid_number: "Value is not numeric",
-    error_invalid_datetime: "Invalid date format"
+    error_invalid_datetime: "Invalid date format",
+    error_converting_value: "Error converting value"
 };
 

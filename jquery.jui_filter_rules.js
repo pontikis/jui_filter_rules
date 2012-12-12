@@ -1237,7 +1237,7 @@
                 }
                 catch(err) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: err.message, elem_filter: elem_filter});
+                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: elem_filter});
                     return false;
                 }
             }
