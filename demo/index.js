@@ -124,11 +124,11 @@ $(function() {
                         }
                     }
                 ],
-                validate_dateformat: ["DD/MM/YYYY"],
-                filter_value_conversion: {
+                validate_dateformat: ["DD/MM/YYYY"]
+/*                filter_value_conversion: {
                     function_name: "date_to_UTC_timestamp",
                     args: ["dd/mm/yy", ""]
-                }
+                }*/
             },
             {
                 filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
@@ -184,7 +184,7 @@ $(function() {
                 ]
             },
             {
-                filterName: "Language", "filterType": "number", field: "language", filterLabel: "Language (ajax data)",
+                filterName: "Language", "filterType": "text", field: "language", filterLabel: "Language code (ajax data)",
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
@@ -210,7 +210,7 @@ $(function() {
                 ]
             },
             {
-                filterName: "Country", "filterType": "number", field: "country", filterLabel: "Country",
+                filterName: "Country", "filterType": "text", field: "country", filterLabel: "Country code",
                 excluded_operators: ["in", "not_in", "less", "less_or_equal", "greater", "greater_or_equal"],
                 filter_interface: [
                     {
