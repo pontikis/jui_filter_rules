@@ -1134,7 +1134,7 @@
             dc_regex_pattern = new RegExp(decimal_separator, "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
             elem_filter, filter_value = [], filter_value_len, v,
-            filter_value_conversion, conversion_function, conversion_args, arg_len;
+            filter_value_conversion, conversion_function = "", conversion_args = [], arg_len, a;
 
         elem_rule.removeClass(rulesListLiErrorClass);
 
@@ -1222,7 +1222,10 @@
         if(filter.hasOwnProperty("filter_value_conversion")) {
             filter_value_conversion = filter.filter_value_conversion;
             conversion_function = filter_value_conversion["function_name"];
-            conversion_args = filter_value_conversion["args"];
+            arg_len = filter_value_conversion["args"].length;
+            for(a = 0; a < arg_len; a++) {
+                conversion_args.push(filter_value_conversion["args"][a]);
+            }
 
             filter_value_len = filter_value.length;
             for(v = 0; v < filter_value_len; v++) {
