@@ -124,11 +124,11 @@ $(function() {
                         }
                     }
                 ],
-                validate_dateformat: ["DD/MM/YYYY"]
-/*                filter_value_conversion: {
-                    function_name: "date_to_UTC_timestamp",
-                    args: ["dd/mm/yy", ""]
-                }*/
+                validate_dateformat: ["DD/MM/YYYY"],
+                filter_value_conversion: {
+                    function_name: "local_date_to_UTC_timestamp",
+                    args: ["DD/MM/YYYY"]
+                }
             },
             {
                 filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
@@ -150,10 +150,10 @@ $(function() {
                         }
                     }
                 ],
-                validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
+                //validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
                 filter_value_conversion: {
-                    function_name: "date_to_UTC_timestamp",
-                    args: ["dd/mm/yy", "HH:mm:ss"]
+                    function_name: "local_date_to_UTC_timestamp",
+                    args: ["DD/MM/YYYY HH:mm:ss"]
                 }
             },
             {
@@ -312,16 +312,26 @@ $(function() {
 
 /**
  * Convert local timezone date string to UTC timestamp
+ *
+ * Alternative syntax using jquery (instead of moment.js):
+ *     var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
+ *
  * @see http://stackoverflow.com/questions/948532/how-do-you-convert-a-javascript-date-to-utc
  * @param dateformat
- * @param timeformat
  * @param date_str
  * @return {String}
  */
-function date_to_UTC_timestamp(dateformat, timeformat, date_str) {
+function local_date_to_UTC_timestamp(dateformat, date_str) {
 
-    var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
+    // avoid date overflow in user input (moment("14/14/2005", "DD/MM/YYYY") => Tue Feb 14 2006)
+    if(moment(date_str, dateformat).isValid() == false) {
+        throw new Error("Invalid date");
+    }
 
+    // parse date string using givn dateformat and create a javascript date object
+    var date = moment(date_str, dateformat).toDate();
+
+    // use javascript getUTC* functions to conv ert to UTC
     return  date.getUTCFullYear() +
         PadDigits(date.getUTCMonth() + 1, 2) +
         PadDigits(date.getUTCDate(), 2) +
@@ -330,6 +340,7 @@ function date_to_UTC_timestamp(dateformat, timeformat, date_str) {
         PadDigits(date.getUTCSeconds(), 2);
 
 }
+
 
 /**
  * Add leading zeros
