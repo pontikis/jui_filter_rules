@@ -106,11 +106,11 @@
                     operators_container_id_prefix = create_id(settings.operators_container_id_prefix, container_id) + '_',
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
                     operator,
-                    filter_value_id_prefix = create_id(settings.filter_value_id_prefix, container_id) + '_',
+                    filter_value_container_id_prefix = create_id(settings.filter_value_container_id_prefix, container_id) + '_',
                     group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
-                    filters_list_id, operators_list_id, operators_container_id, filter_value_id,
-                    elem_filters_list, elem_operators_list, elem_operators_container, elem_filter_value,
+                    filters_list_id, operators_list_id, operators_container_id, filter_value_container_id,
+                    elem_filters_list, elem_operators_list, elem_operators_container, elem_filter_value_container,
                     selector, len, rule_id, filter_index, group_selected, tool_selected;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
@@ -174,14 +174,14 @@
                         case "rule_clear":
                             filters_list_id = filters_list_id_prefix + rule_id;
                             operators_container_id = operators_container_id_prefix + rule_id;
-                            filter_value_id = filter_value_id_prefix + rule_id;
+                            filter_value_container_id = filter_value_container_id_prefix + rule_id;
                             elem_filters_list = $("#" + filters_list_id);
                             elem_operators_container = $("#" + operators_container_id);
-                            elem_filter_value = $("#" + filter_value_id);
+                            elem_filter_value_container = $("#" + filter_value_container_id);
 
                             elem_filters_list.prop("selectedIndex", 0);
                             elem_operators_container.html('');
-                            elem_filter_value.html('');
+                            elem_filter_value_container.html('');
                             break;
                         case "rule_delete":
                             $(this).closest("li").remove();
@@ -207,17 +207,18 @@
 
                     operators_container_id = operators_container_id_prefix + rule_id;
                     operators_list_id = operators_list_id_prefix + rule_id;
-                    filter_value_id = filter_value_id_prefix + rule_id;
+                    filter_value_container_id = filter_value_container_id_prefix + rule_id;
                     elem_operators_container = $("#" + operators_container_id);
-                    elem_filter_value = $("#" + filter_value_id);
+                    elem_filter_value_container = $("#" + filter_value_container_id);
 
+                    elem_filter_value_container.show();
                     if(filter_index >= 0) {
                         elem_operators_container.html(create_operators_list(container_id, rule_id, $(this).val()));
                         elem_operators_list = $("#" + operators_list_id);
                         create_filter_value(container_id, rule_id, $(this).val(), elem_operators_list.val());
                     } else {
                         elem_operators_container.html('');
-                        elem_filter_value.html('');
+                        elem_filter_value_container.html('');
                     }
                 });
 
@@ -229,17 +230,17 @@
 
                     filters_list_id = filters_list_id_prefix + rule_id;
                     operators_list_id = operators_list_id_prefix + rule_id;
-                    filter_value_id = filter_value_id_prefix + rule_id;
+                    filter_value_container_id = filter_value_container_id_prefix + rule_id;
                     elem_filters_list = $("#" + filters_list_id);
                     elem_operators_list = $("#" + operators_list_id);
-                    elem_filter_value = $("#" + filter_value_id);
+                    elem_filter_value_container = $("#" + filter_value_container_id);
 
-                    operator = getOperator($(this).val())
+                    operator = getOperator($(this).val());
                     if(operator.accept_values !== "yes") {
-                        elem_filter_value.hide();
+                        elem_filter_value_container.hide();
                     } else {
-                        elem_filter_value.show();
-                        if(elem_filter_value.html() == '') {
+                        elem_filter_value_container.show();
+                        if(elem_filter_value_container.html() == '') {
                             create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
                         }
                     }
@@ -305,7 +306,7 @@
                 filters_list_id_prefix: "filters_list_",
                 operators_container_id_prefix: "oper_wrap_",
                 operators_list_id_prefix: "oper_list_",
-                filter_value_id_prefix: "filter_value_",
+                filter_value_container_id_prefix: "flt_wrap_",
                 filter_element_id_prefix: "flt_",
                 filter_element_name_prefix: "flt_name_",
                 rule_tools_id_prefix: "rule_tools_",
@@ -760,8 +761,8 @@
     var create_filter_value = function(container_id, rule_id, filterName, operator_type) {
         var elem = $("#" + container_id),
             operator = getOperator(operator_type),
-            filter_value_id = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_' + rule_id,
-            elem_filter_value = $("#" + filter_value_id),
+            filter_value_container_id = create_id(elem.jui_filter_rules("getOption", "filter_value_container_id_prefix"), container_id) + '_' + rule_id,
+            elem_filter_value_container = $("#" + filter_value_container_id),
             filters = elem.jui_filter_rules('getOption', 'filters'),
             filter = remove_obj_empty_props(getFilterByName(container_id, filterName)),
             filter_type = filter.filterType,
@@ -779,7 +780,7 @@
             f_html = '';
 
         if(operator.accept_values !== "yes") {
-            elem_filter_value.html('');
+            elem_filter_value_container.html('');
             return true;
         }
 
@@ -790,7 +791,7 @@
                 url: lookup_values_ajax_url,
                 success: (function(data) {
                     filter_lookup_data = $.parseJSON(data);
-                    elem_filter_value.html(create_filter_value_html());
+                    elem_filter_value_container.html(create_filter_value_html());
                     apply_widgets();
                 })
             });
@@ -799,7 +800,7 @@
             if(filter.hasOwnProperty("lookup_values")) {
                 filter_lookup_data = filter["lookup_values"];
             }
-            elem_filter_value.html(create_filter_value_html());
+            elem_filter_value_container.html(create_filter_value_html());
             apply_widgets();
         }
 
@@ -1083,15 +1084,15 @@
             filterValueContainerClass = elem.jui_filter_rules("getOption", "filterValueContainerClass"),
             rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
             operators_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_container_id_prefix"), container_id) + '_',
-            filter_value_id_prefix = create_id(elem.jui_filter_rules("getOption", "filter_value_id_prefix"), container_id) + '_',
-            rule_li_id, operators_container_id, filter_value_id,
+            filter_value_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "filter_value_container_id_prefix"), container_id) + '_',
+            rule_li_id, operators_container_id, filter_value_container_id,
             r_html = '';
 
         var rule_id = parseInt(elem.data(pluginStatus)["rule_id"]) + 1;
         elem.data(pluginStatus)["rule_id"] = rule_id;
 
         operators_container_id = operators_container_id_prefix + rule_id;
-        filter_value_id = filter_value_id_prefix + rule_id;
+        filter_value_container_id = filter_value_container_id_prefix + rule_id;
         rule_li_id = rule_li_id_prefix + rule_id;
 
         r_html += '<li id="' + rule_li_id + '" class="' + rulesListLiClass + '">';
@@ -1101,7 +1102,7 @@
         r_html += '<div id="' + operators_container_id + '" class="' + operatorsListContainerClass + '">';
         r_html += '</div>';
 
-        r_html += '<div id="' + filter_value_id + '" class="' + filterValueContainerClass + '">';
+        r_html += '<div id="' + filter_value_container_id + '" class="' + filterValueContainerClass + '">';
         r_html += '</div>';
 
         r_html += create_rule_tools(container_id);
