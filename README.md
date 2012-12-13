@@ -3,10 +3,11 @@ jui_filter_rules
 
 Create rules to filter dataset using jquery
 
-* Requires jquery, moment.js
-* jquery-ui is not required but highly recommended for full functionality
-* (tested with jquery 1.8.3 moment.js 1.7.2 and jquery-ui 1.9.2)
+* Requires jquery
+* moment.js and njquery-ui are not required but highly recommended for full functionality
 * For touch event support jquery.ui.touch-punch.min.js could be used
+
+* Tested with jquery 1.8.3 moment.js 1.7.2 and jquery-ui 1.9.2)
 
 UPCOMING Release: 1.00
 
