@@ -14,32 +14,6 @@ $(function() {
         $("#ui-theme").attr("href", theme_url);
     });
 
-    // N O T E S
-    var operators_tmpl = ["equal", "not_equal", "in", "not_in",
-        "less", "less_or_equal", "greater", "greater_or_equal",
-        "begins_with", "not_begins_with", "contains", "not_contains", "ends_with", "not_ends_with", "is_empty", "is_not_empty",
-        "is_null", "is_not_null"];
-
-    var filters_template = [
-        {
-            filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-            excluded_operators: ["in", "not_in"],
-            filter_interface: [
-                {
-                    filter_element: "input",
-                    filter_element_attributes: {type: "text", "class": "test1"}, // id, name will be ignored (non input text value, checked, selected)
-                    vertical_orientation: "no", // default
-                    filter_widget: "datepicker",
-                    filter_widget_properties: {dateFormat: "yy-mm-dd", changeMonth: true, changeYear: true},
-                    returns_no_value: ""
-                }
-            ],
-            lookup_values: [], lookup_values_ajax_url: ""
-
-        }
-    ];
-    // N O T E S
-
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1_container").resizable();
 
@@ -73,10 +47,13 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_attributes: {type: "text"},
+                        filter_element_attributes: {
+                            type: "text",
+                            value: "1"
+                        },
                         filter_widget: "spinner",
                         filter_widget_properties: {
-                            min: 0,
+                            min: 1,
                             max: 10
                         }
                     }
@@ -89,11 +66,17 @@ $(function() {
                 filter_interface: [
                     {
                         filter_element: "input",
-                        filter_element_attributes: {type: "text", disabled: "disabled", "class": "ftl_slider_value"}
+                        filter_element_attributes: {
+                            type: "text",
+                            disabled: "disabled",
+                            "class": "ftl_slider_value"
+                        }
                     },
                     {
                         filter_element: "div",
-                        filter_element_attributes: {"class": "ftl_slider"},
+                        filter_element_attributes: {
+                            "class": "ftl_slider"
+                        },
                         filter_widget: "slider",
                         filter_widget_properties: {
                             min: 0,

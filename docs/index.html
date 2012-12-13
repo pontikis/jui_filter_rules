@@ -160,6 +160,51 @@
 
 </div>
 
+
+<!-- Available filter options ---------------------------------------------- -->
+<h2>Filter options</h2>
+
+<div class="level2">
+    <pre class="brush: js">
+    var filters_template = [
+        {
+            filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+            excluded_operators: ["in", "not_in"],
+            filter_interface: [
+                {
+                    filter_element: "input",
+                    filter_element_attributes: { // id, name will be ignored. At no text type input, value, checked, selected will also be ignored)
+                        type: "text",
+                        "class": "test1"
+                    },
+                    vertical_orientation: "no", // useful for checkbox or radio groups
+                    filter_widget: "datepicker",
+                    filter_widget_properties: {
+                        dateFormat: "yy-mm-dd",
+                        changeMonth: true,
+                        changeYear: true
+                    },
+                    returns_no_value: "no"
+                }
+            ],
+            lookup_values: [
+                {lk_option: "Level1", lk_value: "1"},
+                {lk_option: "Level2", lk_value: "2"},
+                {lk_option: "Level3", lk_value: "3", lk_selected: "yes"}
+            ],
+            lookup_values_ajax_url: "",
+            validate_dateformat: ["DD/MM/YYYY"], // date validation using momentjs.com
+            filter_value_conversion: {
+                function_name: "user_javascript function",
+                args: ["DD/MM/YYYY"]  // your function arguments except filter value, which will become the LAST argument
+            }
+        }
+    ];
+    </pre>
+
+</div>
+
+
 <!-- Usage ----------------------------------------------------------------- -->
 <h2>Usage</h2>
 
