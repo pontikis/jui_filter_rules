@@ -108,9 +108,9 @@ $(function() {
                     }
                 ],
                 validate_dateformat: ["DD/MM/YYYY"],
-                filter_value_conversion: {
-                    function_name: "local_date_to_UTC_timestamp",
-                    args: ["DD/MM/YYYY"]
+                filter_value_conversion_server_side: {
+                    function_name: "date_encode",
+                    args: ["Europe/Athens", "d/m/Y"]
                 }
             },
             {

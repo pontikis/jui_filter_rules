@@ -413,6 +413,11 @@
                     } else {
                         current_rule.condition.filterValue = current_filter_value;
                     }
+
+                    if(getOperator(filter_operator).accept_values == "yes") {
+                        current_rule.filter_value_conversion_server_side = current_filter.filter_value_conversion_server_side;
+                    }
+
                     current_rule.logical_operator = group_logical_operator;
                     a_rules.push(current_rule);
                 } else if(group_rule.tagName == 'DL') {

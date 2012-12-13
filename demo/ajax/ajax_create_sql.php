@@ -10,6 +10,7 @@ if(!$isAjax) {
 
 require_once '../mysql/settings.php';
 require_once '../lib/adodb_5.18a/adodb.inc.php';
+require_once 'demo_functions.php';
 
 $a_rules = $_POST['a_rules'];
 
@@ -44,7 +45,7 @@ function parse_rules($a_rules, $is_group = false) {
 			$sql .= ($is_group && $i == 0 ? '(' : '');
 			$sql .= $rule['condition']['field'];
 			$sql .= create_operator_sql($rule['condition']['operator']);
-			$sql .= create_filter_value_sql($rule['condition']['filterType'], $rule['condition']['operator'], $rule['condition']['filterValue']);
+			$sql .= create_filter_value_sql($rule['condition']['filterType'], $rule['condition']['operator'], $rule['condition']['filterValue'], $rule['filter_value_conversion_server_side']);
 		} else {
 			parse_rules($rule['condition'], true);
 		}
@@ -58,9 +59,10 @@ function parse_rules($a_rules, $is_group = false) {
  * @param $filter_type string (on of "text", "number", "date" - see documentation)
  * @param $operator_type string (see documentation for available operators)
  * @param $a_values array the values array
+ * @param $filter_value_conversion_server_side
  * @return string
  */
-function create_filter_value_sql($filter_type, $operator_type, $a_values) {
+function create_filter_value_sql($filter_type, $operator_type, $a_values, $filter_value_conversion_server_side) {
 	global $conn;
 	$res = '';
 	$vlen = count($a_values);
@@ -69,6 +71,25 @@ function create_filter_value_sql($filter_type, $operator_type, $a_values) {
 			$res = "''";
 		}
 	} else {
+
+
+		if(isset($filter_value_conversion_server_side)) {
+			$function_name = $filter_value_conversion_server_side['function_name'];
+			$args = $filter_value_conversion_server_side['args'];
+			$arg_len = count($args);
+
+			for($i = 0; $i < $vlen; $i++) {
+				if($i == 0) {
+					array_push($args, $a_values[$i]);
+					$arg_len ++;
+				} else {
+					$args[$arg_len - 1] = $a_values[$i];
+				}
+				$a_values[$i] = call_user_func_array($function_name, $args);
+			}
+		}
+
+
 		if(in_array($operator_type, array("equal", "not_equal", "less", "not_equal", "less_or_equal", "greater", "greater_or_equal"))) {
 			$res = ($filter_type == "number" ? $a_values[0] : $conn->qstr($a_values[0]));
 		} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
