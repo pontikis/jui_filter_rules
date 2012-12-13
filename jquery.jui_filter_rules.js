@@ -105,6 +105,7 @@
                     filters_list_id_prefix = create_id(settings.filters_list_id_prefix, container_id) + '_',
                     operators_container_id_prefix = create_id(settings.operators_container_id_prefix, container_id) + '_',
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
+                    operator,
                     filter_value_id_prefix = create_id(settings.filter_value_id_prefix, container_id) + '_',
                     group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
@@ -233,11 +234,14 @@
                     elem_operators_list = $("#" + operators_list_id);
                     elem_filter_value = $("#" + filter_value_id);
 
-                    filter_index = elem_filters_list.prop('selectedIndex') - 1;
-                    if(filter_index >= 0) {
-                        create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
+                    operator = getOperator($(this).val())
+                    if(operator.accept_values !== "yes") {
+                        elem_filter_value.hide();
                     } else {
-                        elem_filter_value.html('');
+                        elem_filter_value.show();
+                        if(elem_filter_value.html() == '') {
+                            create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
+                        }
                     }
                 });
             });
