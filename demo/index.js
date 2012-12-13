@@ -150,7 +150,7 @@ $(function() {
                         }
                     }
                 ],
-                //validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
+                validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
                 filter_value_conversion: {
                     function_name: "local_date_to_UTC_timestamp",
                     args: ["DD/MM/YYYY HH:mm:ss"]

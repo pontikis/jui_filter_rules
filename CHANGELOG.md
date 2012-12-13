@@ -1,7 +1,7 @@
 jui_filter_rules
 ================
 
-jui_filter_rules is an Ajax-enabled jQuery plugin, useful to create dataset filters.
+jui_filter_rules is an Ajax-enabled jQuery plugin, useful to create dataset filters in JSON format.
 
 Project page: [https://github.com/pontikis/jui_filter_rules/][github]
 [github]:https://github.com/pontikis/jui_filter_rules/
