@@ -111,7 +111,9 @@
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
                     filters_list_id, operators_list_id, operators_container_id, filter_value_container_id,
                     elem_filters_list, elem_operators_list, elem_operators_container, elem_filter_value_container,
-                    selector, len, rule_id, filter_index, group_selected, tool_selected;
+                    selector, len, rule_id, filter_index, group_selected, tool_selected,
+                    rulesListLiAppliedClass = settings.rulesListLiAppliedClass,
+                    rulesListLiErrorClass = settings.rulesListLiErrorClass;
 
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
                     if(filters.length > 0) {
@@ -182,6 +184,10 @@
                             elem_filters_list.prop("selectedIndex", 0);
                             elem_operators_container.html('');
                             elem_filter_value_container.html('');
+
+                            $(this).closest("li").removeClass(rulesListLiErrorClass);
+                            $(this).closest("li").removeClass(rulesListLiAppliedClass);
+
                             break;
                         case "rule_delete":
                             $(this).closest("li").remove();
@@ -278,6 +284,7 @@
                 rulesListClass: "rules_list",
                 rulesListLiClass: "rules_list_li",
                 rulesListLiErrorClass: "rules_list_error_li",
+                rulesListLiAppliedClass: "rules_list_applied_li",
 
                 filterContainerClass: "filter_container",
                 filterListClass: "filter_list",
@@ -437,6 +444,24 @@
             }
 
             return a_rules;
+        },
+
+        markRulesAsApplied: function() {
+            var elem = this,
+                rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
+                rulesListLiAppliedClass = elem.jui_filter_rules("getOption", "rulesListLiAppliedClass"),
+                a_rules = elem.jui_filter_rules("getRules", 0, []);
+
+            if(a_rules !== false) {
+                if(a_rules.length > 0) {
+                    elem.find("li").each(function() {
+                        if($(this).find("select:first").prop("selectedIndex") > 0) {
+                            $(this).removeClass(rulesListLiErrorClass);
+                            $(this).addClass(rulesListLiAppliedClass);
+                        }
+                    })
+                }
+            }
         }
     };
 

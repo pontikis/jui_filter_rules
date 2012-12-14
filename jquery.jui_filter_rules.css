@@ -53,6 +53,10 @@
     background-color: #f3f3f3;
 }
 
+.rules_list_applied_li {
+    background-color: #CCFF99 !important;
+}
+
 .rules_list_error_li {
     background-color: #df0202 !important;
 }

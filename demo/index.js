@@ -285,6 +285,15 @@ $(function() {
         }
     });
 
+    $("#mark_rules_as_applied").click(function() {
+            $("#demo_rules1").jui_filter_rules("markRulesAsApplied");
+    });
+
+
+
+
+
+
     $("#create_sql_ps_php").click(function() {
         user_prepered_statements = "yes";
         a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
