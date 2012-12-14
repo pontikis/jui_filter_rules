@@ -462,6 +462,15 @@
                     })
                 }
             }
+        },
+
+        clearRules: function() {
+            var elem = this,
+                container_id = elem.attr("id");
+
+            elem.find("dl:first").html('');
+            elem.data(pluginStatus)['rule_id'] = 0;
+            elem.html(createRulesGroup(container_id));
         }
     };
 

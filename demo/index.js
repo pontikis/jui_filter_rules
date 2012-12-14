@@ -290,6 +290,9 @@ $(function() {
     });
 
 
+    $("#clear_rules").click(function() {
+        $("#demo_rules1").jui_filter_rules("clearRules");
+    });
 
 
 
