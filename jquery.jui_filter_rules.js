@@ -226,6 +226,9 @@
                         elem_operators_container.html('');
                         elem_filter_value_container.html('');
                     }
+
+                    $(this).closest("li").removeClass(rulesListLiErrorClass);
+                    $(this).closest("li").removeClass(rulesListLiAppliedClass);
                 });
 
                 // change operator
@@ -250,6 +253,9 @@
                             create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
                         }
                     }
+
+                    $(this).closest("li").removeClass(rulesListLiErrorClass);
+                    $(this).closest("li").removeClass(rulesListLiAppliedClass);
                 });
             });
 
