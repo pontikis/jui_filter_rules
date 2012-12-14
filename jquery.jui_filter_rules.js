@@ -1,11 +1,11 @@
 /**
- * @fileOverview jui_filter_rules - Create rules to filter dataset using jquery
+ * @fileOverview jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
  *               <p>License MIT
  *               <br />Copyright 2012 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="https://github.com/pontikis/jui_filter_rules">https://github.com/pontikis/jui_filter_rules</a>
- * @version 1.00
+ * @version 1.0.0
  * @author Christos Pontikis http://pontikis.net
- * @requires jquery, jquery-ui
+ * @requires jquery, (optional but highly recommended moment.js, jquery-ui)
  */
 
 /**

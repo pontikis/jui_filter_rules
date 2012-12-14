@@ -1,7 +1,7 @@
 jui_filter_rules
 ================
 
-jui_filter_rules is an Ajax-enabled jQuery plugin, useful to create dataset filters in JSON format.
+jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
 
 Project page: [https://github.com/pontikis/jui_filter_rules/][github]
 [github]:https://github.com/pontikis/jui_filter_rules/
@@ -10,14 +10,15 @@ Copyright Christos Pontikis http://pontikis.net
 
 License MIT
 
-UPCOMING Release 1.00 (?? Nov 2012)
----------------------------
+Release 1.00 (14 Dec 2012)
+--------------------------
 * Create rules as JSON object
-* Create WHERE SQL from rules (available in php)
+* Create WHERE SQL from rules using prepared statements or not (available in php)
+* Support nested filter groups
+* Restrict operators per filter
 * Filter types: text, number, date
 * Supported form elements: input (text, radio, checkbox), select
 * Supported widgets: jquery ui autocomplete, slider, spinner, datepicker (and timepicker by Trent Richardson)
 * Filter value validation
-* Support nested filter groups
-* Restrict operators per filter
+* Filter value conversion using javascript (or server side) function
 * Localization
