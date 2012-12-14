@@ -415,7 +415,9 @@
                     }
 
                     if(getOperator(filter_operator).accept_values == "yes") {
-                        current_rule.filter_value_conversion_server_side = current_filter.filter_value_conversion_server_side;
+                        if(current_filter.hasOwnProperty("filter_value_conversion_server_side")) {
+                            current_rule.filter_value_conversion_server_side = current_filter.filter_value_conversion_server_side;
+                        }
                     }
 
                     current_rule.logical_operator = group_logical_operator;
