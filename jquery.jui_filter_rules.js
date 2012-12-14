@@ -118,6 +118,8 @@
                 if(elem.data(pluginStatus)['rule_id'] == 0) {
                     if(filters.length > 0) {
                         elem.html(createRulesGroup(container_id));
+                    } else {
+                        elem.html('<div class="' + settings.noFiltersFoundClass + '">' + rsc_jui_fr.no_filters_found + '</div>');
                     }
                 }
 
@@ -313,6 +315,8 @@
                 ruleToolsContainerClass: "rule_tools_container",
                 ruleToolsClass: "rule_tools_list",
 
+                noFiltersFoundClass: "no_filters_found",
+
                 // elements id prefix
                 group_tools_id_prefix: "group_tools_",
                 rule_li_id_prefix: "rule_",
@@ -364,6 +368,8 @@
                 elem.jui_filter_rules('init');
             }
         },
+
+
 
         /**
          * Destroy plugin
@@ -482,7 +488,7 @@
 
             elem.find("dl:first").html('');
             elem.data(pluginStatus)['rule_id'] = 0;
-            elem.html(createRulesGroup(container_id));
+            elem.jui_filter_rules("refresh");
         }
     };
 

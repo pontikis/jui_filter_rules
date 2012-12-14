@@ -151,6 +151,14 @@
     margin: 0;
 }
 
+/* no filters div ----------------------------------------------------------- */
+.no_filters_found{
+    text-align: center;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* utility ------------------------------------------------------------------ */
 .tools_list_shrink {
     width: 35px;
