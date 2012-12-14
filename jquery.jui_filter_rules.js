@@ -369,7 +369,15 @@
             }
         },
 
-
+        /**
+         * Refresh plugin
+         * @example $(element).jui_filter_rules('refresh');
+         * @return {*|jQuery}
+         */
+        refresh: function() {
+            var elem = this;
+            elem.jui_filter_rules();
+        },
 
         /**
          * Destroy plugin

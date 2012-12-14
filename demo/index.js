@@ -21,7 +21,7 @@ $(function() {
 
     $("#demo_rules1").jui_filter_rules({
 
-        filters1: [
+        filters: [
             {
                 filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
                 excluded_operators: ["in", "not_in"],
