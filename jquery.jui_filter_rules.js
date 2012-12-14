@@ -446,6 +446,9 @@
             return a_rules;
         },
 
+        /**
+         * Mark rules as applied
+         */
         markRulesAsApplied: function() {
             var elem = this,
                 rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
@@ -464,6 +467,9 @@
             }
         },
 
+        /**
+         * Clear rules
+         */
         clearRules: function() {
             var elem = this,
                 container_id = elem.attr("id");
