@@ -3,6 +3,7 @@ $(function() {
     var elem_dlg_rules = $("#dlg_rules");
     var elem_dlg_sql = $("#dlg_sql");
     var a_rules;
+    var user_prepered_statements = "yes";
 
 
     // detect timezone
@@ -266,7 +267,8 @@ $(function() {
                 type: 'POST',
                 url: "ajax/ajax_create_sql.php",
                 data: {
-                    a_rules: a_rules
+                    a_rules: a_rules,
+                    use_ps: user_prepered_statements
                 },
                 success: function(data) {
                     elem_dlg_sql.html('<pre>' + data + '</pre>');
@@ -283,7 +285,17 @@ $(function() {
         }
     });
 
+    $("#create_sql_ps_php").click(function() {
+        user_prepered_statements = "yes";
+        a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        if(a_rules !== false) {
+            elem_dlg_sql.dialog("open");
+            return false;
+        }
+    });
+
     $("#create_sql_php").click(function() {
+        user_prepered_statements = "no";
         a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
         if(a_rules !== false) {
             elem_dlg_sql.dialog("open");

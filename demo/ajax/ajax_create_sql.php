@@ -1,5 +1,4 @@
 <?php
-
 // prevent direct access
 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND
 	strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
@@ -13,6 +12,7 @@ require_once '../lib/adodb_5.18a/adodb.inc.php';
 require_once 'demo_functions.php';
 
 $a_rules = $_POST['a_rules'];
+$use_ps = ($_POST['use_ps'] == "yes" ? true : false);
 
 if(count($a_rules) == 0) {
 	exit;
@@ -23,17 +23,24 @@ $dsn = $mysql_driver . '://' . $mysql_user . ':' . rawurlencode($mysql_passwd) .
 $conn = NewADOConnection($dsn);
 $conn->execute('SET NAMES UTF8');
 
-
-echo parse_rules($a_rules);
+// print result
+$result = parse_rules($a_rules, $use_ps);
+echo $result['sql'];
+if($use_ps) {
+	echo '<br /><br />bind params: <br />';
+	print_r($result['bind_params']);
+}
 
 
 /**
  * @param $a_rules
+ * @param $use_ps
  * @param bool $is_group
  * @return string
  */
-function parse_rules($a_rules, $is_group = false) {
+function parse_rules($a_rules, $use_ps, $is_group = false) {
 	static $sql;
+	static $bind_params = array();
 	if(is_null($sql)) {
 		$sql = 'WHERE ';
 	}
@@ -45,14 +52,27 @@ function parse_rules($a_rules, $is_group = false) {
 			$sql .= ($is_group && $i == 0 ? '(' : '');
 			$sql .= $rule['condition']['field'];
 			$sql .= create_operator_sql($rule['condition']['operator']);
-			$sql .= create_filter_value_sql($rule['condition']['filterType'], $rule['condition']['operator'], $rule['condition']['filterValue'], $rule['filter_value_conversion_server_side']);
+			$filter_value = create_filter_value_sql($rule['condition']['filterType'],
+				$rule['condition']['operator'],
+				$rule['condition']['filterValue'],
+				$rule['filter_value_conversion_server_side'],
+				$use_ps);
+			if($use_ps) {
+				if(!in_array($rule['condition']['operator'], array("is_null", "is_not_null"))) {
+					$sql .= '?';
+					array_push($bind_params, $filter_value);
+				}
+			} else {
+				$sql .= $filter_value;
+			}
+
 		} else {
-			parse_rules($rule['condition'], true);
+			parse_rules($rule['condition'], $use_ps, true);
 		}
 		$sql .= ($i < $a_len - 1 ? ' ' . $rule['logical_operator'] : '');
 		$sql .= ($is_group && $i == $a_len - 1 ? ')' : '');
 	}
-	return $sql;
+	return array('sql' => $sql, 'bind_params' => $bind_params);
 }
 
 /**
@@ -60,9 +80,10 @@ function parse_rules($a_rules, $is_group = false) {
  * @param $operator_type string (see documentation for available operators)
  * @param $a_values array the values array
  * @param $filter_value_conversion_server_side
+ * @param $use_prepared_statents
  * @return string
  */
-function create_filter_value_sql($filter_type, $operator_type, $a_values, $filter_value_conversion_server_side) {
+function create_filter_value_sql($filter_type, $operator_type, $a_values, $filter_value_conversion_server_side, $use_prepared_statents) {
 	global $conn;
 	$res = '';
 	$vlen = count($a_values);
@@ -72,7 +93,7 @@ function create_filter_value_sql($filter_type, $operator_type, $a_values, $filte
 		}
 	} else {
 
-
+		// apply filter value conversion (if any)
 		if(isset($filter_value_conversion_server_side)) {
 			$function_name = $filter_value_conversion_server_side['function_name'];
 			$args = $filter_value_conversion_server_side['args'];
@@ -81,7 +102,7 @@ function create_filter_value_sql($filter_type, $operator_type, $a_values, $filte
 			for($i = 0; $i < $vlen; $i++) {
 				if($i == 0) {
 					array_push($args, $a_values[$i]);
-					$arg_len ++;
+					$arg_len++;
 				} else {
 					$args[$arg_len - 1] = $a_values[$i];
 				}
@@ -89,22 +110,40 @@ function create_filter_value_sql($filter_type, $operator_type, $a_values, $filte
 			}
 		}
 
-
-		if(in_array($operator_type, array("equal", "not_equal", "less", "not_equal", "less_or_equal", "greater", "greater_or_equal"))) {
-			$res = ($filter_type == "number" ? $a_values[0] : $conn->qstr($a_values[0]));
-		} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
-			$res = $conn->qstr($a_values[0] . '%');
-		} else if(in_array($operator_type, array("contains", "not_contains"))) {
-			$res = $conn->qstr('%' . $a_values[0] . '%');
-		} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
-			$res = $conn->qstr('%' . $a_values[0]);
-		} else if(in_array($operator_type, array("in", "not_in"))) {
-			for($i = 0; $i < $vlen; $i++) {
-				$res .= ($i == 0 ? '(' : '');
-				$res .= ($filter_type == "number" ? $a_values[$i] : $conn->qstr($a_values[$i]));
-				$res .= ($i < $vlen - 1 ? ',' : ')');
+		if($use_prepared_statents) {
+			if(in_array($operator_type, array("equal", "not_equal", "less", "not_equal", "less_or_equal", "greater", "greater_or_equal"))) {
+				$res = $a_values[0];
+			} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
+				$res = $a_values[0] . '%';
+			} else if(in_array($operator_type, array("contains", "not_contains"))) {
+				$res = $a_values[0] . '%';
+			} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
+				$res = '%' . $a_values[0];
+			} else if(in_array($operator_type, array("in", "not_in"))) {
+				for($i = 0; $i < $vlen; $i++) {
+					$res .= ($i == 0 ? '(' : '');
+					$res .= $a_values[$i];
+					$res .= ($i < $vlen - 1 ? ',' : ')');
+				}
+			}
+		} else {
+			if(in_array($operator_type, array("equal", "not_equal", "less", "not_equal", "less_or_equal", "greater", "greater_or_equal"))) {
+				$res = ($filter_type == "number" ? $a_values[0] : $conn->qstr($a_values[0]));
+			} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
+				$res = $conn->qstr($a_values[0] . '%');
+			} else if(in_array($operator_type, array("contains", "not_contains"))) {
+				$res = $conn->qstr('%' . $a_values[0] . '%');
+			} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
+				$res = $conn->qstr('%' . $a_values[0]);
+			} else if(in_array($operator_type, array("in", "not_in"))) {
+				for($i = 0; $i < $vlen; $i++) {
+					$res .= ($i == 0 ? '(' : '');
+					$res .= ($filter_type == "number" ? $a_values[$i] : $conn->qstr($a_values[$i]));
+					$res .= ($i < $vlen - 1 ? ',' : ')');
+				}
 			}
 		}
+
 	}
 	return $res;
 }
