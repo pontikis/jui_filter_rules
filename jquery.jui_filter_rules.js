@@ -108,7 +108,7 @@
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
                     operator,
                     filter_value_container_id_prefix = create_id(settings.filter_value_container_id_prefix, container_id) + '_',
-                    group_condition_id_prefix=create_id(settings.group_condition_id_prefix, container_id) + '_',
+                    group_condition_id_prefix = create_id(settings.group_condition_id_prefix, container_id) + '_',
                     group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
                     filters_list_id, operators_list_id, operators_container_id, filter_value_container_id,
@@ -210,11 +210,10 @@
 
                 // change group condition
                 selector = '[id^="' + group_condition_id_prefix + '"]';
-                    elem.off('change', selector).on('change', selector, function() {
-                        // unmark applied rules
-                        $(this).closest("dl").find("li").removeClass(rulesListLiAppliedClass);
-                    });
-
+                elem.off('change', selector).on('change', selector, function() {
+                    // unmark applied rules
+                    $(this).closest("dl").find("li").removeClass(rulesListLiAppliedClass);
+                });
 
                 // change filter
                 selector = '[id^="' + filters_list_id_prefix + '"]';
