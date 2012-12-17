@@ -449,7 +449,9 @@
                     if(current_filter_value === false) {
                         return false;
                     } else {
-                        current_rule.condition.filterValue = current_filter_value;
+                        if(current_filter_value.length > 0) {
+                            current_rule.condition.filterValue = current_filter_value;
+                        }
                     }
 
                     if(getOperator(filter_operator).accept_values == "yes") {
