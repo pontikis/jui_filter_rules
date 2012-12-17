@@ -89,7 +89,8 @@
                 // initialize plugin status
                 if(typeof  elem.data(pluginStatus) === 'undefined') {
                     elem.data(pluginStatus, {});
-                    elem.data(pluginStatus)['rule_id'] = 0;
+                    elem.data(pluginStatus)["group_id"] = 0;
+                    elem.data(pluginStatus)["rule_id"] = 0;
                 }
 
                 var container_id = elem.attr("id");
@@ -107,6 +108,7 @@
                     operators_list_id_prefix = create_id(settings.operators_list_id_prefix, container_id) + '_',
                     operator,
                     filter_value_container_id_prefix = create_id(settings.filter_value_container_id_prefix, container_id) + '_',
+                    group_condition_id_prefix=create_id(settings.group_condition_id_prefix, container_id) + '_',
                     group_tools_id_prefix = create_id(settings.group_tools_id_prefix, container_id) + '_',
                     rule_tools_id_prefix = create_id(settings.rule_tools_id_prefix, container_id) + '_',
                     filters_list_id, operators_list_id, operators_container_id, filter_value_container_id,
@@ -115,7 +117,7 @@
                     rulesListLiAppliedClass = settings.rulesListLiAppliedClass,
                     rulesListLiErrorClass = settings.rulesListLiErrorClass;
 
-                if(elem.data(pluginStatus)['rule_id'] == 0) {
+                if(elem.data(pluginStatus)["rule_id"] == 0) {
                     if(filters.length > 0) {
                         elem.html(createRulesGroup(container_id));
                     } else {
@@ -205,6 +207,14 @@
                     $(this).prop("selectedIndex", 0);
 
                 });
+
+                // change group condition
+                selector = '[id^="' + group_condition_id_prefix + '"]';
+                    elem.off('change', selector).on('change', selector, function() {
+                        // unmark applied rules
+                        $(this).closest("dl").find("li").removeClass(rulesListLiAppliedClass);
+                    });
+
 
                 // change filter
                 selector = '[id^="' + filters_list_id_prefix + '"]';
@@ -318,6 +328,8 @@
                 noFiltersFoundClass: "no_filters_found",
 
                 // elements id prefix
+                group_dl_id_prefix: "group_",
+                group_condition_id_prefix: "group_cond_",
                 group_tools_id_prefix: "group_tools_",
                 rule_li_id_prefix: "rule_",
                 filters_list_id_prefix: "filters_list_",
@@ -495,7 +507,8 @@
                 container_id = elem.attr("id");
 
             elem.find("dl:first").html('');
-            elem.data(pluginStatus)['rule_id'] = 0;
+            elem.data(pluginStatus)["group_id"] = 0;
+            elem.data(pluginStatus)["rule_id"] = 0;
             elem.jui_filter_rules("refresh");
         }
     };
@@ -698,12 +711,16 @@
      */
     var create_group_condition = function(container_id) {
         var elem = $("#" + container_id),
+            group_condition_id,
             rulesGroupConditionContainerClass = elem.jui_filter_rules('getOption', 'rulesGroupConditionContainerClass'),
             rulesGroupConditionListClass = elem.jui_filter_rules('getOption', 'rulesGroupConditionListClass'),
             gc_html = '';
 
+        group_condition_id = create_id(elem.jui_filter_rules('getOption', 'group_condition_id_prefix'), container_id) +
+            '_' + elem.data(pluginStatus)["group_id"];
+
         gc_html += '<div class="' + rulesGroupConditionContainerClass + '">';
-        gc_html += '<select class="' + rulesGroupConditionListClass + '">';
+        gc_html += '<select id="' + group_condition_id + '" class="' + rulesGroupConditionListClass + '">';
         gc_html += '<option value="AND">' + rsc_jui_fr.rules_group_AND + ':' + '</option>';
         gc_html += '<option value="OR">' + rsc_jui_fr.rules_group_OR + ':' + '</option>';
         gc_html += '</select>';
@@ -1114,13 +1131,20 @@
      */
     var createRulesGroup = function(container_id) {
         var elem = $("#" + container_id),
+            group_dl_id_prefix = elem.jui_filter_rules("getOption", "group_dl_id_prefix"),
+            group_dl_id, group_id,
             rulesGroupContainerClass = elem.jui_filter_rules("getOption", "rulesGroupContainerClass"),
             rulesGroupHeaderClass = elem.jui_filter_rules("getOption", "rulesGroupHeaderClass"),
             rulesGroupBodyClass = elem.jui_filter_rules("getOption", "rulesGroupBodyClass"),
             rulesListClass = elem.jui_filter_rules("getOption", "rulesListClass"),
             rg_html = '';
 
-        rg_html += '<dl class="' + rulesGroupContainerClass + '">';
+        group_id = parseInt(elem.data(pluginStatus)["group_id"]) + 1;
+        elem.data(pluginStatus)["group_id"] = group_id;
+
+        group_dl_id = create_id(group_dl_id_prefix, container_id) + '_' + group_id;
+
+        rg_html += '<dl id="' + group_dl_id + '" class="' + rulesGroupContainerClass + '">';
 
         rg_html += '<dt class="' + rulesGroupHeaderClass + '">';
         rg_html += create_group_condition(container_id);
@@ -1152,10 +1176,10 @@
             rule_li_id_prefix = create_id(elem.jui_filter_rules("getOption", "rule_li_id_prefix"), container_id) + '_',
             operators_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "operators_container_id_prefix"), container_id) + '_',
             filter_value_container_id_prefix = create_id(elem.jui_filter_rules("getOption", "filter_value_container_id_prefix"), container_id) + '_',
-            rule_li_id, operators_container_id, filter_value_container_id,
+            rule_li_id, operators_container_id, filter_value_container_id, rule_id,
             r_html = '';
 
-        var rule_id = parseInt(elem.data(pluginStatus)["rule_id"]) + 1;
+        rule_id = parseInt(elem.data(pluginStatus)["rule_id"]) + 1;
         elem.data(pluginStatus)["rule_id"] = rule_id;
 
         operators_container_id = operators_container_id_prefix + rule_id;
