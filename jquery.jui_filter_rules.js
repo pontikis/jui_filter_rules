@@ -1220,6 +1220,8 @@
             filter_interface = filter.filter_interface,
             filter_interface_len = filter_interface.length, i,
             filter_element,
+            filter_value_container_id = create_id(elem.jui_filter_rules("getOption", "filter_value_container_id_prefix"), container_id) + '_' + rule_id,
+            elem_filter_value_container = $("#" + filter_value_container_id),
             filter_element_id_prefix = elem.jui_filter_rules("getOption", "filter_element_id_prefix"),
             filter_element_id, filter_input_type = "", filter_element_attributes,
             group_elems,
@@ -1278,11 +1280,16 @@
         }
 
         // No value validation
+        if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+            if($("input:checked", elem_filter_value_container).length == 0) {
+                noValueGiven();
+                return false;
+            }
+        }
         filter_value_len = filter_value.length;
         for(v = 0; v < filter_value_len; v++) {
             if($.trim(filter_value[v]).length == 0) {
-                elem_rule.addClass(rulesListLiErrorClass);
-                elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: elem_filter});
+                noValueGiven();
                 return false;
             }
         }
@@ -1356,6 +1363,12 @@
         // ---------------------------------------------------------------------
         function getFilterElementID(group_index) {
             return create_id(filter_element_id_prefix, container_id) + '_' + rule_id + '_' + group_index;
+        }
+
+        // ---------------------------------------------------------------------
+        function noValueGiven() {
+            elem_rule.addClass(rulesListLiErrorClass);
+            elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: elem_filter});
         }
 
         return filter_value;
