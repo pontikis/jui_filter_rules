@@ -553,7 +553,6 @@
         return prefix + plugin_container_id;
     };
 
-
     /**
      * Check array for duplicated values
      * @param arr
@@ -597,7 +596,6 @@
         }
     };
 
-
     /**
      * Remove empty object properties
      * @param obj
@@ -634,7 +632,6 @@
 
     };
 
-
     /**
      *
      * Escape regex special characters !@#$^&%*()+=-[]\/{}|:<>?,.
@@ -645,7 +642,6 @@
     var RegExp_escape = function(expr) {
         return expr.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
     };
-
 
     /**
      * Get filter attributes by filter name
@@ -1288,7 +1284,6 @@
                 } else {
                     filter_value.push(elem_filter.val());
                 }
-
             }
         }
 
