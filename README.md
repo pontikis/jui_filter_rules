@@ -17,10 +17,14 @@ License [MIT][mit]
 
 Documentation
 -------------
-
+Common documentation
 http://pontikis.net/jui_filter_rules/v1.00/docs/
 
+JSDOC documentation
 http://pontikis.net/jui_filter_rules/v1.00/jsdoc/
+
+Doxygen documentation of (server-side) php classes
+http://pontikis.net/jui_filter_rules/v1.00/server_side/php/doxygen/html
 
 Demo
 ----

@@ -40,7 +40,8 @@
 <h1>jui_filter_rules documentation (v1.00)</h1>
 
 <div class="level1">
-    <p>jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
+    <p>jui_filter_rules is a jQuery plugin, useful to create dataset filter
+        rules as JSON object and the relevant WHERE SQL.
 
     <p>Compatible with modern web browsers.
         <br/>Tested with: Google Chrome, Mozilla
@@ -64,14 +65,17 @@
     <ul>
         <li><a href="http://jqueryui.com" target="_blank">jquery-ui</a> (if
             jquery ui widgets are in use)
-        <li><a href="http://www.momentjs.com//" target="_blank">moment.js</a> library (for datetime validation)
+        <li><a href="http://www.momentjs.com//" target="_blank">moment.js</a>
+            library (for datetime validation)
         <li>For touch event support could be used <a
                 href="http://touchpunch.furf.com/" target="_blank">jquery.ui.touch-punch.min.js</a>
     </ul>
 
-    <p>NOTE: moment.js and jquery-ui are not required but highly recommended for full functionality (date validation and rich interface)
+    <p>NOTE: moment.js and jquery-ui are not required but highly recommended for
+        full functionality (date validation and rich interface)
 
-    <p>Tested with jquery >= 1.8.2 moment.js 1.7.2 and >= jquery-ui 1.8.23 (recommended jquery-ui >= 1.9)
+    <p>Tested with jquery >= 1.8.2 moment.js 1.7.2 and >= jquery-ui 1.8.23
+        (recommended jquery-ui >= 1.9)
 
     <p>Release 1.00 (14 Dec 2012) Download <a
             href="https://github.com/pontikis/jui_filter_rules/zipball/v1.0.0">here</a>
@@ -89,13 +93,31 @@
 
 </div>
 
+<!-- Docs ------------------------------------------------------------------ -->
+<h2>Documentation structure</h2>
+
+<div class="level2">
+    <p>Available documentation:</p>
+
+    <ul>
+        <li>Common documentation (current file)
+
+        <li><a href="../jsdoc/">JSDOC documentation</a>
+
+        <li><a href="../server_side/php/doxygen/html">Doxygen documentation of
+            (server-side) php classes</a>
+    </ul>
+</div>
+
+
 <!-- Features -------------------------------------------------------------- -->
 <h2>Features</h2>
 
 <div class="level2">
     <ul>
         <li>Create rules as JSON object
-        <li>Create 'WHERE SQL' from rules JSON object using Prepared Statements or not (available for php)
+        <li>Create 'WHERE SQL' from rules JSON object using Prepared Statements
+            or not (available for php)
         <li>Support nested filter groups
         <li>Restrict operators per filter
         <li>Filter types
@@ -106,7 +128,9 @@
             </ul>
         <li>Supported form elements
             <ul>
-                <li>input (text, radio, checkbox). At least one checkbox or radio must be checked (single checkbox interface is not supported at this time).
+                <li>input (text, radio, checkbox). At least one checkbox or
+                    radio must be checked (single checkbox interface is not
+                    supported at this time).
                 <li>select
             </ul>
         <li>Supported widgets:
@@ -121,7 +145,9 @@
                 <li><a href="http://jqueryui.com/spinner/">jquery ui spinner</a>
                     (jqueru ui >= 1.9)
             </ul>
-        <li>Filter value validation ('numeric' using jquery <code>$.isNumeric</code> and 'date' using <code>moment.js</code> library)
+        <li>Filter value validation ('numeric' using jquery
+            <code>$.isNumeric</code> and 'date' using <code>moment.js</code>
+            library)
         <li>Filter value conversion using javascript (or server side) function
         <li>Localization
     </ul>
@@ -237,7 +263,8 @@
 
 <div class="level3">
 
-    <strong>The following analytic example demonstrates most common filter types:</strong>
+<strong>The following analytic example demonstrates most common filter
+    types:</strong>
 
     <pre class="brush: js">
     $("#demo_rules1").jui_filter_rules({
@@ -532,16 +559,8 @@
 
 </div>
 
-<!-- Methods --------------------------------------------------------------- -->
-<h2>Methods</h2>
-
-<div class="level3" style="margin-top: 50px;">
-    <p>For details, see <a href="../jsdoc">jsdoc documentation</a>.</p>
-</div>
-
-
 <!-- Methods list ---------------------------------------------------------- -->
-<h2>Methods list</h2>
+<h2>Methods</h2>
 
 <div class="level3" style="margin-top: 50px;">
     <span style="background-color: #d9dbdc; padding: 5px; font-size: 140%;">COMMON</span>
