@@ -226,7 +226,7 @@ $(function() {
         ],
 
         filter_widget_locale: "el",
-        decimal_separator: ',',
+        decimal_separator: ",",
 
         htmlentities: false,
 

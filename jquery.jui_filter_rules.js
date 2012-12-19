@@ -1239,7 +1239,7 @@
             elem_rule = $("#" + elem_rule_id),
             rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
             decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
-            dc_regex_pattern = new RegExp(decimal_separator, "g"),
+            dc_regex_pattern = new RegExp(RegExp_escape(decimal_separator), "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
             elem_filter, filter_value = [], filter_value_len, v,
             filter_value_conversion, conversion_function = "", conversion_args = [], arg_len, a;
