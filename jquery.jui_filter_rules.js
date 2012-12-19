@@ -634,6 +634,19 @@
 
     };
 
+
+    /**
+     *
+     * Escape regex special characters !@#$^&%*()+=-[]\/{}|:<>?,.
+     *
+     * @param expr
+     * @return {String|XML|void}
+     */
+    var RegExp_escape = function(expr) {
+        return expr.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    };
+
+
     /**
      * Get filter attributes by filter name
      * @param {String} container_id
