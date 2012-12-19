@@ -638,6 +638,9 @@
      *
      * @param expr
      * @return {String|XML|void}
+     *
+     * @see http://simonwillison.net/2006/Jan/20/escape/#p-6
+     * @see http://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
      */
     var RegExp_escape = function(expr) {
         return expr.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
