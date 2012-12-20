@@ -1244,7 +1244,7 @@
             decimal_separator = elem.jui_filter_rules("getOption", "decimal_separator"),
             dc_regex_pattern = new RegExp(RegExp_escape(decimal_separator), "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
-            elem_filter, filter_value = [], filter_value_len, v,
+            elem_filter, filter_value = [], filter_value_len, v, elem_filter_group = [],
             filter_value_conversion, conversion_function = "", conversion_args = [], arg_len, a;
 
         elem_rule.removeClass(rulesListLiErrorClass);
@@ -1276,6 +1276,7 @@
                     group_elems.each(function() {
                         if($(this).is(":checked"))
                             filter_value.push($(this).val());
+                            elem_filter_group.push($(this));
                     })
                 }
             }
@@ -1313,7 +1314,7 @@
                 filter_value[v] = filter_value[v].replace(dc_regex_pattern, ".");
                 if(!$.isNumeric(filter_value[v])) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 2, err_description: rsc_jui_fr.error_invalid_number, elem_filter: elem_filter});
+                    elem.triggerHandler("onValidationError", {err_num: 2, err_description: rsc_jui_fr.error_invalid_number, elem_filter: getCurrentFilterElement()});
                     return false;
                 }
             }
@@ -1326,7 +1327,7 @@
                 for(v = 0; v < filter_value_len; v++) {
                     if(moment(filter_value[v], filter.validate_dateformat).isValid() == false) {
                         elem_rule.addClass(rulesListLiErrorClass);
-                        elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: elem_filter});
+                        elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: getCurrentFilterElement()});
                         return false;
                     }
                 }
@@ -1355,7 +1356,7 @@
                 }
                 catch(err) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: elem_filter});
+                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: getCurrentFilterElement()});
                     return false;
                 }
             }
@@ -1379,7 +1380,16 @@
         // ---------------------------------------------------------------------
         function noValueGiven() {
             elem_rule.addClass(rulesListLiErrorClass);
-            elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: elem_filter});
+            elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: getCurrentFilterElement()});
+        }
+
+        // ---------------------------------------------------------------------
+        function getCurrentFilterElement() {
+            if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+                return elem_filter_group[v];
+            } else {
+                return elem_filter;
+            }
         }
 
         return filter_value;
