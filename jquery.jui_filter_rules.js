@@ -1276,7 +1276,7 @@
                     group_elems.each(function() {
                         if($(this).is(":checked"))
                             filter_value.push($(this).val());
-                            elem_filter_group.push($(this));
+                        elem_filter_group.push($(this));
                     })
                 }
             }
