@@ -1314,7 +1314,7 @@
                 filter_value[v] = filter_value[v].replace(dc_regex_pattern, ".");
                 if(!$.isNumeric(filter_value[v])) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 2, err_description: rsc_jui_fr.error_invalid_number, elem_filter: getCurrentFilterElement()});
+                    elem.triggerHandler("onValidationError", {err_code: "filter_error_2", err_description: rsc_jui_fr.error_invalid_number, elem_filter: getCurrentFilterElement()});
                     return false;
                 }
             }
@@ -1327,7 +1327,7 @@
                 for(v = 0; v < filter_value_len; v++) {
                     if(moment(filter_value[v], filter.validate_dateformat).isValid() == false) {
                         elem_rule.addClass(rulesListLiErrorClass);
-                        elem.triggerHandler("onValidationError", {err_num: 3, err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: getCurrentFilterElement()});
+                        elem.triggerHandler("onValidationError", {err_code: "filter_error_3", err_description: rsc_jui_fr.error_invalid_datetime, elem_filter: getCurrentFilterElement()});
                         return false;
                     }
                 }
@@ -1356,7 +1356,7 @@
                 }
                 catch(err) {
                     elem_rule.addClass(rulesListLiErrorClass);
-                    elem.triggerHandler("onValidationError", {err_num: 0, err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: getCurrentFilterElement()});
+                    elem.triggerHandler("onValidationError", {err_code: "filter_error_0", err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: getCurrentFilterElement()});
                     return false;
                 }
             }
@@ -1380,7 +1380,7 @@
         // ---------------------------------------------------------------------
         function noValueGiven() {
             elem_rule.addClass(rulesListLiErrorClass);
-            elem.triggerHandler("onValidationError", {err_num: 1, err_description: rsc_jui_fr.error_no_value_given, elem_filter: getCurrentFilterElement()});
+            elem.triggerHandler("onValidationError", {err_code: "filter_error_1", err_description: rsc_jui_fr.error_no_value_given, elem_filter: getCurrentFilterElement()});
         }
 
         // ---------------------------------------------------------------------
