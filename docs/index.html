@@ -666,7 +666,7 @@
     <pre class="brush: js">
     $("#element_id").jui_filter_rules({
         onValidationError: function(event, data) {
-            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+            alert(data["err_description"] + ' (' + data["err_code"] + ')');
             data.elem_filter.focus();
         }
     });
@@ -676,7 +676,7 @@
 
     <pre class="brush: js">
     {
-        err_num: 'n',
+        err_code: 'err_code',
         err_description: 'description',
         elem_filter: 'the filter element as jquery object'
     }
