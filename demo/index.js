@@ -231,7 +231,7 @@ $(function() {
         htmlentities: false,
 
         onValidationError: function(event, data) {
-            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
+            alert(data["err_description"] + ' (' + data["err_code"] + ')');
             data.elem_filter.focus();
         }
 
