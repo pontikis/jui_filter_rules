@@ -13,14 +13,14 @@ class jui_filter_rules {
 	 */
 	var $usePreparedStatements;
 	/**
-	 * @var string rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "PDO", "POSTGRES")
+	 * @var string rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES")
 	 */
 	var $rdbms;
 
 	/**
 	 * @param object $dbcon database connection
 	 * @param bool $use_ps use prepared statements or not
-	 * @param string $db_type rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "PDO", "POSTGRES")
+	 * @param string $db_type rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES")
 	 */
 	public function __construct($dbcon, $use_ps, $db_type) {
 		$this->conn = $dbcon;
@@ -275,7 +275,7 @@ class jui_filter_rules {
 			case "MYSQLi": // ATTENTION - not tested!
 				$res = mysqli_real_escape_string($conn, $str_expr);
 				break;
-			case "PDO": // ATTENTION - not tested!
+			case "MYSQL_PDO": // ATTENTION - not tested!
 				$res = $conn->quote($str_expr);
 				break;
 			case "POSTGRESQL": // ATTENTION - not tested!
