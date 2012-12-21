@@ -278,7 +278,7 @@ class jui_filter_rules {
 			case "MYSQL_PDO": // ATTENTION - not tested!
 				$res = $conn->quote($str_expr);
 				break;
-			case "POSTGRESQL": // ATTENTION - not tested!
+			case "POSTGRES": // ATTENTION - not tested!
 				$res = pg_escape_literal($conn, $str_expr);
 				break;
 		}
