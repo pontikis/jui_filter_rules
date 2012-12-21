@@ -13,5 +13,5 @@ $jfr = new jui_filter_rules($conn, $usePreparedStatements, $rdbms);
 $result = $jfr->parse_rules($rules);
 \endcode
 
-The following RDBMS are suppoterd: "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES"
+The following RDBMS are supported: "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES"
  */
