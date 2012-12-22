@@ -1386,6 +1386,9 @@
         // ---------------------------------------------------------------------
         function getCurrentFilterElement() {
             if(filter_input_type == "checkbox" || filter_input_type == "radio") {
+                if(v == undefined) {
+                    v = 0;
+                }
                 return elem_filter_group[v];
             } else {
                 return elem_filter;
