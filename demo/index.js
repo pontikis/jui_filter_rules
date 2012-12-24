@@ -3,8 +3,8 @@ $(function() {
     var elem_dlg_rules = $("#dlg_rules");
     var elem_dlg_sql = $("#dlg_sql");
     var a_rules;
-    var user_prepered_statements = "yes";
-
+    var use_prepared_statements = "yes";
+    var pst_placeholder = "question_mark";
 
     // detect timezone
     $('#tz_info').html('<strong>Detected timezone: </strong>' + getTimezoneName() + ' ' + getTZoffset());
@@ -268,7 +268,8 @@ $(function() {
                 url: "ajax/ajax_create_sql.php",
                 data: {
                     a_rules: a_rules,
-                    use_ps: user_prepered_statements
+                    use_ps: use_prepared_statements,
+                    pst_placeholder: pst_placeholder
                 },
                 success: function(data) {
                     elem_dlg_sql.html('<pre>' + data + '</pre>');
@@ -295,8 +296,23 @@ $(function() {
     });
 
 
-    $("#create_sql_ps_php").click(function() {
-        user_prepered_statements = "yes";
+    $("#create_sql_ps1_php").click(function() {
+        use_prepared_statements = "yes";
+        pst_placeholder = "question_mark";
+        a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
+        if(a_rules !== false) {
+            if(a_rules.length > 0) {
+                elem_dlg_sql.dialog("open");
+                return false;
+            } else {
+                alert('No rules defined...')
+            }
+        }
+    });
+
+    $("#create_sql_ps2_php").click(function() {
+        use_prepared_statements = "yes";
+        pst_placeholder = "numbered";
         a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
         if(a_rules !== false) {
             if(a_rules.length > 0) {
@@ -309,7 +325,7 @@ $(function() {
     });
 
     $("#create_sql_php").click(function() {
-        user_prepered_statements = "no";
+        use_prepared_statements = "no";
         a_rules = $("#demo_rules1").jui_filter_rules("getRules", 0, []);
         if(a_rules !== false) {
             if(a_rules.length > 0) {
