@@ -4,15 +4,24 @@
 
 jui_filter_rules, helper class for <a href="../../../../docs/">jquery.jui_filter_rules plugin</a>, handles AJAX requests.
 
+Php 5+ required
+
+It is just a helper class. Anyone could write your own code to parse JSON rules.
+
 \section install_sec Usage
 
 \subsection step1 Parse rules to SQL
 To create WHERE SQL from <var>$rules</var> returned from <code>jquery.jui_filter_rules</code>, using an AJAX call
 \code{.php}
-$jfr = new jui_filter_rules($conn, $usePreparedStatements, $rdbms);
+$jfr = new jui_filter_rules($conn, $usePreparedStatements, $pst_placeholder, $rdbms);
 $result = $jfr->parse_rules($rules);
 \endcode
 
 Supported RDMBS: "ADODB", "POSTGRES".\n
 ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql, postgres.
+
+Concerning prepared statements placeholders, two types are supported:\n
+"question_mark" (?) (suitable for ADODB)\n
+"numbered" ($1, $2, ...) (suitable for POSTGRES)
+
  */
