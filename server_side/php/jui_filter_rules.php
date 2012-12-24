@@ -14,7 +14,7 @@ class jui_filter_rules {
 	/**
 	 * @param object $dbcon database connection
 	 * @param bool $use_ps use prepared statements or not
-	 * @param string $pst_placeholder // one of "question_mark", "numbered"
+	 * @param string $pst_placeholder // one of "question_mark" (?), "numbered" ($1, $2, ...)
 	 * @param string $db_type rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES")
 	 */
 	public function __construct($dbcon, $use_ps, $pst_placeholder, $db_type) {
@@ -23,31 +23,6 @@ class jui_filter_rules {
 		$this->rdbms = $db_type;
 		$this->pst_placeholder = $pst_placeholder;
 	}
-
-	public function set_conn($dbcon) {
-		$this->conn = $dbcon;
-	}
-
-	public function get_conn() {
-		return $this->conn;
-	}
-
-	public function set_usePreparedStatements($use_ps) {
-		$this->usePreparedStatements = $use_ps;
-	}
-
-	public function get_usePreparedStatements() {
-		return $this->usePreparedStatements;
-	}
-
-	public function set_rdbms($db) {
-		$this->rdbms = $db;
-	}
-
-	public function get_rdbms() {
-		return $this->rdbms;
-	}
-
 
 	/**
 	 * Parse rules array from given JSON object and returns WHERE SQL clause and bind params array (used on prepared statements)
