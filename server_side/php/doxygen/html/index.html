@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -87,11 +88,12 @@ Parse rules to SQL</h2>
 <p>To create WHERE SQL from <em>$rules</em> returned from <code>jquery.jui_filter_rules</code>, using an AJAX call </p>
 <div class="fragment"><div class="line">$jfr = <span class="keyword">new</span> <a class="code" href="dc/d37/classjui__filter__rules.html">jui_filter_rules</a>($conn, $usePreparedStatements, $rdbms);</div>
 <div class="line">$result = $jfr-&gt;parse_rules($rules);</div>
-</div><!-- fragment --><p>The following RDBMS are supported: "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES" </p>
+</div><!-- fragment --><p>Supported RDMBS: "ADODB", "POSTGRES".<br/>
+ ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql, postgres. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 21 2012 11:59:18 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 24 2012 11:23:50 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

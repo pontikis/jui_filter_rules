@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="../../index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="../../pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="../../annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="../../files.html"><span>Files</span></a></li>
       <li>
@@ -308,16 +309,16 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;ADODB&quot;</span>:</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                $res = <a class="code" href="../../dc/d37/classjui__filter__rules.html#aa8a5a87b9c1a6a0819b88447cbe41877">$conn</a>-&gt;qstr($str_expr);</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQL&quot;</span>: <span class="comment">// \todo MYSQL not tested!</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQL&quot;</span>: </div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                $res = mysql_real_escape_string($str_expr, <a class="code" href="../../dc/d37/classjui__filter__rules.html#aa8a5a87b9c1a6a0819b88447cbe41877">$conn</a>);</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQLi&quot;</span>: <span class="comment">// \todo MYSQLi not tested!</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQLi&quot;</span>: </div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                $res = mysqli_real_escape_string(<a class="code" href="../../dc/d37/classjui__filter__rules.html#aa8a5a87b9c1a6a0819b88447cbe41877">$conn</a>, $str_expr);</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQL_PDO&quot;</span>: <span class="comment">// \todo MYSQL_PDO not tested!</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;MYSQL_PDO&quot;</span>: </div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                $res = <a class="code" href="../../dc/d37/classjui__filter__rules.html#aa8a5a87b9c1a6a0819b88447cbe41877">$conn</a>-&gt;quote($str_expr);</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;POSTGRES&quot;</span>: <span class="comment">// \todo POSTGRES not tested!</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keywordflow">case</span> <span class="stringliteral">&quot;POSTGRES&quot;</span>:</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                $res = pg_escape_literal(<a class="code" href="../../dc/d37/classjui__filter__rules.html#aa8a5a87b9c1a6a0819b88447cbe41877">$conn</a>, $str_expr);</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        }</div>
@@ -328,7 +329,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 21 2012 11:59:18 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 24 2012 11:23:50 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>
