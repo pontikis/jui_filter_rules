@@ -14,12 +14,14 @@ class jui_filter_rules {
 	/**
 	 * @param object $dbcon database connection
 	 * @param bool $use_ps use prepared statements or not
+	 * @param string $pst_placeholder // one of "question_mark", "numbered"
 	 * @param string $db_type rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES")
 	 */
-	public function __construct($dbcon, $use_ps, $db_type) {
+	public function __construct($dbcon, $use_ps, $pst_placeholder, $db_type) {
 		$this->conn = $dbcon;
 		$this->usePreparedStatements = $use_ps;
 		$this->rdbms = $db_type;
+		$this->pst_placeholder = $pst_placeholder;
 	}
 
 	public function set_conn($dbcon) {
@@ -57,6 +59,7 @@ class jui_filter_rules {
 	public function parse_rules($a_rules, $is_group = false) {
 		static $sql;
 		static $bind_params = array();
+		static $bind_param_index = 1;
 		if(is_null($sql)) {
 			$sql = 'WHERE ';
 		}
@@ -83,7 +86,14 @@ class jui_filter_rules {
 							$sql .= '(';
 							$filter_value_len = count($filter_value);
 							for($v = 0; $v < $filter_value_len; $v++) {
-								$sql .= '?';
+								switch($this->pst_placeholder) {
+									case "question_mark":
+										$sql .= '?';
+										break;
+									case "numbered":
+										$sql .= '$' . $bind_param_index;
+										$bind_param_index ++;
+								}
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
 								}
@@ -91,7 +101,14 @@ class jui_filter_rules {
 							}
 							$sql .= ')';
 						} else {
-							$sql .= '?';
+							switch($this->pst_placeholder) {
+								case "question_mark":
+									$sql .= '?';
+									break;
+								case "numbered":
+									$sql .= '$' . $bind_param_index;
+									$bind_param_index ++;
+							}
 							array_push($bind_params, $filter_value_sql);
 						}
 					}
@@ -150,7 +167,7 @@ class jui_filter_rules {
 				} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
 					$res = $a_values[0] . '%';
 				} else if(in_array($operator_type, array("contains", "not_contains"))) {
-					$res = $a_values[0] . '%';
+					$res = '%' . $a_values[0] . '%';
 				} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
 					$res = '%' . $a_values[0];
 				} else if(in_array($operator_type, array("in", "not_in"))) {
@@ -263,13 +280,16 @@ class jui_filter_rules {
 			case "ADODB":
 				$res = $conn->qstr($str_expr);
 				break;
-			case "MYSQL": /** \todo MYSQL not tested! */
+			case "MYSQL":
+				/** \todo MYSQL not tested! */
 				$res = mysql_real_escape_string($str_expr, $conn);
 				break;
-			case "MYSQLi": /** \todo MYSQLi not tested! */
+			case "MYSQLi":
+				/** \todo MYSQLi not tested! */
 				$res = mysqli_real_escape_string($conn, $str_expr);
 				break;
-			case "MYSQL_PDO": /** \todo MYSQL_PDO not tested! */
+			case "MYSQL_PDO":
+				/** \todo MYSQL_PDO not tested! */
 				$res = $conn->quote($str_expr);
 				break;
 			case "POSTGRES":
