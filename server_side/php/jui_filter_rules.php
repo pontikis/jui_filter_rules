@@ -92,7 +92,7 @@ class jui_filter_rules {
 										break;
 									case "numbered":
 										$sql .= '$' . $bind_param_index;
-										$bind_param_index ++;
+										$bind_param_index++;
 								}
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
@@ -107,7 +107,7 @@ class jui_filter_rules {
 									break;
 								case "numbered":
 									$sql .= '$' . $bind_param_index;
-									$bind_param_index ++;
+									$bind_param_index++;
 							}
 							array_push($bind_params, $filter_value_sql);
 						}
