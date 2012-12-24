@@ -13,6 +13,7 @@ define("RDBMS", "ADODB");
 
 $a_rules = $_POST['a_rules'];
 $use_ps = ($_POST['use_ps'] == "yes" ? true : false);
+$pst_placeholder = $_POST['pst_placeholder'];
 
 if(count($a_rules) == 0) {
 	exit;
@@ -78,7 +79,7 @@ if(RDBMS == "ADODB") {
 
 
 // print result
-$jfr = new jui_filter_rules($conn, $use_ps, RDBMS);
+$jfr = new jui_filter_rules($conn, $use_ps, $pst_placeholder, RDBMS);
 $result = $jfr->parse_rules($a_rules);
 
 echo $result['sql'];
