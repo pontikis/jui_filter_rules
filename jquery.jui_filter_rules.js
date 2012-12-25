@@ -281,7 +281,6 @@
             return {
                 filters: [],
 
-                filter_widget_locale: "",
                 decimal_separator: ".",
                 htmlentities: false,
 
@@ -873,7 +872,6 @@
             group_list_class = elem.jui_filter_rules("getOption", "filterGroupListClass"),
             filterGroupListItemHorizontalClass = elem.jui_filter_rules("getOption", "filterGroupListItemHorizontalClass"),
             filterGroupListItemVerticalClass = elem.jui_filter_rules("getOption", "filterGroupListItemVerticalClass"),
-            filter_widget_locale = elem.jui_filter_rules("getOption", "filter_widget_locale"),
             f_html = '';
 
         if(operator.accept_values !== "yes") {
@@ -1065,15 +1063,13 @@
 
                 if(filter_widget == "datepicker") {
                     elem_filter.datepicker(
-                        filter_widget_properties,
-                        $.datepicker.regional[ filter_widget_locale ]
+                        filter_widget_properties
                     );
                 }
                 if(filter_widget == "datetimepicker") {
                     elem_filter.datetimepicker(
-                        filter_widget_properties,
-                        $.datepicker.regional[ filter_widget_locale ],
-                        $.timepicker.regional[ filter_widget_locale ]);
+                        filter_widget_properties
+                    );
                 }
 
                 if(filter_widget == "autocomplete") {
