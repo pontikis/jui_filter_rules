@@ -15,6 +15,15 @@ To create WHERE SQL from <var>$rules</var> returned from <code>jquery.jui_filter
 \code{.php}
 $jfr = new jui_filter_rules($conn, $usePreparedStatements, $pst_placeholder, $rdbms);
 $result = $jfr->parse_rules($rules);
+
+$last_error = $jfr->get_last_error();
+if(!is_null($last_error['error_message'])) {
+	$whereSQL = $result['sql'];
+	$a_bind_parmas = $result['bind_parmas'];
+} else {
+    echo 'Error occured ' . $last_error['error_message'] . ' at rule element ' . $last_error['element_rule_id'];
+}
+
 \endcode
 
 Supported RDMBS: "ADODB", "POSTGRES".\n

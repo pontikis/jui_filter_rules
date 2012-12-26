@@ -90,6 +90,14 @@ Parse rules to SQL</h2>
 <p>To create WHERE SQL from <em>$rules</em> returned from <code>jquery.jui_filter_rules</code>, using an AJAX call </p>
 <div class="fragment"><div class="line">$jfr = <span class="keyword">new</span> <a class="code" href="dc/d37/classjui__filter__rules.html">jui_filter_rules</a>($conn, $usePreparedStatements, $pst_placeholder, $rdbms);</div>
 <div class="line">$result = $jfr-&gt;parse_rules($rules);</div>
+<div class="line"></div>
+<div class="line">$last_error = $jfr-&gt;get_last_error();</div>
+<div class="line"><span class="keywordflow">if</span>(!is_null($last_error[<span class="stringliteral">&#39;error_message&#39;</span>])) {</div>
+<div class="line">    $whereSQL = $result[<span class="stringliteral">&#39;sql&#39;</span>];</div>
+<div class="line">    $a_bind_parmas = $result[<span class="stringliteral">&#39;bind_parmas&#39;</span>];</div>
+<div class="line">} <span class="keywordflow">else</span> {</div>
+<div class="line">    echo <span class="stringliteral">&#39;Error occured &#39;</span> . $last_error[<span class="stringliteral">&#39;error_message&#39;</span>] . <span class="stringliteral">&#39; at rule element &#39;</span> . $last_error[<span class="stringliteral">&#39;element_rule_id&#39;</span>];</div>
+<div class="line">}</div>
 </div><!-- fragment --><p>Supported RDMBS: "ADODB", "POSTGRES".<br/>
  ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql, postgres.</p>
 <p>Concerning prepared statements placeholders, two types are supported:<br/>
@@ -98,7 +106,7 @@ Parse rules to SQL</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 24 2012 20:27:33 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Dec 26 2012 17:32:00 for jui_filter_rules by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>
