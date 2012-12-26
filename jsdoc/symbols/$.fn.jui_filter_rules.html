@@ -268,7 +268,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.clearRules">clearRules</a></b>()
+								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.clearAllRules">clearAllRules</a></b>()
 								</div>
 								<div class="description">Clear rules</div>
 							</td>
@@ -331,9 +331,36 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.markRulesAsApplied">markRulesAsApplied</a></b>()
+								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.markAllRulesAsApplied">markAllRulesAsApplied</a></b>()
 								</div>
-								<div class="description">Mark rules as applied</div>
+								<div class="description">Mark all rules as applied</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.markRuleAsApplied">markRuleAsApplied</a></b>(element_rule_id, status)
+								</div>
+								<div class="description">Mark rule as applied</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.markRuleAsError">markRuleAsError</a></b>(element_rule_id, status)
+								</div>
+								<div class="description">Mark rule as error</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">$.fn.jui_filter_rules.<b><a href="../symbols/%24.fn.jui_filter_rules.html#.markRuleAsPending">markRuleAsPending</a></b>(element_rule_id)
+								</div>
+								<div class="description">Mark rule as pending</div>
 							</td>
 						</tr>
 					
@@ -414,11 +441,11 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name=".clearRules"> </a>
+					<a name=".clearAllRules"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">$.fn.jui_filter_rules.</span><b>clearRules</b>()
+					<span class="light">$.fn.jui_filter_rules.</span><b>clearAllRules</b>()
 					
 					</div>
 					<div class="description">
@@ -426,6 +453,10 @@ ul.inheritsList
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">$(element).jui_filter_rules("clearAllRules");</pre>
 					
 					
 					
@@ -683,21 +714,157 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name=".markRulesAsApplied"> </a>
+					<a name=".markAllRulesAsApplied"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">$.fn.jui_filter_rules.</span><b>markRulesAsApplied</b>()
+					<span class="light">$.fn.jui_filter_rules.</span><b>markAllRulesAsApplied</b>()
 					
 					</div>
 					<div class="description">
-						Mark rules as applied
+						Mark all rules as applied
 						
 						
 					</div>
 					
 					
 					
+					<pre class="code">$(element).jui_filter_rules("markAllRulesAsApplied");</pre>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".markRuleAsApplied"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">$.fn.jui_filter_rules.</span><b>markRuleAsApplied</b>(element_rule_id, status)
+					
+					</div>
+					<div class="description">
+						Mark rule as applied
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">$(element).jui_filter_rules("markRuleAsApplied", "element_rule_id", true);</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>element_rule_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>status</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".markRuleAsError"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">$.fn.jui_filter_rules.</span><b>markRuleAsError</b>(element_rule_id, status)
+					
+					</div>
+					<div class="description">
+						Mark rule as error
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">$(element).jui_filter_rules("markRuleAsError", "element_rule_id", true);</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>element_rule_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>status</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".markRuleAsPending"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">$.fn.jui_filter_rules.</span><b>markRuleAsPending</b>(element_rule_id)
+					
+					</div>
+					<div class="description">
+						Mark rule as pending
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">$(element).jui_filter_rules("markRuleAsPending", "element_rule_id");</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>element_rule_id</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -808,7 +975,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Dec 25 2012 19:26:00 GMT+0200 (EET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Dec 26 2012 13:17:44 GMT+0200 (EET)
 		</div>
 	</body>
 </html>

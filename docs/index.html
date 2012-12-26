@@ -43,6 +43,12 @@
     <p>jui_filter_rules is a jQuery plugin, useful to create dataset filter
         rules as JSON object and the relevant WHERE SQL.
 
+    <p>As a javascript control, it can be integrated with any server-side
+        technology (e.g. PHP, Perl, ASP, JSP and more) and any Database.
+
+    <p><a href="../server_side/php/doxygen/html">A helper PHP jui_datagrid class</a> is available. It can parse rules to SQL, supporting: "ADODB", "POSTGRES". ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql, postgres.
+
+
     <p>Compatible with modern web browsers.
         <br/>Tested with: Google Chrome, Mozilla
         Firefox, Microsoft Internet Explorer (>= 8, MSIE >=9 recommended),
@@ -84,6 +90,8 @@
             href="https://github.com/pontikis/jui_filter_rules/blob/master/CHANGELOG.md">here</a>
 
     <p>DEMO <a href="http://pontikis.net/jui_filter_rules/demo/">http://pontikis.net/jui_filter_rules/demo/</a>
+
+    <p>FORUM <a href="http://bbs.pontikis.net">http://bbs.pontikis.net</a>
 
     <p>
         <small>Syntax highlight using <a
@@ -640,19 +648,44 @@
     </pre>
 </div>
 
-<h3>markRulesAsApplied</h3>
+
+<h3>markRuleAsApplied</h3>
 
 <div class="level3">
     <pre class="brush: js">
-    $("#element_id").jui_filter_rules('markRulesAsApplied');
+    $("#element_id").jui_filter_rules('markAllRulesAsApplied', 'rule_element_id', true);
     </pre>
 </div>
 
-<h3>clearRules</h3>
+<h3>markRuleAsError</h3>
 
 <div class="level3">
     <pre class="brush: js">
-    $("#element_id").jui_filter_rules('clearRules');
+    $("#element_id").jui_filter_rules('markRuleAsError', 'rule_element_id', true);
+    </pre>
+</div>
+
+<h3>markRuleAsPending</h3>
+
+<div class="level3">
+    <pre class="brush: js">
+    $("#element_id").jui_filter_rules('markRuleAsPending', 'rule_element_id');
+    </pre>
+</div>
+
+<h3>markAllRulesAsApplied</h3>
+
+<div class="level3">
+    <pre class="brush: js">
+    $("#element_id").jui_filter_rules('markAllRulesAsApplied');
+    </pre>
+</div>
+
+<h3>clearAllRules</h3>
+
+<div class="level3">
+    <pre class="brush: js">
+    $("#element_id").jui_filter_rules('clearAllRules');
     </pre>
 </div>
 
