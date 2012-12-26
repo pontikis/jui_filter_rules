@@ -477,6 +477,7 @@
 
         /**
          * Mark rule as applied
+         * @example $(element).jui_filter_rules("markRuleAsApplied", "element_rule_id", true);
          *
          * @param element_rule_id
          * @param status
@@ -494,6 +495,7 @@
 
         /**
          * Mark rule as error
+         * @example $(element).jui_filter_rules("markRuleAsError", "element_rule_id", true);
          *
          * @param element_rule_id
          * @param status
@@ -512,6 +514,7 @@
 
         /**
          * Mark rule as pending
+         * @example $(element).jui_filter_rules("markRuleAsPending", "element_rule_id");
          *
          * @param element_rule_id
          */
@@ -528,6 +531,7 @@
 
         /**
          * Mark all rules as applied
+         * @example $(element).jui_filter_rules("markAllRulesAsApplied");
          */
         markAllRulesAsApplied: function() {
             var elem = this,
@@ -549,8 +553,9 @@
 
         /**
          * Clear rules
+         * @example $(element).jui_filter_rules("clearAllRules");
          */
-        clearRules: function() {
+        clearAllRules: function() {
             var elem = this,
                 container_id = elem.attr("id");
 
