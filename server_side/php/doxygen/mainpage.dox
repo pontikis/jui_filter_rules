@@ -17,7 +17,7 @@ $jfr = new jui_filter_rules($conn, $usePreparedStatements, $pst_placeholder, $rd
 $result = $jfr->parse_rules($rules);
 
 $last_error = $jfr->get_last_error();
-if(!is_null($last_error['error_message'])) {
+if(is_null($last_error['error_message'])) {
 	$whereSQL = $result['sql'];
 	$a_bind_parmas = $result['bind_parmas'];
 } else {
