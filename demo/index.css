@@ -12,6 +12,12 @@
     font-family: "courier new";
 }
 
+#dlg_sql li {
+    padding-bottom: 10px;
+    font-size: 12px;
+    font-family: "courier new";
+}
+
 /* demo_rules1 --------------------------------------------------------------- */
 .demo_rules1_container {
     padding: 5px 10px 10px 10px;

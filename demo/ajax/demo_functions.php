@@ -44,9 +44,6 @@ function date_encode($str_user_timezone,
 		$date = new DateTime('', new DateTimeZone($str_user_timezone));
 	} else {
 		$date = DateTime::createFromFormat($str_user_dateformat, $str_user_datetime, new DateTimeZone($str_user_timezone));
-		if($date === false) {
-			trigger_error('date_encode: Invalid date', E_USER_ERROR);
-		}
 	}
 
 	// convert given datetime to safe format for strtotime

@@ -82,10 +82,12 @@ if(RDBMS == "ADODB") {
 $jfr = new jui_filter_rules($conn, $use_ps, $pst_placeholder, RDBMS);
 $result = $jfr->parse_rules($a_rules);
 
-echo $result['sql'];
-if($use_ps) {
-	echo str_repeat(PHP_EOL, 3);
-	echo 'bind params: ' . PHP_EOL;
-	print_r($result['bind_params']);
+$last_error = $jfr->get_last_error();
+
+if(!is_null($last_error['error_message'])) {
+	$result['error'] = $last_error;
 }
+
+echo json_encode($result);
+
 ?>

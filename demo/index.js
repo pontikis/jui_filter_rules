@@ -111,7 +111,7 @@ $(function() {
                 validate_dateformat: ["DD/MM/YYYY"],
                 filter_value_conversion_server_side: {
                     function_name: "date_encode",
-                    args: ["Europe/Athens", "d/m/Y"]
+                    args: ["Europe/rrrAthens", "d/m/Y"]
                 }
             },
             {
@@ -231,7 +231,9 @@ $(function() {
 
         onValidationError: function(event, data) {
             alert(data["err_description"] + ' (' + data["err_code"] + ')');
-            data.elem_filter.focus();
+            if(data.hasOwnProperty("elem_filter")) {
+                data.elem_filter.focus();
+            }
         }
 
     });
@@ -271,7 +273,26 @@ $(function() {
                     pst_placeholder: pst_placeholder
                 },
                 success: function(data) {
-                    elem_dlg_sql.html('<pre>' + data + '</pre>');
+                    var a_data = $.parseJSON(data);
+                    var dlg_html = '';
+
+                    if(a_data.hasOwnProperty("error")) {
+                        elem_dlg_sql.dialog("close");
+                        $("#demo_rules1").jui_filter_rules("markRuleAsError", a_data["error"]["element_rule_id"], true);
+                        $("#demo_rules1").triggerHandler("onValidationError",
+                            {
+                                err_code: "filter_error_server_side",
+                                err_description: "Server error during filter converion..." + '\n\n' + a_data["error"]["error_message"]
+                            }
+                        );
+                    } else {
+                        dlg_html = '<pre><ul>';
+                        dlg_html += '<li>SQL: \n\n' + a_data["sql"];
+                        dlg_html += '<li>\nBind params: \n\n' + JSON.stringify(a_data["bind_params"], null, '    ');
+                        dlg_html += '</ul></pre>';
+                        elem_dlg_sql.html(dlg_html);
+                    }
+
                 }
             });
         }
@@ -286,12 +307,12 @@ $(function() {
     });
 
     $("#mark_rules_as_applied").click(function() {
-        $("#demo_rules1").jui_filter_rules("markRulesAsApplied");
+        $("#demo_rules1").jui_filter_rules("markAllRulesAsApplied");
     });
 
 
     $("#clear_rules").click(function() {
-        $("#demo_rules1").jui_filter_rules("clearRules");
+        $("#demo_rules1").jui_filter_rules("clearAllRules");
     });
 
 
