@@ -46,7 +46,10 @@
     <p>As a javascript control, it can be integrated with any server-side
         technology (e.g. PHP, Perl, ASP, JSP and more) and any Database.
 
-    <p><a href="../server_side/php/doxygen/html">A helper PHP jui_datagrid class</a> is available. It can parse rules to SQL, supporting: "ADODB", "POSTGRES". ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql, postgres.
+    <p><a href="../server_side/php/doxygen/html">A helper PHP jui_datagrid
+        class</a> is available. It can parse rules to SQL, supporting: "ADODB",
+        "POSTGRES". ADODB drivers tested: mysql, mysqlt, mysqli, pdo_mysql,
+        postgres.
 
 
     <p>Compatible with modern web browsers.
@@ -124,7 +127,8 @@
 <div class="level2">
     <ul>
         <li>Create rules as JSON object
-        <li>Create 'WHERE SQL' parsing rules JSON object using Prepared Statements
+        <li>Create 'WHERE SQL' parsing rules JSON object using Prepared
+            Statements
             or not (available for php)
         <li>Support nested filter groups
         <li>Restrict operators per filter
@@ -242,6 +246,44 @@
 
 </div>
 
+<!-- User functions -------------------------------------------------------- -->
+<h2>User functions</h2>
+
+<div class="level2">
+    <p>Use can set custom functions for filter value conversion either
+        javascript or server side functions.
+        These functions must have filter value as <strong>LAST</strong>
+        argument.
+        Arguments can be passed as an array, which will NOT contain 'filter
+        value', as it will be added automatically by
+        <code>jui_filter_rules</code> plugin.</p>
+
+    <p>Example of javascript user function</p>
+        <pre class="brush: js">
+        filters: [
+            {
+                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                filter_value_conversion: {
+                    function_name: "user javascript function",
+                    args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
+                }
+            }
+        ];
+        </pre>
+
+    <p>Example of server-side user function</p>
+        <pre class="brush: js">
+        filters: [
+            {
+                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
+                filter_value_conversion_server_side: {
+                    function_name: "user function executed on server",
+                    args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
+                }
+            }
+        ];
+        </pre>
+</div>
 
 <!-- Usage ----------------------------------------------------------------- -->
 <h2>Usage</h2>
