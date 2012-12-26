@@ -188,10 +188,7 @@
                             elem_filters_list.prop("selectedIndex", 0);
                             elem_operators_container.html('');
                             elem_filter_value_container.html('');
-
-                            $(this).closest("li").removeClass(rulesListLiErrorClass);
-                            $(this).closest("li").removeClass(rulesListLiAppliedClass);
-
+                            elem.jui_filter_rules("markRuleAsPending", $(this).closest("li").attr("id"));
                             break;
                         case "rule_delete":
                             $(this).closest("li").remove();
@@ -212,7 +209,9 @@
                 selector = '[id^="' + group_condition_id_prefix + '"]';
                 elem.off('change', selector).on('change', selector, function() {
                     // unmark applied rules
-                    $(this).closest("dl").find("li").removeClass(rulesListLiAppliedClass);
+                    $(this).closest("dl").find("li").each(function() {
+                        elem.jui_filter_rules("markRuleAsApplied", $(this).attr("id"), false);
+                    });
                 });
 
                 // change filter
@@ -238,8 +237,7 @@
                         elem_filter_value_container.html('');
                     }
 
-                    $(this).closest("li").removeClass(rulesListLiErrorClass);
-                    $(this).closest("li").removeClass(rulesListLiAppliedClass);
+                    elem.jui_filter_rules("markRuleAsPending", $(this).closest("li").attr("id"));
                 });
 
                 // change operator
@@ -264,9 +262,7 @@
                             create_filter_value(container_id, rule_id, elem_filters_list.val(), elem_operators_list.val());
                         }
                     }
-
-                    $(this).closest("li").removeClass(rulesListLiErrorClass);
-                    $(this).closest("li").removeClass(rulesListLiAppliedClass);
+                    elem.jui_filter_rules("markRuleAsPending", $(this).closest("li").attr("id"));
                 });
             });
 
@@ -435,6 +431,7 @@
                     }
 
                     rule_id = $(group_rule).attr("id").substr(rule_li_id_prefix_len);
+                    current_rule.element_rule_id = $(group_rule).attr("id");
                     current_rule.condition = {};
 
                     filter_name = $(group_rule).find("select:first").val();
@@ -479,9 +476,60 @@
         },
 
         /**
-         * Mark rules as applied
+         * Mark rule as applied
+         *
+         * @param element_rule_id
+         * @param status
          */
-        markRulesAsApplied: function() {
+        markRuleAsApplied: function(element_rule_id, status) {
+            var elem = this,
+                elem_rule = $("#" + element_rule_id),
+                rulesListLiAppliedClass = elem.jui_filter_rules("getOption", "rulesListLiAppliedClass");
+            if(status) {
+                elem_rule.addClass(rulesListLiAppliedClass);
+            } else {
+                elem_rule.removeClass(rulesListLiAppliedClass);
+            }
+        },
+
+        /**
+         * Mark rule as error
+         *
+         * @param element_rule_id
+         * @param status
+         */
+        markRuleAsError: function(element_rule_id, status) {
+            var elem = this,
+                elem_rule = $("#" + element_rule_id),
+                rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass");
+            if(status) {
+                elem_rule.addClass(rulesListLiErrorClass);
+            } else {
+                elem_rule.removeClass(rulesListLiErrorClass);
+            }
+        },
+
+
+        /**
+         * Mark rule as pending
+         *
+         * @param element_rule_id
+         */
+        markRuleAsPending: function(element_rule_id) {
+            var elem = this,
+                elem_rule = $("#" + element_rule_id),
+                rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
+                rulesListLiAppliedClass = elem.jui_filter_rules("getOption", "rulesListLiAppliedClass");
+
+            elem_rule.removeClass(rulesListLiErrorClass);
+            elem_rule.removeClass(rulesListLiAppliedClass);
+
+        },
+
+        /**
+         * Mark all rules as applied
+         */
+        markAllRulesAsApplied: function() {
             var elem = this,
                 rulesListLiErrorClass = elem.jui_filter_rules("getOption", "rulesListLiErrorClass"),
                 rulesListLiAppliedClass = elem.jui_filter_rules("getOption", "rulesListLiAppliedClass"),
@@ -491,8 +539,8 @@
                 if(a_rules.length > 0) {
                     elem.find("li").each(function() {
                         if($(this).find("select:first").prop("selectedIndex") > 0) {
-                            $(this).removeClass(rulesListLiErrorClass);
-                            $(this).addClass(rulesListLiAppliedClass);
+                            elem.jui_filter_rules("markRuleAsError", $(this).attr("id"), false);
+                            elem.jui_filter_rules("markRuleAsApplied", $(this).attr("id"), true);
                         }
                     })
                 }
