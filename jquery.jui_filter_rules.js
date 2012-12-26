@@ -432,8 +432,8 @@
 
                     rule_id = $(group_rule).attr("id").substr(rule_li_id_prefix_len);
                     current_rule.element_rule_id = $(group_rule).attr("id");
-                    current_rule.condition = {};
 
+                    current_rule.condition = {};
                     filter_name = $(group_rule).find("select:first").val();
                     current_filter = remove_obj_empty_props(getFilterByName(container_id, filter_name));
                     filter_operator = $(group_rule).find("select").eq(1).val();
