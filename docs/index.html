@@ -247,7 +247,7 @@
 </div>
 
 <!-- User functions -------------------------------------------------------- -->
-<h2>User functions</h2>
+<h2>User functions (filter value conversion)</h2>
 
 <div class="level2">
     <p>Use can set custom functions for filter value conversion either
@@ -260,28 +260,25 @@
 
     <p>Example of javascript user function</p>
         <pre class="brush: js">
-        filters: [
-            {
-                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                filter_value_conversion: {
-                    function_name: "user javascript function",
-                    args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
-                }
-            }
-        ];
+        filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
+        ...
+        filter_value_conversion: {
+            function_name: "local_date_to_UTC_timestamp",
+            args: ["DD/MM/YYYY HH:mm:ss"]
+        }
+    }
         </pre>
 
     <p>Example of server-side user function</p>
         <pre class="brush: js">
-        filters: [
-            {
-                filterName: "Lastname", "filterType": "text", field: "lastname", filterLabel: "Last name",
-                filter_value_conversion_server_side: {
-                    function_name: "user function executed on server",
-                    args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
-                }
+        {
+            filterName: "DateInserted", "filterType": "date", field: "date_inserted", filterLabel: "Date inserted",
+            ...
+            filter_value_conversion_server_side: {
+                function_name: "date_encode",
+                args: ["Europe/Athens", "d/m/Y"]
             }
-        ];
+        }
         </pre>
 </div>
 
