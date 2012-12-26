@@ -7,7 +7,13 @@ $(function() {
     var pst_placeholder = "question_mark";
 
     // detect timezone
-    $('#tz_info').html('<strong>Detected timezone: </strong>' + getTimezoneName() + ' ' + getTZoffset());
+    $.ajax({
+        type: 'POST',
+        url: "ajax/ajax_get_server_timezone.php",
+        success: function(data) {
+            $('#tz_info').html('<strong>SERVER timezone: </strong>' + data + ' <strong>Detected USER timezone: </strong>' + getTimezoneName() + ' ' + getTZoffset());
+        }
+    });
 
     // theme switcher ----------------------------------------------------------
     $("#ui-theme-switcher").change(function() {
