@@ -1404,7 +1404,7 @@
                     filter_value[v] = window[conversion_function].apply(null, conversion_args);
                 }
                 catch(err) {
-                    elem_rule.addClass(rulesListLiErrorClass);
+                    elem.jui_filter_rules("markRuleAsError", elem_rule.attr("id"), true);
                     elem.triggerHandler("onValidationError", {err_code: "filter_error_0", err_description: rsc_jui_fr.error_converting_value + ':\n\n' + err.message, elem_filter: getCurrentFilterElement()});
                     return false;
                 }
