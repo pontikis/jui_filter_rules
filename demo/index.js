@@ -111,7 +111,7 @@ $(function() {
                 validate_dateformat: ["DD/MM/YYYY"],
                 filter_value_conversion_server_side: {
                     function_name: "date_encode",
-                    args: ["Europe/rrrAthens", "d/m/Y"]
+                    args: ["Europe/Athens", "d/m/Y"]
                 }
             },
             {
