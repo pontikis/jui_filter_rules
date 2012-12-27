@@ -19,6 +19,7 @@ Release 1.00 (14 Dec 2012)
 * Filter types: text, number, date
 * Supported form elements: input (text, radio, checkbox), select
 * Supported widgets: jquery ui autocomplete, slider, spinner, datepicker (and timepicker by Trent Richardson)
+* Filter default value supported
 * Filter value validation
 * Filter value conversion using javascript (or server side) function
 * Localization
