@@ -117,7 +117,10 @@ $(function() {
                 validate_dateformat: ["DD/MM/YYYY"],
                 filter_value_conversion_server_side: {
                     function_name: "date_encode",
-                    args: ["Europe/Athens", "d/m/Y"]
+                    args: [
+                        {"filter_value": "yes"},
+                        {"value": "d/m/Y"}
+                    ]
                 }
             },
             {
@@ -142,8 +145,11 @@ $(function() {
                 ],
                 validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
                 filter_value_conversion: {
-                    function_name: "local_date_to_UTC_timestamp",
-                    args: ["DD/MM/YYYY HH:mm:ss"]
+                    function_name: "local_datetime_to_UTC_timestamp",
+                    args: [
+                        {"filter_value": "yes"},
+                        {"value": "DD/MM/YYYY HH:mm:ss"}
+                    ]
                 }
             },
             {
@@ -372,11 +378,11 @@ $(function() {
  *     var date = $.datepicker.parseDateTime(dateformat, timeformat, date_str);
  *
  * @see http://stackoverflow.com/questions/948532/how-do-you-convert-a-javascript-date-to-utc
- * @param dateformat
  * @param date_str
+ * @param dateformat
  * @return {String}
  */
-function local_date_to_UTC_timestamp(dateformat, date_str) {
+function local_datetime_to_UTC_timestamp(date_str, dateformat) {
 
     // avoid date overflow in user input (moment("14/14/2005", "DD/MM/YYYY") => Tue Feb 14 2006)
     if(moment(date_str, dateformat).isValid() == false) {

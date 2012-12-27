@@ -13,7 +13,7 @@ require_once '../lib/adodb_5.18a/adodb.inc.php';
 
 
 // connect to database
-$dsn = $mysql_driver . '://' . $mysql_user . ':' . rawurlencode($mysql_passwd) . '@' . $mysql_server . '/' . $mysql_db . '?fetchmode=' . ADODB_FETCH_ASSOC;
+$dsn = $adodb_driver . '://' . $db_user . ':' . rawurlencode($db_passwd) . '@' . $db_server . '/' . $db_name . '?fetchmode=' . ADODB_FETCH_ASSOC;
 $conn = NewADOConnection($dsn);
 $conn->execute('SET NAMES UTF8');
 
