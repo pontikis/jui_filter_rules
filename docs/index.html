@@ -167,7 +167,71 @@
 </div>
 
 <!-- Operators ------------------------------------------------------------- -->
-<h2>Filter types and Operators</h2>
+<h2>Example of Rules returned (JSON)</h2>
+
+<div class="level2">
+    <pre class="brush: js">
+    [
+        {
+            "element_rule_id": "rule_demo_rules1_1",
+            "condition": {
+                "filterType": "text",
+                "field": "lastname",
+                "operator": "equal",
+                "filterValue": [
+                    "Smith"
+                ]
+            },
+            "logical_operator": "AND"
+        },
+        {
+            "element_rule_id": "rule_demo_rules1_2",
+            "condition": {
+                "filterType": "number",
+                "field": "age",
+                "operator": "less",
+                "filterValue": [
+                    "60"
+                ]
+            },
+            "logical_operator": "AND"
+        },
+        {
+            "condition": [
+                {
+                    "element_rule_id": "rule_demo_rules1_3",
+                    "condition": {
+                        "filterType": "date",
+                        "field": "date_updated",
+                        "operator": "greater",
+                        "filterValue": [
+                            "20121212122920"
+                        ]
+                    },
+                    "logical_operator": "OR"
+                },
+                {
+                    "element_rule_id": "rule_demo_rules1_4",
+                    "condition": {
+                        "filterType": "date",
+                        "field": "date_updated",
+                        "operator": "less_or_equal",
+                        "filterValue": [
+                            "20100510082929"
+                        ]
+                    },
+                    "logical_operator": "OR"
+                }
+            ],
+            "logical_operator": "AND"
+        }
+    ]
+    </pre>
+
+</div>
+
+<!-- Operators ------------------------------------------------------------- -->
+<h2>Supported Filter types and Operators</h2>
 
 <div class="level2">
     <pre class="brush: js">
@@ -201,7 +265,7 @@
 
 
 <!-- Available filter options ---------------------------------------------- -->
-<h2>Filter options</h2>
+<h2>Filter options synopsis</h2>
 
 <div class="level2">
     <pre class="brush: js">
@@ -235,11 +299,11 @@
             validate_dateformat: ["DD/MM/YYYY"], // date validation using momentjs.com
             filter_value_conversion: {
                 function_name: "user javascript function",
-                args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
+                args: [obj_arg1, obj_arg2, obj_argn]
             },
             filter_value_conversion_server_side: {
                 function_name: "user function executed on server",
-                args: [arg1, arg2, argn]  // user function arguments array, except filter value, which will become the LAST argument
+                args: [obj_arg1, obj_arg2, obj_argn]
             }
         }
     ];
@@ -252,20 +316,25 @@
 
 <div class="level2">
     <p>Use can set custom functions for filter value conversion either
-        javascript or server side functions.
-        These functions must have filter value as <strong>LAST</strong>
-        argument.
-        Arguments can be passed as an array, which will NOT contain 'filter
-        value', as it will be added automatically by
-        <code>jui_filter_rules</code> plugin.</p>
+        javascript or server side functions.</p>
+
+    <p>Arguments can be passed as an array of objects. Each argument object can contain:</p>
+
+    <ul>
+        <li>a direct value: <code>{"value": "DD/MM/YYYY"}</code></li>
+        <li>or the filter value: <code>{"filter_value": "yes"}</code></li>
+    </ul>
 
     <p>Example of javascript user function</p>
         <pre class="brush: js">
         filterName: "DateUpdated", "filterType": "date", field: "date_updated", filterLabel: "Datetime updated",
         ...
         filter_value_conversion: {
-            function_name: "local_date_to_UTC_timestamp",
-            args: ["DD/MM/YYYY HH:mm:ss"]
+            function_name: "local_datetime_to_UTC_timestamp",
+            args: [
+                {"filter_value": "yes"},
+                {"value": "DD/MM/YYYY HH:mm:ss"}
+            ]
         }
     }
         </pre>
@@ -277,7 +346,10 @@
             ...
             filter_value_conversion_server_side: {
                 function_name: "date_encode",
-                args: ["Europe/Athens", "d/m/Y"]
+                args: [
+                    {"filter_value": "yes"},
+                    {"value": "d/m/Y"}
+                ]
             }
         }
         </pre>
@@ -407,7 +479,10 @@
                 validate_dateformat: ["DD/MM/YYYY"],
                 filter_value_conversion_server_side: {
                     function_name: "date_encode",
-                    args: ["Europe/Athens", "d/m/Y"]
+                    args: [
+                        {"filter_value": "yes"},
+                        {"value": "d/m/Y"}
+                    ]
                 }
             },
             {
@@ -432,8 +507,11 @@
                 ],
                 validate_dateformat: ["DD/MM/YYYY HH:mm:ss"],
                 filter_value_conversion: {
-                    function_name: "local_date_to_UTC_timestamp",
-                    args: ["DD/MM/YYYY HH:mm:ss"]
+                    function_name: "local_datetime_to_UTC_timestamp",
+                    args: [
+                        {"filter_value": "yes"},
+                        {"value": "DD/MM/YYYY HH:mm:ss"}
+                    ]
                 }
             },
             {
@@ -521,9 +599,15 @@
             }
         ],
 
+        decimal_separator: ".",
+
+        htmlentities: false,
+
         onValidationError: function(event, data) {
-            alert(data["err_description"] + ' (error: ' + data["err_num"] + ')');
-            data.elem_filter.focus();
+            alert(data["err_description"] + ' (' + data["err_code"] + ')');
+            if(data.hasOwnProperty("elem_filter")) {
+                data.elem_filter.focus();
+            }
         }
 
     });
@@ -750,7 +834,7 @@
     {
         err_code: 'err_code',
         err_description: 'description',
-        elem_filter: 'the filter element as jquery object'
+        elem_filter: 'the filter element as jquery object' // optional
     }
     </pre>
 </div>
