@@ -342,7 +342,7 @@
         /**
          * Get any option set to plugin using its name (as string)
          * @example $(element).jui_filter_rules('getOption', some_option);
-         * @param opt
+         * @param {String} opt
          * @return {*}
          */
         getOption: function(opt) {
@@ -363,9 +363,9 @@
         /**
          * Set option
          * @example $(element).jui_filter_rules('setOption', 'option_name',  'option_value',  reinit);
-         * @param opt {string} option names
+         * @param {String} opt option name
          * @param val
-         * @param reinit {boolean}
+         * @param {Boolean} reinit
          */
         setOption: function(opt, val, reinit) {
             var elem = this;
@@ -401,9 +401,9 @@
         /**
          * Get rules
          * @example $(element).jui_filter_rules("getRules", 0, []);
-         * @param rules_group_index (Number} the index of rules group
-         * @param a_rules {Array} rules array
-         * @return {*} rules array of false (on validation error)
+         * @param {Number} rules_group_index  The index of rules group
+         * @param {Array} a_rules Rules array
+         * @return {*} rules array or false (on validation error)
          */
         getRules: function(rules_group_index, a_rules) {
             var elem = this,
@@ -479,8 +479,8 @@
          * Mark rule as applied
          * @example $(element).jui_filter_rules("markRuleAsApplied", "element_rule_id", true);
          *
-         * @param element_rule_id
-         * @param status
+         * @param {String} element_rule_id
+         * @param {Boolean} status
          */
         markRuleAsApplied: function(element_rule_id, status) {
             var elem = this,
@@ -497,8 +497,8 @@
          * Mark rule as error
          * @example $(element).jui_filter_rules("markRuleAsError", "element_rule_id", true);
          *
-         * @param element_rule_id
-         * @param status
+         * @param {String} element_rule_id
+         * @param {Boolean} status
          */
         markRuleAsError: function(element_rule_id, status) {
             var elem = this,
@@ -516,7 +516,7 @@
          * Mark rule as pending
          * @example $(element).jui_filter_rules("markRuleAsPending", "element_rule_id");
          *
-         * @param element_rule_id
+         * @param {String} element_rule_id
          */
         markRuleAsPending: function(element_rule_id) {
             var elem = this,
@@ -1294,7 +1294,7 @@
             dc_regex_pattern = new RegExp(RegExp_escape(decimal_separator), "g"),
             htmlentities = elem.jui_filter_rules("getOption", "htmlentities"),
             elem_filter, filter_value = [], filter_value_len, v, elem_filter_group = [],
-            filter_value_conversion, conversion_function = "", conversion_args = [], arg_len, a;
+            filter_value_conversion, conversion_function = "", args, conversion_args = [], arg_len, a;
 
         elem_rule.removeClass(rulesListLiErrorClass);
 
@@ -1387,19 +1387,23 @@
         if(filter.hasOwnProperty("filter_value_conversion")) {
             filter_value_conversion = filter.filter_value_conversion;
             conversion_function = filter_value_conversion["function_name"];
-            arg_len = filter_value_conversion["args"].length;
-            for(a = 0; a < arg_len; a++) {
-                conversion_args.push(filter_value_conversion["args"][a]);
-            }
+            args = filter_value_conversion["args"];
+            arg_len = args.length;
 
             filter_value_len = filter_value.length;
             for(v = 0; v < filter_value_len; v++) {
-                if(v == 0) {
-                    conversion_args.push(filter_value[v]);
-                } else {
-                    arg_len = conversion_args.length;
-                    conversion_args[arg_len - 1] = filter_value[v];
+
+                // create arguments values for this filter value
+                conversion_args = [];
+                for(a = 0; a < arg_len; a++) {
+                    if(args[a].hasOwnProperty("filter_value")) {
+                        conversion_args.push(filter_value[v]);
+                    }
+                    if(args[a].hasOwnProperty("value")) {
+                        conversion_args.push(args[a]["value"]);
+                    }
                 }
+                // execute user function and assign return value to filter value
                 try {
                     filter_value[v] = window[conversion_function].apply(null, conversion_args);
                 }
