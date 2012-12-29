@@ -21,6 +21,9 @@ $(function() {
         datasource_url: 'lib/jquery.jui_theme_switch_v1.00/json_data/dist/default.json'
     });
 
+    $("#jui_version").html('<strong>' + 'jQuery version: ' + '</strong>' + $().jquery
+        + ' - ' + '<strong>' + 'jQuery-ui version: ' + '</strong>' + $.ui.version);
+
     // demo_rules1 -------------------------------------------------------------
     $("#demo_rules1_container").resizable();
 

@@ -24,6 +24,7 @@ strong {
 
 /* demo_rules1 --------------------------------------------------------------- */
 .demo_rules1_container {
+    margin-top: 10px;
     padding: 5px 10px 10px 10px;
     border: 1px solid black;
     width: 800px;
