@@ -10,7 +10,7 @@ Copyright Christos Pontikis http://pontikis.net
 
 License MIT
 
-Release 1.00 (14 Dec 2012)
+Release 1.00 (24 Jan 2013)
 --------------------------
 * Create rules as JSON object
 * Create WHERE SQL from rules using prepared statements or not (available in php)
