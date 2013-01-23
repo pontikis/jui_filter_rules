@@ -1,9 +1,10 @@
 {
     "name": "jui_filter_rules",
     "version": "1.0.0",
-    "title": "jui_filter_rules",
+    "title": "dataset filter rules jQuery plugin",
     "author": {
         "name": "Christos Pontikis",
+        "email": "christos@pontikis.net",
         "url": "http://pontikis.net"
     },
     "licenses": [
@@ -13,27 +14,21 @@
         }
     ],
     "dependencies": {
-        "jquery": ">=1.6",
-        "jquery-ui": ">=1.8",
-        "moment.js": "1.7.2"
+        "jquery": ">=1.6"
     },
-    "description": "Create dataset filter rules (as JSON) and the relevant WHERE SQL.",
-    "homepage": "https://github.com/pontikis/jui_filter_rules",
-    "docs": "http://pontikis.net/jui_filter_rules/v1.00/docs",
-    "demo": "http://pontikis.net/jui_filter_rules/v1.00/demo",
-    "download": "https://github.com/pontikis/jui_filter_rules/zipball/v1.0.0",
+    "description": "jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support.",
+    "homepage": "http://pontikis.net/labs/jui_filter_rules",
+    "docs": "http://pontikis.net/labs/jui_filter_rules/docs",
+    "demo": "http://pontikis.net/labs/jui_filter_rules/demo",
+    "download": "https://github.com/pontikis/jui_filter_rules/archive/master.zip",
     "keywords": [
-        "filter",
         "rules",
+        "filters",
+        "grid",
         "datagrid",
+        "database",
         "SQL",
-        "i18n"
+        "ui"
     ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/pontikis/jui_filter_rules"
-    },
-    "bugs": {
-        "url": "https://github.com/pontikis/jui_filter_rules/issues"
-    }
+    "bugs": "https://github.com/pontikis/jui_filter_rules/issues"
 }
