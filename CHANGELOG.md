@@ -3,12 +3,15 @@ jui_filter_rules
 
 jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
 
-Project page: [https://github.com/pontikis/jui_filter_rules/][github]
-[github]:https://github.com/pontikis/jui_filter_rules/
+Project page: [https://pontikis.net/labs/jui_filter_rules][HOME]
+[HOME]: http://pontikis.net/labs/jui_filter_rules
 
-Copyright Christos Pontikis http://pontikis.net
+Copyright Christos Pontikis [http://pontikis.net][copyright]
+[copyright]: http://pontikis.net
 
-License MIT
+License [MIT][mit]
+[mit]: https://raw.github.com/pontikis/jui_filter_rules/master/MIT_LICENSE
+
 
 Release 1.00 (24 Jan 2013)
 --------------------------
