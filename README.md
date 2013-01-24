@@ -19,7 +19,7 @@ License [MIT][mit]
 
 
 Project page
------------
+------------
 [http://pontikis.net/labs/jui_filter_rules][HOME]
 [HOME]: http://pontikis.net/labs/jui_filter_rules
 
