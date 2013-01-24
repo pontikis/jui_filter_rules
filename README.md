@@ -9,7 +9,7 @@ jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JS
 
 * Tested with jquery 1.8.3 moment.js 1.7.2 and jquery-ui 1.9.2)
 
-Release: 1.00 (14 Dec 2012)
+Release: 1.00 (24 Jan 2013)
 
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/jui_filter_rules/master/MIT_LICENSE
