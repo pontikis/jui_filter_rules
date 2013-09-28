@@ -1,6 +1,7 @@
 <?php
 /**
  * jui_filter_rules, helper class for jquery.jui_filter_rules plugin, handles AJAX requests.
+ * 1.0.1 (TODO 2013)
  **/
 class jui_filter_rules {
 
@@ -10,7 +11,7 @@ class jui_filter_rules {
 	private $usePreparedStatements;
 	/** @var string Prepared statements placeholder type ("question_mark" or "numbered") */
 	private $pst_placeholder;
-	/** @var string RDBMS in use (one of "ADODB", "POSTGRES") */
+	/** @var string RDBMS in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES") */
 	private $rdbms;
 	/**
 	 * @var array last_error
