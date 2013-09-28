@@ -296,8 +296,7 @@ class jui_filter_rules {
 				$res = mysql_real_escape_string($str_expr, $conn);
 				break;
 			case "MYSQLi":
-				/** \todo MYSQLi not tested! */
-				$res = mysqli_real_escape_string($conn, $str_expr);
+				$res = $conn->real_escape_string($str_expr);
 				break;
 			case "MYSQL_PDO":
 				/** \todo MYSQL_PDO not tested! */
