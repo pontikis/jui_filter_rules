@@ -809,7 +809,7 @@
             group_tools_id = create_id(elem.jui_filter_rules("getOption", "group_tools_id_prefix"), container_id) + '_' + rule_id,
 
             disabled_html = (rule_id == 0 ? ' disabled="disabled"' : ''),
-            shrink_class_html = ($.bowser.msie && parseInt($.bowser.version) < 9 ? '' : ' tools_list_shrink'),
+            shrink_class_html = (bowser.msie && parseInt(bowser.version) < 9 ? '' : ' tools_list_shrink'),
             tools_html = '';
 
         tools_html += '<div class="' + rulesGroupToolsContainerClass + '">';
@@ -1158,7 +1158,7 @@
             ruleToolsClass = elem.jui_filter_rules("getOption", "ruleToolsClass"),
 
             rule_tools_id = create_id(elem.jui_filter_rules("getOption", "rule_tools_id_prefix"), container_id) + '_' + rule_id,
-            shrink_class_html = ($.bowser.msie && parseInt($.bowser.version) < 9 ? '' : ' tools_list_shrink'),
+            shrink_class_html = (bowser.msie && parseInt(bowser.version) < 9 ? '' : ' tools_list_shrink'),
             tools_html = '';
 
         tools_html += '<div class="' + ruleToolsContainerClass + '">';
