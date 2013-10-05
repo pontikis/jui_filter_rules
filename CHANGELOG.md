@@ -14,7 +14,7 @@ License [MIT][mit]
 
 Release 1.0.1 (05 Oct 2013)
 --------------------------
-* $.browser is not used anymore, as it removed in jQuery >= 1.9 Browser detection using bowser (https://github.com/ded/bowser). In next version browser detection will be probaly replaced by feature detection using Modernizr
+* $.browser is not used anymore, as it removed in jQuery >= 1.9, so latest jquery can be used. Browser detection using bowser (https://github.com/ded/bowser). In next version browser detection will be probaly replaced by feature detection using Modernizr
 * MySQLi support (php class)
 
 
