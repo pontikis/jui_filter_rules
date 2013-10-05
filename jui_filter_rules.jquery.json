@@ -1,11 +1,11 @@
 {
     "name": "jui_filter_rules",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "dataset filter rules jQuery plugin",
     "author": {
         "name": "Christos Pontikis",
         "email": "christos@pontikis.net",
-        "url": "http://pontikis.net"
+        "url": "http://www.pontikis.net"
     },
     "licenses": [
         {
@@ -14,12 +14,13 @@
         }
     ],
     "dependencies": {
-        "jquery": ">=1.6"
+        "jquery": ">=1.6",
+        "bowser": ">=0.3.1"
     },
     "description": "jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support.",
-    "homepage": "http://pontikis.net/labs/jui_filter_rules",
-    "docs": "http://pontikis.net/labs/jui_filter_rules/docs",
-    "demo": "http://pontikis.net/labs/jui_filter_rules/demo",
+    "homepage": "http://www.pontikis.net/labs/jui_filter_rules",
+    "docs": "http://www.pontikis.net/labs/jui_filter_rules/docs",
+    "demo": "http://www.pontikis.net/labs/jui_filter_rules/demo",
     "download": "https://github.com/pontikis/jui_filter_rules/archive/master.zip",
     "keywords": [
         "rules",

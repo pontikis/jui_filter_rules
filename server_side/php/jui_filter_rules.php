@@ -1,7 +1,7 @@
 <?php
 /**
  * jui_filter_rules, helper class for jquery.jui_filter_rules plugin, handles AJAX requests.
- * 1.0.1 (TODO 2013)
+ * 1.0.1 (05 Oct 2013)
  **/
 class jui_filter_rules {
 
