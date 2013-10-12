@@ -439,6 +439,9 @@
                     filter_operator = $(group_rule).find("select").eq(1).val();
 
                     current_rule.condition.filterType = current_filter.filterType;
+                    if(current_filter.hasOwnProperty("numberType")) {
+                        current_rule.condition.numberType = current_filter.numberType;
+                    }
                     current_rule.condition.field = current_filter.field;
                     current_rule.condition.operator = filter_operator;
                     current_filter_value = get_filter_value(container_id, rule_id, current_filter, filter_operator);
