@@ -11,7 +11,7 @@ class jui_filter_rules {
 	private $usePreparedStatements;
 	/** @var string Prepared statements placeholder type ("question_mark" or "numbered") */
 	private $pst_placeholder;
-	/** @var string RDBMS in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES") */
+	/** @var string RDBMS in use (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "ADODB", "POSTGRES") */
 	private $rdbms;
 	/**
 	 * @var array last_error
@@ -28,7 +28,7 @@ class jui_filter_rules {
 	 * @param object $dbcon database connection
 	 * @param bool $use_ps use prepared statements or not
 	 * @param string $pst_placeholder // one of "question_mark" (?), "numbered" ($1, $2, ...)
-	 * @param string $db_type rdbms in use (one of "ADODB", "MYSQL", "MYSQLi", "MYSQL_PDO", "POSTGRES")
+	 * @param string $db_type rdbms in use (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "POSTGRES", "ADODB")
 	 */
 	public function __construct($dbcon, $use_ps, $pst_placeholder, $db_type) {
 		$this->conn = $dbcon;
@@ -289,21 +289,20 @@ class jui_filter_rules {
 		$rdbms = $this->rdbms;
 		$res = '';
 		switch($rdbms) {
-			case "ADODB":
-				$res = $conn->qstr($str_expr);
-				break;
-			case "MYSQL":
-				$res = "'" . mysql_real_escape_string($str_expr) . "'";
-				break;
 			case "MYSQLi":
 				$res = "'" . $conn->real_escape_string($str_expr) . "'";
 				break;
 			case "MYSQL_PDO":
-				/** \todo MYSQL_PDO not tested! */
 				$res = $conn->quote($str_expr);
+				break;
+			case "MYSQL":
+				$res = "'" . mysql_real_escape_string($str_expr) . "'";
 				break;
 			case "POSTGRES":
 				$res = pg_escape_literal($conn, $str_expr);
+				break;
+			case "ADODB":
+				$res = $conn->qstr($str_expr);
 				break;
 		}
 		return $res;
