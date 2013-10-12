@@ -293,8 +293,7 @@ class jui_filter_rules {
 				$res = $conn->qstr($str_expr);
 				break;
 			case "MYSQL":
-				/** \todo MYSQL not tested! */
-				$res = mysql_real_escape_string($str_expr, $conn);
+				$res = "'" . mysql_real_escape_string($str_expr) . "'";
 				break;
 			case "MYSQLi":
 				$res = "'" . $conn->real_escape_string($str_expr) . "'";
