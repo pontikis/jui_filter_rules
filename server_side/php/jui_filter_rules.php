@@ -1,7 +1,9 @@
 <?php
 /**
  * jui_filter_rules, helper class for jquery.jui_filter_rules plugin, handles AJAX requests.
- * 1.0.1 (05 Oct 2013)
+ * @version 1.0.2 (16 Oct 2013)
+ * @author Christos Pontikis http://www.pontikis.net
+ * @license http://opensource.org/licenses/MIT MIT License
  **/
 class jui_filter_rules {
 
@@ -28,12 +30,12 @@ class jui_filter_rules {
 	 * @param object $dbcon database connection
 	 * @param bool $use_ps use prepared statements or not
 	 * @param string $pst_placeholder // one of "question_mark" (?), "numbered" ($1, $2, ...)
-	 * @param string $db_type rdbms in use (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "POSTGRES", "ADODB")
+	 * @param string $rdbms rdbms in use (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "POSTGRES", "ADODB")
 	 */
-	public function __construct($dbcon, $use_ps, $pst_placeholder, $db_type) {
+	public function __construct($dbcon, $use_ps, $pst_placeholder, $rdbms) {
 		$this->conn = $dbcon;
 		$this->usePreparedStatements = $use_ps;
-		$this->rdbms = $db_type;
+		$this->rdbms = $rdbms;
 		$this->pst_placeholder = $pst_placeholder;
 		$this->last_error = array(
 			'element_rule_id' => null,
@@ -41,6 +43,9 @@ class jui_filter_rules {
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_last_error() {
 		return $this->last_error;
 	}
