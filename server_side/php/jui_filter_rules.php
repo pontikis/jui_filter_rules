@@ -1,7 +1,7 @@
 <?php
 /**
  * jui_filter_rules, helper class for jquery.jui_filter_rules plugin, handles AJAX requests.
- * @version 1.0.2 (16 Oct 2013)
+ * @version 1.0.3 (19 Oct 2013)
  * @author Christos Pontikis http://www.pontikis.net
  * @license http://opensource.org/licenses/MIT MIT License
  **/
@@ -75,6 +75,8 @@ class jui_filter_rules {
 
 				$filter_value_conversion_server_side = array_key_exists("filter_value_conversion_server_side", $rule) ? $rule['filter_value_conversion_server_side'] : null;
 				$filter_value = array_key_exists("filterValue", $rule['condition']) ? $rule['condition']['filterValue'] : null;
+				$filter_type = array_key_exists("filterType", $rule['condition']) ? $rule['condition']['filterType'] : null;
+				$number_type = array_key_exists("numberType", $rule['condition']) ? $rule['condition']['numberType'] : null;
 
 				$filter_value_sql = $this->create_filter_value_sql($rule['condition']['filterType'],
 					$rule['condition']['operator'],
@@ -99,7 +101,10 @@ class jui_filter_rules {
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
 								}
-								array_push($bind_params, $filter_value[$v]);
+
+								// set type
+								$bind_param = $this->set_bind_param_type($filter_value[$v], $filter_value, $filter_type, $number_type);
+								array_push($bind_params, $bind_param);
 							}
 							$sql .= ')';
 						} else {
@@ -111,7 +116,10 @@ class jui_filter_rules {
 									$sql .= '$' . $bind_param_index;
 									$bind_param_index++;
 							}
-							array_push($bind_params, $filter_value_sql);
+
+							// set type
+							$bind_param = $this->set_bind_param_type($filter_value_sql, $filter_value, $filter_type, $number_type);
+							array_push($bind_params, $bind_param);
 						}
 					}
 				} else {
@@ -126,6 +134,34 @@ class jui_filter_rules {
 		}
 		return array('sql' => $sql, 'bind_params' => $bind_params);
 	}
+
+
+	/**
+	 * Set bind_param type
+	 *
+	 * @param $bind_param
+	 * @param $filter_value
+	 * @param $filter_type
+	 * @param $number_type
+	 * @return mixed
+	 */
+	private function set_bind_param_type($bind_param, $filter_value, $filter_type, $number_type) {
+		if(is_null($filter_value)) {
+			settype($bind_param, "null");
+		} else {
+			if($filter_type == "number") {
+				if($number_type == "integer") {
+					settype($bind_param, "int");
+				} else {
+					settype($bind_param, "float");
+				}
+			} else {
+				settype($bind_param, "string");
+			}
+		}
+		return $bind_param;
+	}
+
 
 	/**
 	 * Return current rule filter value as a string suitable for SQL WHERE clause

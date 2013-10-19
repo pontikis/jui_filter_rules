@@ -3,7 +3,7 @@
  *               <p>License MIT
  *               <br />Copyright 2013 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="http://pontikis.net/labs/jui_filter_rules">http://pontikis.net/labs/jui_filter_rules</a>
- * @version 1.0.2 (16 Oct 2013)
+ * @version 1.0.3 (19 Oct 2013)
  * @author Christos Pontikis http://www.pontikis.net
  * @requires jquery, bowser.js (optional but highly recommended moment.js, jquery-ui)
  */
