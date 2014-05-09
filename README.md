@@ -6,6 +6,7 @@ jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JS
 * Requires jquery (>=1.6)
 * Requires bowser.js (https://github.com/ded/bowser) for browser detection
 * moment.js and jquery-ui are not required but highly recommended for full functionality
+* Support for Twitter Bootstrap
 * For touch event support jquery.ui.touch-punch.min.js could be used
 
 * Tested with jquery >=1.8.3 moment.js 1.7.2 and jquery-ui >=1.9.2)
@@ -13,7 +14,7 @@ jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JS
 Copyright [Christos Pontikis][copyright]
 [copyright]: http://pontikis.net
 
-Release: 1.0.3 (19 Oct 2013) - View CHANGELOG [here][CHANGELOG]
+Release: 1.0.4 (09 May 2014) - View CHANGELOG [here][CHANGELOG]
 [CHANGELOG]: https://raw.github.com/pontikis/jui_filter_rules/master/CHANGELOG.md
 
 License [MIT][mit]

@@ -12,6 +12,12 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/jui_filter_rules/master/MIT_LICENSE
 
+Release 1.0.4 (09 May 2014)
+--------------------------
+* Twitter Bootstrap support (bootstarp_version option, one of: false, "2", "3")
+* php class: [Da Capo database wrapper][dacapo] is used (so MYSQLi and POSTGRES are supported at this time)
+[dacapo]: https://github.com/pontikis/dacapo
+
 Release 1.0.3 (19 Oct 2013)
 --------------------------
 * php class: Set type of each bind param (prepared statements). One of string, int, float, null

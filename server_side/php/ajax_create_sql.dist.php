@@ -3,9 +3,11 @@
  * ajax_create_sql.dist.php, jui_filter_rules ajax creating sql template script
  *
  * Sample php file creating sql from given rules
- * MYSQLi is used for RDBMS (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "ADODB", "POSTGRES")
+ * MYSQLi is used for RDBMS (one of "MYSQLi", "POSTGRES")
  *
- * @version 1.0.3 (19 Oct 2013)
+ * Da Capo database wrapper is required https://github.com/pontikis/dacapo
+ *
+ * @version 1.0.4 (09 May 2014)
  * @author Christos Pontikis http://pontikis.net
  * @license  http://opensource.org/licenses/MIT MIT license
  **/
@@ -18,31 +20,31 @@ if(!$isAjax) {
 	exit;
 }
 
+// required
+require_once '/path/to/dacapo.php';
+require_once '/path/to/jui_filter_rules.php';
+
 // Get params
 $a_rules = $_POST['a_rules'];
-$use_ps = ($_POST['use_ps'] == "yes" ? true : false);
-$pst_placeholder = $_POST['pst_placeholder'];
-
 if(count($a_rules) == 0) {
 	exit;
 }
-
-// required
-require_once '/path/to/jui_filter_rules.php';                       // CONFIGURE
-
-// configuration
-define("RDBMS", "MYSQLi");                                          // CONFIGURE
-
-// connect to database                                              // CONFIGURE
-$conn = new mysqli('db_server', 'db_user', 'db_passwd', 'db_name');
-if ($conn->connect_error) {
-	echo 'Database connection failed: '  . $conn->connect_error;
-	exit;
-}
-$conn->set_charset('utf8');
+// create new datasource                                            // CONFIGURE
+$db_settings = array(
+	'rdbms' => 'MYSQLi',
+	'db_server' => 'localhost',
+	'db_user' => 'DB_USER_HERE',
+	'db_passwd' => 'DB_PASS_HERE',
+	'db_name' => 'DB_NAME',
+	'db_port' => '3306',
+	'charset' => 'utf8',
+	'use_prepared_statements' => true,
+	'pst_placeholder' => 'question_mark'
+);
+$ds = new dacapo($db_settings, null);
 
 // print result
-$jfr = new jui_filter_rules($conn, $use_ps, $pst_placeholder, RDBMS);
+$jfr = new jui_filter_rules($ds);
 $result = $jfr->parse_rules($a_rules);
 
 $last_error = $jfr->get_last_error();
@@ -50,6 +52,4 @@ $last_error = $jfr->get_last_error();
 if(!is_null($last_error['error_message'])) {
 	$result['error'] = $last_error;
 }
-
 echo json_encode($result);
-?>

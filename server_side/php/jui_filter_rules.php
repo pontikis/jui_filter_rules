@@ -1,14 +1,15 @@
 <?php
 /**
  * jui_filter_rules, helper class for jquery.jui_filter_rules plugin, handles AJAX requests.
- * @version 1.0.3 (19 Oct 2013)
+ *
+ * Da Capo database wrapper is required https://github.com/pontikis/dacapo
+ *
+ * @version 1.0.4 (09 May 2014)
  * @author Christos Pontikis http://www.pontikis.net
  * @license http://opensource.org/licenses/MIT MIT License
  **/
 class jui_filter_rules {
 
-	/** @var object Database connection */
-	private $conn;
 	/** @var bool Use prepared statements or not */
 	private $usePreparedStatements;
 	/** @var string Prepared statements placeholder type ("question_mark" or "numbered") */
@@ -27,16 +28,12 @@ class jui_filter_rules {
 	private $last_error;
 
 	/**
-	 * @param object $dbcon database connection
-	 * @param bool $use_ps use prepared statements or not
-	 * @param string $pst_placeholder // one of "question_mark" (?), "numbered" ($1, $2, ...)
-	 * @param string $rdbms rdbms in use (one of "MYSQLi", "MYSQL_PDO", "MYSQL", "POSTGRES", "ADODB")
+	 * @param dacapo $ds
 	 */
-	public function __construct($dbcon, $use_ps, $pst_placeholder, $rdbms) {
-		$this->conn = $dbcon;
-		$this->usePreparedStatements = $use_ps;
-		$this->rdbms = $rdbms;
-		$this->pst_placeholder = $pst_placeholder;
+	public function __construct(dacapo $ds) {
+		$this->ds = $ds;
+		$this->usePreparedStatements = $ds->use_pst;
+		$this->pst_placeholder = $ds->pst_placeholder;
 		$this->last_error = array(
 			'element_rule_id' => null,
 			'error_message' => null
@@ -174,7 +171,9 @@ class jui_filter_rules {
 	 * @return string
 	 */
 	private function create_filter_value_sql($filter_type, $operator_type, $a_values, $filter_value_conversion_server_side, $element_rule_id) {
-		$conn = $this->conn;
+
+		$ds = $this->ds;
+
 		$res = '';
 		$vlen = count($a_values);
 		if($vlen == 0) {
@@ -232,17 +231,17 @@ class jui_filter_rules {
 				}
 			} else {
 				if(in_array($operator_type, array("equal", "not_equal", "less", "not_equal", "less_or_equal", "greater", "greater_or_equal"))) {
-					$res = ($filter_type == "number" ? $a_values[0] : $this->safe_sql($a_values[0]));
+					$res = ($filter_type == "number" ? $a_values[0] : $ds->qstr($a_values[0]));
 				} else if(in_array($operator_type, array("begins_with", "not_begins_with"))) {
-					$res = $this->safe_sql($a_values[0] . '%');
+					$res = $ds->qstr($a_values[0] . '%');
 				} else if(in_array($operator_type, array("contains", "not_contains"))) {
-					$res = $this->safe_sql('%' . $a_values[0] . '%');
+					$res = $ds->qstr('%' . $a_values[0] . '%');
 				} else if(in_array($operator_type, array("ends_with", "not_ends_with"))) {
-					$res = $this->safe_sql('%' . $a_values[0]);
+					$res = $ds->qstr('%' . $a_values[0]);
 				} else if(in_array($operator_type, array("in", "not_in"))) {
 					for($i = 0; $i < $vlen; $i++) {
 						$res .= ($i == 0 ? '(' : '');
-						$res .= ($filter_type == "number" ? $a_values[$i] : $this->safe_sql($a_values[$i]));
+						$res .= ($filter_type == "number" ? $a_values[$i] : $ds->qstr($a_values[$i]));
 						$res .= ($i < $vlen - 1 ? ',' : ')');
 					}
 				}
@@ -317,36 +316,6 @@ class jui_filter_rules {
 		}
 		$operator = ' ' . $operator . ' ';
 		return $operator;
-	}
-
-	/**
-	 * Returns escaped string for safe insertion in the database (in case prepared statements are NOT used)
-	 *
-	 * @param string $str_expr The string expression to be quoted
-	 * @return string
-	 */
-	private function safe_sql($str_expr) {
-		$conn = $this->conn;
-		$rdbms = $this->rdbms;
-		$res = '';
-		switch($rdbms) {
-			case "MYSQLi":
-				$res = "'" . $conn->real_escape_string($str_expr) . "'";
-				break;
-			case "MYSQL_PDO":
-				$res = $conn->quote($str_expr);
-				break;
-			case "MYSQL":
-				$res = "'" . mysql_real_escape_string($str_expr) . "'";
-				break;
-			case "POSTGRES":
-				$res = pg_escape_literal($conn, $str_expr);
-				break;
-			case "ADODB":
-				$res = $conn->qstr($str_expr);
-				break;
-		}
-		return $res;
 	}
 
 }

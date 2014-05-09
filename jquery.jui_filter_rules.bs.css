@@ -5,7 +5,7 @@ Write your own classes in other css file.
 
 /* container ---------------------------------------------------------------- */
 .filter_rules_container {
-    padding: 5px 10px 10px 10px;
+    padding: 10px 0;
 }
 
 /* rules group -------------------------------------------------------------- */
@@ -30,8 +30,6 @@ Write your own classes in other css file.
 
 .rules_group_condition_list {
     border: 1px solid;
-    padding: 2px 0;
-    margin: 0;
 }
 
 .rules_group_tools_container {
@@ -60,12 +58,10 @@ Write your own classes in other css file.
 .rules_list_li {
     margin: 0 0 2px 0 !important;
     padding: 0 !important;
-    background-color: #f3f3f3 !important;
     display: block !important;
 }
 
 .rules_list_applied_li {
-    background-color: #CCFF99 !important;
 }
 
 .rules_list_error_li {
@@ -80,23 +76,16 @@ Write your own classes in other css file.
 }
 
 .filter_list {
-    padding: 0;
-    margin: 0;
-    background: none;
 }
 
 /* operator ----------------------------------------------------------------- */
 .operators_list_container {
     display: inline-block;
     padding: 5px;
-    width: 180px;
     vertical-align: top;
 }
 
 .operators_list {
-    padding: 0;
-    margin: 0;
-    background: none;
 }
 
 /* filter value ------------------------------------------------------------- */
@@ -106,9 +95,6 @@ Write your own classes in other css file.
 }
 
 .filter_input_text {
-    width: 180px;
-    margin: 0 5px;
-    padding: 0;
 }
 
 .filter_input_number {
@@ -125,6 +111,7 @@ Write your own classes in other css file.
 
 .filter_input_checkbox {
     margin: 0 5px 0 0;
+    display: inline !important;
 }
 
 .filter_input_radio {
@@ -156,7 +143,6 @@ Write your own classes in other css file.
 .rule_tools_container {
     display: inline-block !important;
     padding: 5px !important;
-    float: right !important;
     vertical-align: top !important;
 }
 

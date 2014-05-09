@@ -1,11 +1,11 @@
 /**
  * @fileOverview jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
  *               <p>License MIT
- *               <br />Copyright 2013 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
+ *               <br />Copyright 2013 - 2014 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="http://pontikis.net/labs/jui_filter_rules">http://pontikis.net/labs/jui_filter_rules</a>
- * @version 1.0.3 (19 Oct 2013)
+ * @version 1.0.4 (09 May 2014)
  * @author Christos Pontikis http://www.pontikis.net
- * @requires jquery, bowser.js (optional but highly recommended moment.js, jquery-ui)
+ * @requires jquery, bowser.js (optional but highly recommended moment.js, jquery-ui, twitter bootstrap >= 2)
  */
 
 /**
@@ -79,7 +79,14 @@
                  */
                 var settings = elem.data(pluginName);
                 if(typeof(settings) == 'undefined') {
-                    var defaults = elem.jui_filter_rules('getDefaults');
+                    var bootstrap_version = false;
+                    if(options.hasOwnProperty("bootstrap_version") && options["bootstrap_version"] == "3") {
+                        bootstrap_version = "3";
+                    }
+                    if(options.hasOwnProperty("bootstrap_version") && options["bootstrap_version"] == "2") {
+                        bootstrap_version = "2";
+                    }
+                    var defaults = methods.getDefaults.call(elem, bootstrap_version);
                     settings = $.extend({}, defaults, options);
                 } else {
                     settings = $.extend({}, settings, options);
@@ -269,18 +276,29 @@
         },
 
         /**
+         * Get plugin version
+         * @returns {string}
+         */
+        getVersion: function() {
+            return "1.0.4";
+        },
+
+        /**
          * Get default values
-         * @example $(element).jui_filter_rules('getDefaults');
+         * @example $(element).jui_filter_rules('getDefaults', false);
+         * @param {boolean|string} bootstrap_version
          * @return {Object}
          */
-        getDefaults: function() {
-            return {
+        getDefaults: function(bootstrap_version) {
+            var default_settings = {
                 filters: [],
 
                 decimal_separator: ".",
                 htmlentities: false,
 
                 // styles
+                bootstrap_version: false,
+
                 containerClass: "filter_rules_container",
 
                 rulesGroupContainerClass: "rules_group_container",
@@ -337,6 +355,96 @@
                 onValidationError: function() {
                 }
             };
+
+            if(bootstrap_version == "3") {
+                default_settings.bootstrap_version = "3";
+
+                default_settings.containerClass = "filter_rules_container";
+
+                default_settings.rulesGroupContainerClass = "rules_group_container";
+                default_settings.rulesGroupHeaderClass = "rules_group_header";
+                default_settings.rulesGroupBodyClass = "rules_group_body";
+
+                default_settings.rulesGroupConditionContainerClass = "rules_group_condition_container";
+                default_settings.rulesGroupConditionListClass = "form-control input-sm rules_group_condition_list";
+
+                default_settings.rulesGroupToolsContainerClass = "rules_group_tools_container";
+                default_settings.rulesGroupToolsListClass = "form-control input-sm rules_group_tools_list";
+
+                default_settings.rulesListClass = "rules_list";
+                default_settings.rulesListLiClass = "rules_list_li";
+                default_settings.rulesListLiErrorClass = "rules_list_error_li";
+                default_settings.rulesListLiAppliedClass = "rules_list_applied_li";
+
+                default_settings.filterContainerClass = "filter_container";
+                default_settings.filterListClass = "form-control input-sm filter_list";
+
+                default_settings.operatorsListContainerClass = "operators_list_container";
+                default_settings.operatorsListClass = "form-control input-sm operators_list";
+
+                default_settings.filterValueContainerClass = "filter_value_container";
+                default_settings.filterInputTextClass = "form-control input-sm filter_input_text";
+                default_settings.filterInputNumberClass = "form-control input-sm filter_input_number";
+                default_settings.filterInputDateClass = "form-control input-sm filter_input_date";
+                default_settings.filterInputCheckboxClass = "filter_input_checkbox";
+                default_settings.filterInputRadioClass = "form-control input-sm filter_input_radio";
+                default_settings.filterSelectClass = "form-control input-sm filter_select";
+
+                default_settings.filterGroupListClass = "filter_group_list";
+                default_settings.filterGroupListItemHorizontalClass = "filter_group_list_item_horizontal";
+                default_settings.filterGroupListItemVerticalClass = "filter_group_list_item_vertical";
+
+                default_settings.ruleToolsContainerClass = "rule_tools_container";
+                default_settings.ruleToolsClass = "form-control input-sm rule_tools_list";
+
+                default_settings.noFiltersFoundClass = "no_filters_found";
+            }
+
+            if(bootstrap_version == "2") {
+                default_settings.bootstrap_version = "2";
+
+                default_settings.containerClass = "filter_rules_container";
+
+                default_settings.rulesGroupContainerClass = "rules_group_container";
+                default_settings.rulesGroupHeaderClass = "rules_group_header";
+                default_settings.rulesGroupBodyClass = "rules_group_body";
+
+                default_settings.rulesGroupConditionContainerClass = "rules_group_condition_container";
+                default_settings.rulesGroupConditionListClass = "form-control btn-small rules_group_condition_list";
+
+                default_settings.rulesGroupToolsContainerClass = "rules_group_tools_container";
+                default_settings.rulesGroupToolsListClass = "form-control btn-small rules_group_tools_list";
+
+                default_settings.rulesListClass = "rules_list";
+                default_settings.rulesListLiClass = "rules_list_li";
+                default_settings.rulesListLiErrorClass = "rules_list_error_li";
+                default_settings.rulesListLiAppliedClass = "rules_list_applied_li";
+
+                default_settings.filterContainerClass = "filter_container";
+                default_settings.filterListClass = "form-control btn-small filter_list";
+
+                default_settings.operatorsListContainerClass = "operators_list_container";
+                default_settings.operatorsListClass = "form-control btn-small operators_list";
+
+                default_settings.filterValueContainerClass = "filter_value_container";
+                default_settings.filterInputTextClass = "form-control btn-small filter_input_text";
+                default_settings.filterInputNumberClass = "form-control btn-small filter_input_number";
+                default_settings.filterInputDateClass = "form-control btn-small filter_input_date";
+                default_settings.filterInputCheckboxClass = "filter_input_checkbox";
+                default_settings.filterInputRadioClass = "form-control btn-small filter_input_radio";
+                default_settings.filterSelectClass = "form-control btn-small filter_select";
+
+                default_settings.filterGroupListClass = "filter_group_list";
+                default_settings.filterGroupListItemHorizontalClass = "filter_group_list_item_horizontal";
+                default_settings.filterGroupListItemVerticalClass = "filter_group_list_item_vertical";
+
+                default_settings.ruleToolsContainerClass = "rule_tools_container";
+                default_settings.ruleToolsClass = "form-control btn-small rule_tools_list";
+
+                default_settings.noFiltersFoundClass = "no_filters_found";
+            }
+
+            return default_settings;
         },
 
         /**
