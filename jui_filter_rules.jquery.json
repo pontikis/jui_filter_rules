@@ -17,7 +17,7 @@
         "jquery": ">=1.6",
         "bowser": ">=0.3.1"
     },
-    "description": "jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support.",
+    "description": "jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support. Bootstrap support.",
     "homepage": "http://www.pontikis.net/labs/jui_filter_rules",
     "docs": "http://www.pontikis.net/labs/jui_filter_rules/docs",
     "demo": "http://www.pontikis.net/labs/jui_filter_rules/demo",
