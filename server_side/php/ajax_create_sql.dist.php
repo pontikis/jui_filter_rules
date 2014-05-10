@@ -38,7 +38,7 @@ $db_settings = array(
 	'db_name' => 'DB_NAME',
 	'db_port' => '3306',
 	'charset' => 'utf8',
-	'use_prepared_statements' => true,
+	'use_pst' => true,
 	'pst_placeholder' => 'question_mark'
 );
 $ds = new dacapo($db_settings, null);
