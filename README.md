@@ -1,12 +1,12 @@
 jui_filter_rules
 ================
 
-jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support.
+jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL. Fully configurable. Localization support. Bootstrap support.
 
 * Requires jquery (>=1.6)
 * Requires bowser.js (https://github.com/ded/bowser) for browser detection
 * moment.js and jquery-ui are not required but highly recommended for full functionality
-* Support for Twitter Bootstrap
+* Support for Twitter Bootstrap (>=2)
 * For touch event support jquery.ui.touch-punch.min.js could be used
 
 * Tested with jquery >=1.8.3 moment.js 1.7.2 and jquery-ui >=1.9.2)
