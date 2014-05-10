@@ -14,7 +14,7 @@ License [MIT][mit]
 
 Release 1.0.4 (09 May 2014)
 --------------------------
-* Twitter Bootstrap support (bootstarp_version option, one of: false, "2", "3")
+* Twitter Bootstrap support (bootstarp_version option, one of: false, "2", "3"). The default is:  false
 * php class: [Da Capo database wrapper][dacapo] is used (so MYSQLi and POSTGRES are supported at this time)
 [dacapo]: https://github.com/pontikis/dacapo
 
