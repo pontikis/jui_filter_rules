@@ -15,7 +15,7 @@ License [MIT][mit]
 Release 1.0.5 (27 May 2014)
 --------------------------
 * Set Rules functionality: If you define `filter_rules` option, `jui_filter_rules` will display default filters on startup. You can also apply a filter_rules set, using `setRules` method.
-* `onSetRules` events
+* `onSetRules` event
 * bowser.js removed from dependencies (a CSS hack for IE8 added instead)
 * Default `filter_interface`
 * `filter_element_attributes` cannot missing
