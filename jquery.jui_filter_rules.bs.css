@@ -103,15 +103,10 @@ Write your own classes in other css file.
 }
 
 .filter_input_number {
-    width: 75px;
-    margin: 0 5px;
-    padding: 0;
+    width: 80px;
 }
 
 .filter_input_date {
-    width: 150px;
-    margin: 0 5px;
-    padding: 0;
 }
 
 .filter_input_checkbox {
