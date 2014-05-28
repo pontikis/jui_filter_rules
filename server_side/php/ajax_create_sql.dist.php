@@ -3,11 +3,11 @@
  * ajax_create_sql.dist.php, jui_filter_rules ajax creating sql template script
  *
  * Sample php file creating sql from given rules
- * MYSQLi is used for RDBMS (one of "MYSQLi", "POSTGRES")
+ * RDBMS compatible: "MYSQLi", "POSTGRES"
  *
  * Da Capo database wrapper is required https://github.com/pontikis/dacapo
  *
- * @version 1.0.4 (09 May 2014)
+ * @version 1.0.5 (27 May 2014)
  * @author Christos Pontikis http://pontikis.net
  * @license  http://opensource.org/licenses/MIT MIT license
  **/

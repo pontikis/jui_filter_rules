@@ -1,11 +1,11 @@
 /**
- * @fileOverview jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
+ * @fileOverview jui_filter_rules is a jQuery plugin, useful to create or set filter rules as JSON object and get the relevant WHERE SQL.
  *               <p>License MIT
  *               <br />Copyright 2013 - 2014 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="http://pontikis.net/labs/jui_filter_rules">http://pontikis.net/labs/jui_filter_rules</a>
- * @version 1.0.4 (09 May 2014)
+ * @version 1.0.5 (27 May 2014)
  * @author Christos Pontikis http://www.pontikis.net
- * @requires jquery, bowser.js (optional but highly recommended moment.js, jquery-ui, twitter bootstrap >= 2)
+ * @requires jquery >= 1.8 (optional but highly recommended moment.js, jquery-ui, twitter bootstrap >= 2)
  */
 
 /**
@@ -107,6 +107,7 @@
 
                 // bind events
                 elem.unbind("onValidationError").bind("onValidationError", settings.onValidationError);
+                elem.unbind("onSetRules").bind("onSetRules", settings.onSetRules);
 
                 var filters = settings.filters,
 
@@ -271,6 +272,13 @@
                     }
                     elem.jui_filter_rules("markRuleAsPending", $(this).closest("li").attr("id"));
                 });
+
+
+                if(settings.filter_rules.length > 0) {
+                    apply_rules(settings.filter_rules, elem, container_id);
+                }
+
+
             });
 
         },
@@ -280,7 +288,7 @@
          * @returns {string}
          */
         getVersion: function() {
-            return "1.0.4";
+            return "1.0.5";
         },
 
         /**
@@ -292,6 +300,7 @@
         getDefaults: function(bootstrap_version) {
             var default_settings = {
                 filters: [],
+                filter_rules: [],
 
                 decimal_separator: ".",
                 htmlentities: false,
@@ -352,6 +361,8 @@
                 filter_element_name_prefix: "flt_name_",
                 rule_tools_id_prefix: "rule_tools_",
 
+                onSetRules: function() {
+                },
                 onValidationError: function() {
                 }
             };
@@ -481,16 +492,6 @@
             if(reinit) {
                 elem.jui_filter_rules('init');
             }
-        },
-
-        /**
-         * Refresh plugin
-         * @example $(element).jui_filter_rules('refresh');
-         * @return {*|jQuery}
-         */
-        refresh: function() {
-            var elem = this;
-            elem.jui_filter_rules();
         },
 
         /**
@@ -670,10 +671,29 @@
             var elem = this,
                 container_id = elem.attr("id");
 
+            methods.setOption.call(elem, "filter_rules", []);
+
             elem.find("dl:first").html('');
             elem.data(pluginStatus)["group_id"] = 0;
             elem.data(pluginStatus)["rule_id"] = 0;
-            elem.jui_filter_rules("refresh");
+
+            elem.html(createRulesGroup(container_id));
+        },
+
+
+        /**
+         * Set rules
+         * @example $(element).jui_filter_rules("setRules", a_rules);
+         */
+        setRules: function(a_rules) {
+            var elem = this,
+                container_id = elem.attr("id");
+
+            methods.clearAllRules.call(elem);
+            methods.setOption.call(elem, "filter_rules", a_rules);
+            methods.init.call(elem);
+
+            elem.triggerHandler("onSetRules");
         }
     };
 
@@ -689,7 +709,7 @@
      */
     var validate_input = function(container_id) {
         var elem = $("#" + container_id),
-            err_msg, i,
+            err_msg, i, e,
             filters = elem.jui_filter_rules("getOption", "filters"),
             filters_len = filters.length,
             filternames = [];
@@ -702,6 +722,31 @@
             err_msg = 'Filternames are not unique...';
             elem.html('<span style="color: red;">' + 'ERROR: ' + err_msg + '</span>');
             $.error(err_msg);
+        }
+
+        // default filter interface if missing
+        for(i = 0; i < filters_len; i++) {
+            if(!filters[i].hasOwnProperty("filter_interface")) {
+                filters[i].filter_interface = [
+                    {
+                        filter_element: "input",
+                        filter_element_attributes: {
+                            type: "text"
+                        }
+                    }
+                ];
+            }
+        }
+
+        // filter_element_attributes cannot missing
+        for(i = 0; i < filters_len; i++) {
+            var fi = filters[i].filter_interface,
+                fi_length = fi.length;
+            for(e = 0; e < fi_length; e++) {
+                if(!fi[e].hasOwnProperty("filter_element_attributes")) {
+                    fi[e].filter_element_attributes = {}
+                }
+            }
         }
 
     };
@@ -830,6 +875,28 @@
         return flt;
     };
 
+
+    /**
+     * Get filter attributes by filter field
+     * @param {String} container_id
+     * @param {String} filter_field
+     * @return {*} filter object or undefined
+     */
+    var getFilterByFIeld = function(container_id, filter_field) {
+        var elem = $("#" + container_id),
+            i, filters = elem.jui_filter_rules("getOption", "filters"),
+            filters_len = filters.length,
+            flt = undefined;
+
+        for(i = 0; i < filters_len; i++) {
+            if(filters[i].field == filter_field) {
+                flt = filters[i];
+                break;
+            }
+        }
+        return flt;
+    };
+
     /**
      * Get operators for filter type
      * @param filterName {string}
@@ -920,11 +987,10 @@
             group_tools_id = create_id(elem.jui_filter_rules("getOption", "group_tools_id_prefix"), container_id) + '_' + rule_id,
 
             disabled_html = (rule_id == 0 ? ' disabled="disabled"' : ''),
-            shrink_class_html = (bowser.msie && parseInt(bowser.version) < 9 ? '' : ' tools_list_shrink'),
             tools_html = '';
 
         tools_html += '<div class="' + rulesGroupToolsContainerClass + '">';
-        tools_html += '<select id="' + group_tools_id + '" class="' + rulesGroupToolsListClass + shrink_class_html + '">';
+        tools_html += '<select id="' + group_tools_id + '" class="' + rulesGroupToolsListClass + '">';
 
         tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
 
@@ -1048,6 +1114,7 @@
 
             $.ajax({
                 url: lookup_values_ajax_url,
+                async: false, // necessary if you have to apply filters (setRules)
                 success: (function(data) {
                     filter_lookup_data = $.parseJSON(data);
                     elem_filter_value_container.html(create_filter_value_html());
@@ -1269,11 +1336,10 @@
             ruleToolsClass = elem.jui_filter_rules("getOption", "ruleToolsClass"),
 
             rule_tools_id = create_id(elem.jui_filter_rules("getOption", "rule_tools_id_prefix"), container_id) + '_' + rule_id,
-            shrink_class_html = (bowser.msie && parseInt(bowser.version) < 9 ? '' : ' tools_list_shrink'),
             tools_html = '';
 
         tools_html += '<div class="' + ruleToolsContainerClass + '">';
-        tools_html += '<select id="' + rule_tools_id + '" class="' + ruleToolsClass + shrink_class_html + '">';
+        tools_html += '<select id="' + rule_tools_id + '" class="' + ruleToolsClass + '">';
 
         tools_html += '<option value="please_select">' + rsc_jui_fr.tools_please_select + '</option>';
 
@@ -1559,6 +1625,93 @@
         }
 
         return filter_value;
+
+    };
+
+
+    /**
+     * Apply given rules using recursion
+     *
+     * @param {Array} a_rules
+     * @param {obj}  elem jquery object
+     * @param {string} container_id
+     */
+    var apply_rules = function(a_rules, elem, container_id) {
+
+        var a_rules_length = a_rules.length;
+
+        elem.find('dd:first ul:first li:first').remove();
+        elem.find('dt:first select:first').val(a_rules[0].logical_operator);
+
+        for(var i = 0; i < a_rules_length; i++) {
+            var filter_rule = a_rules[i],
+                filter_value = filter_rule.condition.hasOwnProperty("filterValue") ? filter_rule.condition.filterValue : null,
+                autocomplete_value = filter_rule.hasOwnProperty("autocomplete_value") ? filter_rule.autocomplete_value : false,
+                slider_value = filter_rule.hasOwnProperty("slider_value") ? filter_rule.slider_value : false;
+            if($.isArray(filter_rule.condition)) {
+                elem.find('dd:first ul:first').append(createRulesGroup(container_id));
+                apply_rules(filter_rule.condition, elem.find('dd:first ul:first dl:first'), container_id);
+            }
+            else {
+                elem.find('dd:first ul:first').append(createRule(container_id));
+                var elem_rule = elem.find('dd:first ul:first li:last');
+                // set element_rule_id attribute
+                a_rules[i].element_rule_id = elem_rule.attr("id");
+
+                var filter = getFilterByFIeld(container_id, filter_rule.condition.field),
+                    filterName = filter.filterName,
+                    filter_interface = filter.filter_interface,
+                    filter_interface_len = filter_interface.length;
+
+                // update filter selector --------------------------------------
+                elem_rule.find('select:first').val(filterName).trigger('change');
+
+                // update operator selector ------------------------------------
+                elem_rule.find('select').eq(1).val(filter_rule.condition.operator).trigger('change');
+
+                // update filter value -----------------------------------------
+                var operator = getOperator(filter_rule.condition.operator);
+                if(operator.accept_values !== "yes") {
+                    continue;
+                }
+                for(var j = 0; j < filter_interface_len; j++) {
+
+                    var element_returns_no_value = (filter_interface[j].hasOwnProperty("returns_no_value") &&
+                        filter_interface[j].returns_no_value == "yes") ? true : false;
+                    if(element_returns_no_value) {
+                        // update widgets
+                        if(autocomplete_value) {
+                           elem_rule.find('input.ui-autocomplete-input').val(autocomplete_value);
+                        }
+                        if(slider_value) {
+                            elem_rule.find('div.ui-slider').slider('value', slider_value);
+                        }
+                        continue;
+                    }
+
+                    var filter_element = filter_interface[j].filter_element,
+                        filter_element_attributes = filter_interface[j].filter_element_attributes,
+                        filter_input_type = filter_element_attributes.hasOwnProperty("type") ? filter_element_attributes["type"] : null;
+
+                    if(filter_element == 'input') {
+                        if(filter_input_type == 'radio') {
+                            elem_rule.find('input[type=radio][value="' + filter_value[0] + '"]').prop('checked', true);
+                        }
+                        else if(filter_input_type == 'checkbox') {
+                            for(var c in filter_value) {
+                                elem_rule.find('input[type=checkbox][value="' + filter_value[c] + '"]').prop('checked', true);
+                            }
+                        }
+                        else {
+                            elem_rule.find('input').eq(0).val(filter_value[0]);
+                        }
+                    }
+                    else if(filter_element == 'select') {
+                        elem_rule.find('select').eq(2).val(filter_value[0]);
+                    }
+                }
+            }
+        }
 
     };
 

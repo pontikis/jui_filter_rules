@@ -1,4 +1,8 @@
 /*
+ * jui_filter_rules v1.0.5 CSS (for Bootstrap) *********************************
+*/
+
+/*
 DO NOT CHANGE this file, as it will be overwritten in next update.
 Write your own classes in other css file.
 */
@@ -42,6 +46,7 @@ Write your own classes in other css file.
     border: 1px solid;
     padding: 2px;
     margin: 0;
+    width: 35px;
 }
 
 /* rules list --------------------------------------------------------------- */
@@ -149,6 +154,7 @@ Write your own classes in other css file.
 .rule_tools_list {
     padding: 0;
     margin: 0;
+    width: 35px;
 }
 
 /* no filters div ----------------------------------------------------------- */
@@ -159,9 +165,22 @@ Write your own classes in other css file.
     margin-right: auto;
 }
 
-/* utility ------------------------------------------------------------------ */
-.tools_list_shrink {
-    width: 35px !important;
-}
 
+/* IE8 CSS hack ------------------------------------------------------------- */
+/* http://dimox.net/personal-css-hacks-for-ie6-ie7-ie8/ */
+@media \0screen {
+
+    .rules_group_tools_list {
+        border: 1px solid;
+        padding: 2px;
+        margin: 0;
+        width: auto;
+    }
+
+    .rule_tools_list {
+        padding: 0;
+        margin: 0;
+        width: auto;
+    }
+}
 /* -------------------------------------------------------------------------- */

@@ -1,7 +1,7 @@
 jui_filter_rules
 ================
 
-jui_filter_rules is a jQuery plugin, useful to create dataset filter rules as JSON object and the relevant WHERE SQL.
+jui_filter_rules is a jQuery plugin, useful to create or set filter rules as JSON object and get the relevant WHERE SQL.
 
 Project page: [https://pontikis.net/labs/jui_filter_rules][HOME]
 [HOME]: http://pontikis.net/labs/jui_filter_rules
@@ -11,6 +11,15 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/jui_filter_rules/master/MIT_LICENSE
+
+Release 1.0.5 (27 May 2014)
+--------------------------
+* Set Rules functionality: If you define `filter_rules` option, `jui_filter_rules` will display default filters on startup. You can also apply a filter_rules set, using `setRules` method.
+* `onSetRules` events
+* bowser.js removed from dependencies (a CSS hack for IE8 added instead)
+* Default `filter_interface`
+* `filter_element_attributes` cannot missing
+* php class: is_empty BUG FIX (is_empty returned null instead of '')
 
 Release 1.0.4 (09 May 2014)
 --------------------------
