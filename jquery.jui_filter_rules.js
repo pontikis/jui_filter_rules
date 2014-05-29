@@ -1698,6 +1698,9 @@
                             elem_rule.find('input[type=radio][value="' + filter_value[0] + '"]').prop('checked', true);
                         }
                         else if(filter_input_type == 'checkbox') {
+                            // uncheck all checkboxes (may have been checked by "lk_selected" attribute)
+                            elem_rule.find('input[type=checkbox]').prop('checked', false);
+                            // check checkboxes according to filter value
                             for(var c in filter_value) {
                                 elem_rule.find('input[type=checkbox][value="' + filter_value[c] + '"]').prop('checked', true);
                             }
