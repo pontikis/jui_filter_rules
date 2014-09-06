@@ -33,6 +33,7 @@ class jui_filter_rules {
 	public function __construct(dacapo $ds) {
 		$this->ds = $ds;
 		$this->usePreparedStatements = $ds->use_pst;
+		$this->sql_placeholder = $ds->sql_placeholder;
 		$this->pst_placeholder = $ds->pst_placeholder;
 		$this->last_error = array(
 			'element_rule_id' => null,
@@ -99,14 +100,17 @@ class jui_filter_rules {
 							$sql .= '(';
 							$filter_value_len = count($filter_value);
 							for($v = 0; $v < $filter_value_len; $v++) {
-								switch($this->pst_placeholder) {
+
+								$sql .= $this->sql_placeholder;
+/*								switch($this->pst_placeholder) {
 									case 'question_mark':
 										$sql .= '?';
 										break;
 									case 'numbered':
 										$sql .= '$' . $bind_param_index;
 										$bind_param_index++;
-								}
+								}*/
+
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
 								}
@@ -117,14 +121,17 @@ class jui_filter_rules {
 							}
 							$sql .= ')';
 						} else {
-							switch($this->pst_placeholder) {
+
+							$sql .= $this->sql_placeholder;
+
+/*							switch($this->pst_placeholder) {
 								case 'question_mark':
 									$sql .= '?';
 									break;
 								case 'numbered':
 									$sql .= '$' . $bind_param_index;
 									$bind_param_index++;
-							}
+							}*/
 
 							if(in_array($rule['condition']['operator'], array('is_empty', 'is_not_empty'))) {
 								array_push($bind_params, '');
