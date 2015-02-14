@@ -7,7 +7,7 @@
  *
  * Da Capo database wrapper is required https://github.com/pontikis/dacapo
  *
- * @version 1.0.5 (27 May 2014)
+ * @version 1.0.6 (14 Feb 2015)
  * @author Christos Pontikis http://pontikis.net
  * @license  http://opensource.org/licenses/MIT MIT license
  **/
@@ -45,6 +45,7 @@ $ds = new dacapo($db_settings, null);
 
 // print result
 $jfr = new jui_filter_rules($ds);
+$jfr->set_allowed_functions(array('date_encode'));
 $result = $jfr->parse_rules($a_rules);
 
 $last_error = $jfr->get_last_error();

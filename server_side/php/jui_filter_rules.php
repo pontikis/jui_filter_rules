@@ -4,7 +4,7 @@
  *
  * Da Capo database wrapper is required https://github.com/pontikis/dacapo
  *
- * @version 1.0.5 (27 May 2014)
+ * @version 1.0.6 (14 Feb 2015)
  * @author Christos Pontikis http://www.pontikis.net
  * @license http://opensource.org/licenses/MIT MIT License
  **/
@@ -30,10 +30,10 @@ class jui_filter_rules {
 	/**
 	 * @param dacapo $ds
 	 */
-	public function __construct(dacapo $ds) {
+	public function __construct(dacapo $ds, $allowed_functions = array()) {
 		$this->ds = $ds;
+		$this->allowed_functions = $allowed_functions;
 		$this->usePreparedStatements = $ds->use_pst;
-		$this->sql_placeholder = $ds->sql_placeholder;
 		$this->pst_placeholder = $ds->pst_placeholder;
 		$this->last_error = array(
 			'element_rule_id' => null,
@@ -47,6 +47,17 @@ class jui_filter_rules {
 	public function get_last_error() {
 		return $this->last_error;
 	}
+
+
+	/**
+	 * @param array $a_functions
+	 */
+	public function set_allowed_functions($a_functions = array()) {
+		if(is_array($a_functions)) {
+			$this->allowed_functions = $a_functions;
+		}
+	}
+
 
 	/**
 	 * Parse rules array from given JSON object and returns WHERE SQL clause and bind params array (used on prepared statements).
@@ -100,17 +111,14 @@ class jui_filter_rules {
 							$sql .= '(';
 							$filter_value_len = count($filter_value);
 							for($v = 0; $v < $filter_value_len; $v++) {
-
-								$sql .= $this->sql_placeholder;
-/*								switch($this->pst_placeholder) {
+								switch($this->pst_placeholder) {
 									case 'question_mark':
 										$sql .= '?';
 										break;
 									case 'numbered':
 										$sql .= '$' . $bind_param_index;
 										$bind_param_index++;
-								}*/
-
+								}
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
 								}
@@ -121,17 +129,14 @@ class jui_filter_rules {
 							}
 							$sql .= ')';
 						} else {
-
-							$sql .= $this->sql_placeholder;
-
-/*							switch($this->pst_placeholder) {
+							switch($this->pst_placeholder) {
 								case 'question_mark':
 									$sql .= '?';
 									break;
 								case 'numbered':
 									$sql .= '$' . $bind_param_index;
 									$bind_param_index++;
-							}*/
+							}
 
 							if(in_array($rule['condition']['operator'], array('is_empty', 'is_not_empty'))) {
 								array_push($bind_params, '');
@@ -217,31 +222,36 @@ class jui_filter_rules {
 		$vlen = count($a_values);
 		if(is_array($filter_value_conversion_server_side)) {
 			$function_name = $filter_value_conversion_server_side['function_name'];
-			$args = $filter_value_conversion_server_side['args'];
-			$arg_len = count($args);
 
-			for($i = 0; $i < $vlen; $i++) {
-				// create arguments values for this filter value
-				$conversion_args = array();
-				for($a = 0; $a < $arg_len; $a++) {
-					if(array_key_exists('filter_value', $args[$a])) {
-						array_push($conversion_args, $a_values[$i]);
+			if(in_array($function_name, $this->allowed_functions)) {
+
+				$args = $filter_value_conversion_server_side['args'];
+				$arg_len = count($args);
+
+				for($i = 0; $i < $vlen; $i++) {
+					// create arguments values for this filter value
+					$conversion_args = array();
+					for($a = 0; $a < $arg_len; $a++) {
+						if(array_key_exists('filter_value', $args[$a])) {
+							array_push($conversion_args, $a_values[$i]);
+						}
+						if(array_key_exists('value', $args[$a])) {
+							array_push($conversion_args, $args[$a]['value']);
+						}
 					}
-					if(array_key_exists('value', $args[$a])) {
-						array_push($conversion_args, $args[$a]['value']);
+					// execute user function and assign return value to filter value
+					try {
+						$a_values[$i] = call_user_func_array($function_name, $conversion_args);
+					} catch(Exception $e) {
+						$this->last_error = array(
+							'element_rule_id' => $element_rule_id,
+							'error_message' => $e->getMessage()
+						);
+						break;
 					}
-				}
-				// execute user function and assign return value to filter value
-				try {
-					$a_values[$i] = call_user_func_array($function_name, $conversion_args);
-				} catch(Exception $e) {
-					$this->last_error = array(
-						'element_rule_id' => $element_rule_id,
-						'error_message' => $e->getMessage()
-					);
-					break;
 				}
 			}
+
 		}
 
 		if($this->usePreparedStatements) {

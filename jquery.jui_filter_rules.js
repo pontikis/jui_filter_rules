@@ -1,9 +1,9 @@
 /**
  * @fileOverview jui_filter_rules is a jQuery plugin, useful to create or set filter rules as JSON object and get the relevant WHERE SQL.
  *               <p>License MIT
- *               <br />Copyright 2013 - 2014 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
+ *               <br />Copyright 2013 - 2015 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="http://pontikis.net/labs/jui_filter_rules">http://pontikis.net/labs/jui_filter_rules</a>
- * @version 1.0.5 (27 May 2014)
+ * @version 1.0.6 (14 Feb 2015)
  * @author Christos Pontikis http://www.pontikis.net
  * @requires jquery >= 1.8 (optional but highly recommended moment.js, jquery-ui, twitter bootstrap >= 2)
  */
@@ -288,7 +288,7 @@
          * @returns {string}
          */
         getVersion: function() {
-            return "1.0.5";
+            return "1.0.6";
         },
 
         /**

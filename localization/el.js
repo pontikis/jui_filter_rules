@@ -1,5 +1,5 @@
 /**
- * jui_filter_rules v1.0.5 simple localization - GREEK
+ * jui_filter_rules v1.0.6 simple localization - GREEK
  *
  * DO NOT CHANGE this file, as it will be overwritten in next update.
  * To use different values, write and use a similar structure js file.
