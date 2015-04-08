@@ -13,7 +13,7 @@ jui_filter_rules is a jQuery plugin, useful to **create** or **set** filter rule
 Copyright [Christos Pontikis][copyright]
 [copyright]: http://www.pontikis.net
 
-Release: 1.0.6 (14 Feb 2015) - View CHANGELOG [here][CHANGELOG]
+Release: 1.0.7 (08 Apr 2015) - View CHANGELOG [here][CHANGELOG]
 [CHANGELOG]: https://raw.github.com/pontikis/jui_filter_rules/master/CHANGELOG.md
 
 License [MIT][mit]

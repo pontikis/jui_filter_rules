@@ -1,5 +1,5 @@
 /**
- * jui_filter_rules v1.0.6 simple localization - TURKISH
+ * jui_filter_rules v1.0.7 simple localization - TURKISH
  *
  * by Şimşek Mert www.simsekmert.com
  *

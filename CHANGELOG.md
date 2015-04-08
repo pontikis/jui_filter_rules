@@ -12,6 +12,10 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/jui_filter_rules/master/MIT_LICENSE
 
+Release 1.0.7 (07 Apr 2015)
+--------------------------
+* BUG fix: php class to use dacapo $sql_placeholder
+
 Release 1.0.6 (14 Feb 2015)
 --------------------------
 * Critical Security issue in jui_filter_rules PHP part (FIXED - issue #16) - bug noticed by Timo Schmid ERNW GmbH www.ernw.de

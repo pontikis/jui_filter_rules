@@ -7,7 +7,7 @@
  *
  * Da Capo database wrapper is required https://github.com/pontikis/dacapo
  *
- * @version 1.0.6 (14 Feb 2015)
+ * @version 1.0.7 (08 Apr 2015)
  * @author Christos Pontikis http://pontikis.net
  * @license  http://opensource.org/licenses/MIT MIT license
  **/

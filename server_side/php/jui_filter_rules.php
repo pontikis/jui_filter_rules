@@ -4,7 +4,7 @@
  *
  * Da Capo database wrapper is required https://github.com/pontikis/dacapo
  *
- * @version 1.0.6 (14 Feb 2015)
+ * @version 1.0.7 (08 Apr 2015)
  * @author Christos Pontikis http://www.pontikis.net
  * @license http://opensource.org/licenses/MIT MIT License
  **/
@@ -29,11 +29,13 @@ class jui_filter_rules {
 
 	/**
 	 * @param dacapo $ds
+	 * @param array $allowed_functions
 	 */
 	public function __construct(dacapo $ds, $allowed_functions = array()) {
 		$this->ds = $ds;
 		$this->allowed_functions = $allowed_functions;
 		$this->usePreparedStatements = $ds->use_pst;
+		$this->sql_placeholder = $ds->sql_placeholder;
 		$this->pst_placeholder = $ds->pst_placeholder;
 		$this->last_error = array(
 			'element_rule_id' => null,
@@ -111,14 +113,8 @@ class jui_filter_rules {
 							$sql .= '(';
 							$filter_value_len = count($filter_value);
 							for($v = 0; $v < $filter_value_len; $v++) {
-								switch($this->pst_placeholder) {
-									case 'question_mark':
-										$sql .= '?';
-										break;
-									case 'numbered':
-										$sql .= '$' . $bind_param_index;
-										$bind_param_index++;
-								}
+
+								$sql .= $this->sql_placeholder;
 								if($v < $filter_value_len - 1) {
 									$sql .= ',';
 								}
@@ -129,14 +125,8 @@ class jui_filter_rules {
 							}
 							$sql .= ')';
 						} else {
-							switch($this->pst_placeholder) {
-								case 'question_mark':
-									$sql .= '?';
-									break;
-								case 'numbered':
-									$sql .= '$' . $bind_param_index;
-									$bind_param_index++;
-							}
+
+							$sql .= $this->sql_placeholder;
 
 							if(in_array($rule['condition']['operator'], array('is_empty', 'is_not_empty'))) {
 								array_push($bind_params, '');

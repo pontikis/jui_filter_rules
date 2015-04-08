@@ -3,7 +3,7 @@
  *               <p>License MIT
  *               <br />Copyright 2013 - 2015 Christos Pontikis <a href="http://pontikis.net">http://pontikis.net</a>
  *               <br />Project page <a href="http://pontikis.net/labs/jui_filter_rules">http://pontikis.net/labs/jui_filter_rules</a>
- * @version 1.0.6 (14 Feb 2015)
+ * @version 1.0.7 (08 Apr 2015)
  * @author Christos Pontikis http://www.pontikis.net
  * @requires jquery >= 1.8 (optional but highly recommended moment.js, jquery-ui, twitter bootstrap >= 2)
  */
@@ -288,7 +288,7 @@
          * @returns {string}
          */
         getVersion: function() {
-            return "1.0.6";
+            return "1.0.7";
         },
 
         /**
